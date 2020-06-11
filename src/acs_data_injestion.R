@@ -24,10 +24,7 @@ v2018profile <- load_variables(2018, dataset = "acs5/profile")
 acs_age_sex_race_estimates <- get_acs(geography = "county",
                           year = 2018,
                           table = "DP05",
-                          state = "VA")
-
-
-acs_age_sex_race_estimates %>%
+                          state = "VA") %>%
   left_join(v2018profile, by = c("variable" = "name")) %>%
-  mutate(label = tolower(gsub(label, )))
+  mutate(label = tolower(gsub(" ", "-", gsub("!!", "_", label)) ))
 
