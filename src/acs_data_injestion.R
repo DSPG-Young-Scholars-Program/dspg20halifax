@@ -24,7 +24,7 @@ library(glue)
 
 # get tables we need
 
-v2018profile <- load_variables(2018, dataset = "acs5/profile")
+v2018profile <- load_variables(2018, dataset = "acs5/profile", cache = TRUE)
 
 # load county wide age sex race variables
 acs_age_sex_race_estimates <- get_acs(geography = "county",
@@ -34,12 +34,12 @@ acs_age_sex_race_estimates <- get_acs(geography = "county",
   left_join(v2018profile, by = c("variable" = "name")) %>%
   mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label)))))
 
-v2018subject <- load_variables(2018, dataset = "acs5/subject")
+v2018subject <- load_variables(2018, dataset = "acs5/subject", cache = TRUE)
 
 
 
 # load county wide income variables
-acs_median_income_estimates <- get_acs(geography = "county",
+county_median_income_estimates <- get_acs(geography = "county",
                                        year = 2018,
                                        table = "S1903",
                                        state = "VA") %>%
@@ -47,7 +47,7 @@ acs_median_income_estimates <- get_acs(geography = "county",
   mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label)))))
 
 # load county wide unemployment variables
-acs_unemployment_estimates <- get_acs(geography = "county",
+county_unemployment_estimates <- get_acs(geography = "county",
                                       year = 2018,
                                       table = "S2301",
                                       state = "VA") %>%
@@ -56,7 +56,7 @@ acs_unemployment_estimates <- get_acs(geography = "county",
 
 
 # can get this data by age/sex/race, but table measurements are odd and would take work to fix.
-acs_transportation_estimates <- get_acs(geography = "county",
+county_transportation_estimates <- get_acs(geography = "county",
                                         year = 2018,
                                         variables = c(workers_total = "S0802_C01_001",
                                                       workers_drove_alone = "S0802_C02_001",
@@ -70,10 +70,15 @@ dec_census_group_pops <- get_decennial(geography = "county",
                                        variables = c(paste0(rep("PCT02000"), 1:9),
                                                      paste0(rep("PCT0200"), 10:13)), # only PCT020001-PCT020013 deal with incarceration
                                        state = "VA",
-                                       summary_var = "P001001")
+                                       summary_var = "P001001") %>%
+  mutate(per_1000 = 1000 * value / summary_value) %>%
+  pivot_wider(names_from = variable,
+              values_from = c(value, per_1000),
+              names_glue = "{variable}_{.value}") %>%
+  mutate(fed_state_rate = PCT020004_per_1000 + PCT020005_per_1000 + PCT020005_per_1000) %>%
+  mutate(local_rate = PCT020007_per_1000 + PCT020008_per_1000) %>%
+  mutate(foster_care_rate = PCT020011_per_1000 + PCT020012_per_1000) %>%
+  select(NAME, fed_state_rate, local_rate, foster_care_rate, everything())
 
-dec_census_group_pops %>%
-  pivot_wider(names_from = c(variable),
-              values_from = c(value))
 
-
+# DP05, S1903, S2301 and S0802 are only available at tract level
