@@ -1,9 +1,3 @@
-##################################################################
-# Desc: Load in useful data from the ACS for the
-#   Incarceration/Recidivism in Halifax County Project
-#
-# Author: Ellen Graham
-# ################################################################
 
 # Load in Libraries
 
@@ -32,7 +26,7 @@ acs_age_sex_race_estimates <- get_acs(geography = "county",
                                       table = "DP05",
                                       state = "VA") %>%
   left_join(v2018profile, by = c("variable" = "name")) %>%
-  mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label)))))
+  mutate(label = tolower(gsub(",", "", gsub(" ", "_", gsub("!!", "_", label)))))
 
 v2018subject <- load_variables(2018, dataset = "acs5/subject", cache = TRUE)
 
@@ -44,7 +38,7 @@ county_median_income_estimates <- get_acs(geography = "county",
                                        table = "S1903",
                                        state = "VA") %>%
   left_join(v2018subject, by = c("variable" = "name")) %>%
-  mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label)))))
+  mutate(label = tolower(gsub(",", "", gsub(" ", "_", gsub("!!", "_", label)))))
 
 # load county wide unemployment variables
 county_unemployment_estimates <- get_acs(geography = "county",
@@ -52,7 +46,7 @@ county_unemployment_estimates <- get_acs(geography = "county",
                                       table = "S2301",
                                       state = "VA") %>%
   left_join(v2018subject, by = c("variable" = "name")) %>%
-  mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label)))))
+  mutate(label = tolower(gsub(",", "", gsub(" ", "_", gsub("!!", "_", label)))))
 
 
 # can get this data by age/sex/race, but table measurements are odd and would take work to fix.
