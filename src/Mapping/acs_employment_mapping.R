@@ -30,8 +30,8 @@ check_unstable <- function(variable_name) {
 
 }
 
-# quick map of unemployment by white and black. Note that unemployments above 20% are assumed unstable
-unemployment_scale <- colorBin("BuPu", c(0,100), c(0, 2.5, 5, 7.5, 10, 100))
+# quick map of unemployment by white and black. Note that unemployments above 25% are assumed unstable
+unemployment_scale <- colorBin("BuPu", c(0,100), c(0, 2.5, 5, 7.5, 10, 30))
 m <- leaflet(unemployment_county_sp) %>%
   addTiles() %>%  # Add default OpenStreetMap map tiles
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
