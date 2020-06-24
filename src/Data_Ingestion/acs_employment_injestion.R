@@ -1,0 +1,35 @@
+
+# Load in Libraries
+
+library(tidycensus)
+library(dplyr)
+library(tidyr)
+library(tigris)
+library(glue)
+library(sf)
+
+
+v2018subject <- load_variables(2018, dataset = "acs5/subject", cache = TRUE)
+
+
+# load tract level unemployment data
+unemployment_county <- get_acs(geography = "county",
+                              year = 2018,
+                              table = "S2301",
+                              state = "VA") %>%
+  left_join(v2018subject, by = c("variable" = "name")) %>%
+  mutate(label = tolower(gsub(",", "", gsub(" ", "_", gsub("!!", "_", label))))) %>%
+  select(-variable) %>%
+  pivot_wider(names_from = label,
+              values_from = c(estimate, moe),
+              names_glue = "{label}_{.value}")
+
+halifax_counties <- counties(state = "VA",
+                           class = "sf",
+                           cb = TRUE,
+                           resolution = "20m") %>%
+  st_transform(crs = 4326)
+
+# bind to spatial data
+unemployment_county_sp <- left_join(halifax_counties, unemployment_county, by = c("GEOID"))
+
