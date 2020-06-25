@@ -46,29 +46,6 @@ geog_mobility <- get_acs(geography = "county", year = 2018, table = tables[1], s
 # bind to spatial data
 geog_mobility <- left_join(va_counties, geog_mobility, by = c("GEOID"))
 
-## Calculate rates for variables of interest
-geog_mobility <- geog_mobility %>% 
-  mutate(pct_stay = geog_mobility$`estimate_total_same-house-1-year-ago_householder-lived-in-renter-occupied-housing-units_estimate` / geog_mobility$`estimate_total_householder-lived-in-renter-occupied-housing-units_estimate`)
-
-## Palette
-fill_pal <- colorBin("BuPu", range(geog_mobility$pct_stay), bins = 9)
-
-## Map
-leaflet(geog_mobility) %>%
-  addTiles() %>%
-  addPolygons(
-    weight = 1,
-    fillColor = ~fill_pal(geog_mobility$pct_stay),
-    fillOpacity = 1
-  ) %>%
-  addLegend(
-    "bottomright", 
-    pal = fill_pal, 
-    values = ~pct_stay,
-    title = "Pct of renters in <br>same household from 1 year ago",
-    opacity = .8
-  )
-
 #
 #
 # Financial Characteristics --------------------------------------------------------------------------------
@@ -93,8 +70,6 @@ financial_chars <- left_join(va_counties, financial_chars, by = c("GEOID"))
 #
 
 ## Geographic mobility
-geojson_write(geog_mobility, geometry = "polygon", file = here("data","working","geog_mobility.geojson"))
+# geojson_write(geog_mobility, geometry = "polygon", file = here("data","original","acs_geog_mobility.geojson"))
 
-## When reading in geo-json, read in as sp, then convert to sf
-# test <- st_as_sf(geojson_read(here("data","working","sp_test.geojson"), what = "sp"))
 
