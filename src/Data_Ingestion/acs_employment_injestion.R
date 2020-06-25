@@ -24,12 +24,15 @@ unemployment_county <- get_acs(geography = "county",
               values_from = c(estimate, moe),
               names_glue = "{label}_{.value}")
 
-halifax_counties <- counties(state = "VA",
+virginia_counties <- counties(state = "VA",
                            class = "sf",
                            cb = TRUE,
                            resolution = "20m") %>%
   st_transform(crs = 4326)
 
 # bind to spatial data
-unemployment_county_sp <- left_join(halifax_counties, unemployment_county, by = c("GEOID"))
+unemployment_county_sp <- left_join(virginia_counties, unemployment_county, by = c("GEOID"))
 
+# st_write(unemployment_county_sp,
+#          here::here("data", "original", "acs_unemployment_county.geojson"),
+#          driver = "GeoJSON")
