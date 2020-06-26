@@ -39,7 +39,7 @@ m <- leaflet(acs_unemployment_county_sp) %>%
               opacity = 1.0, fillOpacity = 0.8,
               fillColor = unemployment_scale(check_unstable("estimate_unemployment_rate_population_16_years_and_over")),
               group = "Overall Unemployment",
-              label = ~map(glue("Tract {NAME.x}<br/>
+              label = ~map(glue("{NAME.x} County<br/>
                                 Unemployment Rate: {estimate_unemployment_rate_population_16_years_and_over_estimate}%<br/>
                                 MOE: {estimate_unemployment_rate_population_16_years_and_over_moe}%"), htmltools::HTML)
               ) %>%
@@ -47,7 +47,7 @@ m <- leaflet(acs_unemployment_county_sp) %>%
               opacity = 1.0, fillOpacity = 0.8,
               fillColor = unemployment_scale(check_unstable("estimate_unemployment_rate_population_16_years_and_over_race_and_hispanic_or_latino_origin_white_alone")),
               group = "White Alone Unemployment",
-              label = ~map(glue("Tract {NAME.x}<br/>
+              label = ~map(glue("{NAME.x} County<br/>
                                 Unemployment Rate: {estimate_unemployment_rate_population_16_years_and_over_race_and_hispanic_or_latino_origin_white_alone_estimate}%<br/>
                                 MOE: {estimate_unemployment_rate_population_16_years_and_over_race_and_hispanic_or_latino_origin_white_alone_moe}%"), htmltools::HTML)
   ) %>%
