@@ -1,10 +1,3 @@
-##################################################################
-# Desc: Load in useful data from the ACS for the
-#   Incarceration/Recidivism in Halifax County Project
-#
-# Author: Ellen Graham
-# ################################################################
-
 # Load in Libraries
 
 library(tidycensus)
@@ -24,47 +17,68 @@ library(glue)
 
 # get tables we need
 
-v2018profile <- load_variables(2018, dataset = "acs5/profile", cache = TRUE)
+v2018profile <- load_variables(2018, dataset = "acs5/profile")
+
+v2018profile_unique <- v2018profile %>% # this works for this table, not sure if works for all tables
+  group_by(label) %>%
+  top_n(1, wt = rev(name)) %>%
+  ungroup()
 
 # load county wide age sex race variables
-acs_age_sex_race_estimates <- get_acs(geography = "county",
+acs_age_sex_race_county <- get_acs(geography = "county",
                                       year = 2018,
                                       table = "DP05",
                                       state = "VA") %>%
-  left_join(v2018profile, by = c("variable" = "name")) %>%
-  mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label)))))
+  inner_join(v2018profile_unique, by = c("variable" = "name")) %>%
+  mutate(label = tolower(gsub(",", "", gsub(" ", "_", gsub("!!", "_", label))))) %>%
+  select(-variable) %>%
+  pivot_wider(names_from = label,
+              values_from = c(estimate, moe),
+              names_glue = "{label}_{.value}")
+
+table(acs_age_sex_race_county$label)
 
 v2018subject <- load_variables(2018, dataset = "acs5/subject", cache = TRUE)
 
 
 
 # load county wide income variables
-county_median_income_estimates <- get_acs(geography = "county",
+acs_median_income_county <- get_acs(geography = "county",
                                        year = 2018,
                                        table = "S1903",
                                        state = "VA") %>%
   left_join(v2018subject, by = c("variable" = "name")) %>%
-  mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label)))))
+  mutate(label = tolower(gsub(",", "", gsub(" ", "_", gsub("!!", "_", label))))) %>%
+  select(-variable) %>%
+  pivot_wider(names_from = label,
+              values_from = c(estimate, moe),
+              names_glue = "{label}_{.value}")
 
-# load county wide unemployment variables
-county_unemployment_estimates <- get_acs(geography = "county",
-                                      year = 2018,
-                                      table = "S2301",
-                                      state = "VA") %>%
+
+get_acs(geography = "county",
+        year = 2018,
+        table = "DP05",
+        state = "VA") %>%
   left_join(v2018subject, by = c("variable" = "name")) %>%
-  mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label)))))
-
+  mutate(label = tolower(gsub(",", "", gsub(" ", "_", gsub("!!", "_", label))))) %>%
+  select(-variable)# %>%
+  pivot_wider(names_from = label,
+              values_from = c(estimate, moe),
+              names_glue = "{label}_{.value}")
 
 # can get this data by age/sex/race, but table measurements are odd and would take work to fix.
-county_transportation_estimates <- get_acs(geography = "county",
-                                        year = 2018,
-                                        variables = c(workers_total = "S0802_C01_001",
-                                                      workers_drove_alone = "S0802_C02_001",
-                                                      workers_carpooled = "S0802_C03_001",
-                                                      workers_transit = "S0802_C04_001"),
-                                        state = "VA")
+acs_transportation_county <- get_acs(geography = "county",
+                                     year = 2018,
+                                     variables = c(workers_total = "S0802_C01_001",
+                                                   workers_drove_alone = "S0802_C02_001",
+                                                   workers_carpooled = "S0802_C03_001",
+                                                   workers_transit = "S0802_C04_001"),
+                                     state = "VA") %>%
+  pivot_wider(names_from = variable,
+              values_from = c(estimate, moe),
+              names_glue = "{variable}_{.value}")
 
-dec_census_group_pops <- get_decennial(geography = "county",
+dec_group_pops_county <- get_decennial(geography = "county",
                                        year = 2010,
                                        sumfile = "sf1",
                                        variables = c(paste0(rep("PCT02000"), 1:9),
@@ -81,4 +95,36 @@ dec_census_group_pops <- get_decennial(geography = "county",
   select(NAME, fed_state_rate, local_rate, foster_care_rate, everything())
 
 
-# DP05, S1903, S2301 and S0802 are only available at tract level
+virginia_counties <- counties(state = "VA",
+                              class = "sf",
+                              cb = TRUE,
+                              resolution = "20m") %>%
+  st_transform(crs = 4326)
+
+virginia_counties_2010 <- counties(state = "VA",
+                                   class = "sf",
+                                   cb = TRUE,
+                                   resolution = "20m",
+                                   year = 2010) %>%
+  st_transform(crs = 4326) %>%
+  mutate(GEOID_short = str_sub(GEO_ID, 10))
+
+# bind to spatial data
+acs_age_sex_race_county_sp <- left_join(virginia_counties, acs_age_sex_race_county, by = c("GEOID"))
+acs_median_income_county_sp <- left_join(virginia_counties, acs_median_income_county, by = c("GEOID"))
+acs_transportation_county_sp <- left_join(virginia_counties, acs_transportation_county, by = c("GEOID"))
+dec_group_pops_county_sp <- left_join(virginia_counties_2010, dec_group_pops_county, by = c("GEOID_short" = "GEOID"))
+
+
+# st_write(acs_age_sex_race_county_sp,
+#          here::here("data", "original", "acs_age_sex_race_county.geojson"),
+#          driver = "GeoJSON")
+# st_write(acs_median_income_county_sp,
+#          here::here("data", "original", "acs_median_income_county.geojson"),
+#          driver = "GeoJSON")
+# st_write(acs_transportation_county_sp,
+#          here::here("data", "original", "acs_transportation_county.geojson"),
+#          driver = "GeoJSON")
+# st_write(dec_group_pops_county_sp,
+#          here::here("data", "original", "dec_group_pops_county.geojson"),
+#          driver = "GeoJSON")
