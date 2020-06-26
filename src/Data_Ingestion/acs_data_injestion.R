@@ -1,4 +1,3 @@
-
 # Load in Libraries
 
 library(tidycensus)
