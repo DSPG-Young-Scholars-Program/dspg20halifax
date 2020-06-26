@@ -56,16 +56,17 @@ create_map <- function(.data, # spatial dataset to use
     )
 }
 
-create_map(acs_poverty_county_sp,
-           variables= c("estimate_percent_below_poverty_level_population_for_whom_poverty_status_is_determined",
-                        "estimate_percent_below_poverty_level_population_for_whom_poverty_status_is_determined_race_and_hispanic_or_latino_origin_white_alone",
-                        "estimate_percent_below_poverty_level_population_for_whom_poverty_status_is_determined_race_and_hispanic_or_latino_origin_black_or_african_american_alone"),
-           group_names = c("Overall Poverty",
-                           "White Alone Poverty",
-                           "Black Alone Poverty"),
-           legend_name = "Poverty Rate",
-           label_name = "Poverty Rate",
-           scale_domain = c(0,100),
-           scale_breaks = c(0, 5, 10, 20, 40, 100),
-           unstable_threshold = 2)
+
+# create_map(acs_poverty_county_sp,
+#            variables= c("estimate_percent_below_poverty_level_population_for_whom_poverty_status_is_determined",
+#                         "estimate_percent_below_poverty_level_population_for_whom_poverty_status_is_determined_race_and_hispanic_or_latino_origin_white_alone",
+#                         "estimate_percent_below_poverty_level_population_for_whom_poverty_status_is_determined_race_and_hispanic_or_latino_origin_black_or_african_american_alone"),
+#            group_names = c("Overall Poverty",
+#                            "White Alone Poverty",
+#                            "Black Alone Poverty"),
+#            legend_name = "Poverty Rate",
+#            label_name = "Poverty Rate",
+#            scale_domain = c(0,100),
+#            scale_breaks = c(0, 5, 10, 20, 40, 100),
+#            unstable_threshold = 2)
 
