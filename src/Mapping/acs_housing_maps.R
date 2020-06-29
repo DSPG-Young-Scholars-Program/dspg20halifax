@@ -27,7 +27,8 @@ leaflet(geog_mobility) %>%
     "bottomright", 
     pal = fill_pal, 
     values = ~pct_stay,
-    title = "Pct of renters in <br>same household from 1 year ago",
+    title = "Prop. renters in <br>same household from 1 year ago",
     opacity = .8
   )
+
 

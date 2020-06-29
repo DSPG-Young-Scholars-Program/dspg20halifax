@@ -2,6 +2,7 @@
 library(here)
 library(tidycensus)
 library(dplyr)
+library(tidyr)
 library(sf)
 library(tigris)
 library(leaflet)
@@ -60,8 +61,37 @@ financial_chars <- get_acs(geography = "county", year = 2018, table = tables[2],
               values_from = c(estimate, moe),
               names_glue = "{label}_{.value}")
 
-financial_chars <- left_join(va_counties, financial_chars, by = c("GEOID"))
+financial_chars <- left_join(va_counties, financial_chars, by = c("GEOID")) ## All owner-occupied....?
 
+# ----- Real Estate Subset ---- # - probably not useful
+
+## Extract real estate data and clean up formatting
+real_estate <- financial_chars %>% 
+  select("GEOID", contains("real-estate") & contains("perc") & !contains("median"))
+
+colnames(real_estate) <- c("GEOID",
+                           "pct_owner_taxes_less_800", 
+                           "pct_owner_taxes_800_1499", 
+                           "pct_owner_taxes_more_1500", 
+                           "pct_owner_no_taxes",
+                           "pct_owner_taxes_less_800_moe", 
+                           "pct_owner_taxes_800_1499_moe", 
+                           "pct_owner_taxes_more_1500_moe", 
+                           "pct_owner_no_taxes_moe")
+
+real_estate <- left_join(va_counties, real_estate, by = c("GEOID"))
+
+# ----- Rent percentage of income ---- #
+
+rent_data <- get_acs(geography = "county", year = 2018, table = "B25070", state = "VA") %>%
+  left_join(vars_2018, by = c("variable" = "name")) %>%
+  mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label))))) %>%
+  select(-variable) %>%
+  pivot_wider(names_from = label,
+              values_from = c(estimate, moe),
+              names_glue = "{label}_{.value}")
+
+rent_data <- left_join(va_counties, rent_data, by = c("GEOID"))
 
 #
 #
