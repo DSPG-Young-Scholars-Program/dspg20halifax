@@ -36,12 +36,12 @@ geog_mobility <- get_acs_multi_years(table = "S0701", var_names = subject_vars_2
 
 rent_data <- get_acs_multi_years(table = "B25070", var_names = vars_2018, years = seq(2010, 2018))
 
-geojson_write(rent_data, geometry = "polygon", file = here("data", "original", "Housing", "acs_rent_data.geojson"))
+#geojson_write(rent_data, geometry = "polygon", file = here("data", "original", "Housing", "acs_rent_data.geojson"))
 
 # ----- Demographics by housing status ---- #
 
 ## Was having trouble with data from 2010-2012
 housing_demo_data <- get_acs_multi_years(table = "S2502", var_names = subject_vars_2018, years = seq(2013, 2018))
 
-geojson_write(housing_demo_data, geometry = "polygon", file = here("data", "original", "Housing", "housing_demo_data.geojson"))
+#geojson_write(housing_demo_data, geometry = "polygon", file = here("data", "original", "Housing", "housing_demo_data.geojson"))
 
