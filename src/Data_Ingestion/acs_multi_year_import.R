@@ -1,16 +1,17 @@
 
-library(acs)
 library(tidycensus)
 library(dplyr)
 library(sf)
+library(tigris)
 
 ## Function to create a single sf object with data for an ACS table across multiple years
 get_acs_multi_years <- function(table, # ACS table ID
-                                var_names, # Should be in the format obtained from acs package load_variables function
+                                var_names, # Should be in the format obtained from tidycensus package load_variables function
                                 years = seq(2010, 2018), 
                                 state = "VA", 
                                 geography = "county", 
-                                survey = "acs5") # Switch to acs1 to avoid overlapping survey windows
+                                survey = "acs1", # Switch to acs1 to avoid overlapping survey windows
+                                spatial = TRUE) # Do you want spatial info?
   {
   
   i <- 1
@@ -37,10 +38,21 @@ get_acs_multi_years <- function(table, # ACS table ID
   }
   
   ## Combine into single dataframe
-  tmp_full <- do.call(rbind, data_by_year)
+  tmp_full <- do.call(bind_rows, data_by_year)
   
-  ## Join on spatial data
-  acs_df <- left_join(va_counties, tmp_full, by = c("GEOID"))
+  if (spatial == TRUE) {
+    ## Spatial data for VA counties
+    counties <- counties(state = state, class = "sf", cb = TRUE, resolution = "20m") %>% 
+      st_transform(crs = 4326)
+    
+    ## Join on spatial data
+    acs_df <- left_join(counties, tmp_full, by = c("GEOID"))
+    
+  } else {
+    
+    acs_df <- tmp_full
+    
+  }
   
   return(acs_df)
   
