@@ -2,12 +2,16 @@
 library(here)
 library(tidycensus)
 library(dplyr)
+library(tidyr)
 library(sf)
 library(tigris)
 library(leaflet)
 library(geojsonio)
+library(ggplot2)
 
 census_api_key(Sys.getenv("CENSUS_API_KEY"))
+
+source(here("src", "Data_Ingestion", "acs_multi_year_import.R"))
 
 ## Variable names for ACS
 vars_2018 <- load_variables(2018, dataset = "acs5", cache = TRUE)
@@ -34,17 +38,9 @@ va_counties <- counties(state = "VA",
 #
 #
 
-## Geographic mobility variables
-geog_mobility <- get_acs(geography = "county", year = 2018, table = tables[1], state = "VA") %>%
-  left_join(vars_2018, by = c("variable" = "name")) %>%
-  mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label))))) %>%
-  select(-variable) %>%
-  pivot_wider(names_from = label,
-              values_from = c(estimate, moe),
-              names_glue = "{label}_{.value}")
+geog_mobility <- get_acs_multi_years(table = "S0701", var_names = subject_vars_2018, survey = "acs1")
 
-# bind to spatial data
-geog_mobility <- left_join(va_counties, geog_mobility, by = c("GEOID"))
+# geojson_write(geog_mobility, geometry = "polygon", file = here("data","original", "Housing", "acs_geog_mobility.geojson"))
 
 #
 #
@@ -60,16 +56,11 @@ financial_chars <- get_acs(geography = "county", year = 2018, table = tables[2],
               values_from = c(estimate, moe),
               names_glue = "{label}_{.value}")
 
-financial_chars <- left_join(va_counties, financial_chars, by = c("GEOID"))
+financial_chars <- left_join(va_counties, financial_chars, by = c("GEOID")) ## All owner-occupied....?
 
+# ----- Rent percentage of income ---- #
 
-#
-#
-# Write Files --------------------------------------------------------------------------------
-#
-#
+rent_data <- get_acs_multi_years(table = "B25070", var_names = vars_2018, years = seq(2017, 2018))
 
-## Geographic mobility
-# geojson_write(geog_mobility, geometry = "polygon", file = here("data","original","acs_geog_mobility.geojson"))
-
+# geojson_write(rent_data, geometry = "polygon", file = here("data","original","Housing", "acs_rent_data.geojson"))
 
