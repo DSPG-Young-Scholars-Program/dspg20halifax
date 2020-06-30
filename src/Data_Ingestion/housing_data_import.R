@@ -7,8 +7,11 @@ library(sf)
 library(tigris)
 library(leaflet)
 library(geojsonio)
+library(ggplot2)
 
 census_api_key(Sys.getenv("CENSUS_API_KEY"))
+
+source(here("src", "Data_Ingestion", "acs_multi_year_import.R"))
 
 ## Variable names for ACS
 vars_2018 <- load_variables(2018, dataset = "acs5", cache = TRUE)
@@ -35,17 +38,9 @@ va_counties <- counties(state = "VA",
 #
 #
 
-## Geographic mobility variables
-geog_mobility <- get_acs(geography = "county", year = 2018, table = tables[1], state = "VA") %>%
-  left_join(vars_2018, by = c("variable" = "name")) %>%
-  mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label))))) %>%
-  select(-variable) %>%
-  pivot_wider(names_from = label,
-              values_from = c(estimate, moe),
-              names_glue = "{label}_{.value}")
+geog_mobility <- get_acs_multi_years(table = "S0701", var_names = subject_vars_2018, survey = "acs1")
 
-# bind to spatial data
-geog_mobility <- left_join(va_counties, geog_mobility, by = c("GEOID"))
+# geojson_write(geog_mobility, geometry = "polygon", file = here("data","original", "Housing", "acs_geog_mobility.geojson"))
 
 #
 #
@@ -63,43 +58,9 @@ financial_chars <- get_acs(geography = "county", year = 2018, table = tables[2],
 
 financial_chars <- left_join(va_counties, financial_chars, by = c("GEOID")) ## All owner-occupied....?
 
-# ----- Real Estate Subset ---- # - probably not useful
-
-## Extract real estate data and clean up formatting
-real_estate <- financial_chars %>% 
-  select("GEOID", contains("real-estate") & contains("perc") & !contains("median"))
-
-colnames(real_estate) <- c("GEOID",
-                           "pct_owner_taxes_less_800", 
-                           "pct_owner_taxes_800_1499", 
-                           "pct_owner_taxes_more_1500", 
-                           "pct_owner_no_taxes",
-                           "pct_owner_taxes_less_800_moe", 
-                           "pct_owner_taxes_800_1499_moe", 
-                           "pct_owner_taxes_more_1500_moe", 
-                           "pct_owner_no_taxes_moe")
-
-real_estate <- left_join(va_counties, real_estate, by = c("GEOID"))
-
 # ----- Rent percentage of income ---- #
 
-rent_data <- get_acs(geography = "county", year = 2018, table = "B25070", state = "VA") %>%
-  left_join(vars_2018, by = c("variable" = "name")) %>%
-  mutate(label = tolower(gsub(",", "", gsub(" ", "-", gsub("!!", "_", label))))) %>%
-  select(-variable) %>%
-  pivot_wider(names_from = label,
-              values_from = c(estimate, moe),
-              names_glue = "{label}_{.value}")
+rent_data <- get_acs_multi_years(table = "B25070", var_names = vars_2018, years = seq(2017, 2018))
 
-rent_data <- left_join(va_counties, rent_data, by = c("GEOID"))
-
-#
-#
-# Write Files --------------------------------------------------------------------------------
-#
-#
-
-## Geographic mobility
-# geojson_write(geog_mobility, geometry = "polygon", file = here("data","original","acs_geog_mobility.geojson"))
-
+# geojson_write(rent_data, geometry = "polygon", file = here("data","original","Housing", "acs_rent_data.geojson"))
 
