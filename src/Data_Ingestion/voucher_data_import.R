@@ -3,6 +3,7 @@ library(here)
 library(dplyr)
 library(tidyr)
 library(stringr)
+library(purrr)
 
 # ---- Voucher Recipient Data ---- #
 
@@ -72,7 +73,9 @@ lihtc_data <- lihtc_data %>%
   map_at("record_stat", ~case_when(. == "N" ~ "New",
                                    . == "U" ~ "Updated",
                                    . == "X" ~ "Existing")) %>%
-  as.data.frame()
+  as.data.frame() %>%
+  separate(fips2010, into = c("GEOID", "tract_fips"), 5)
+  
 
 ## Halifax county projects
 lihtc_data %>% filter(str_detect(fips2010, "^(51083)"))
