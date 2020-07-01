@@ -40,7 +40,7 @@ create_map <- function(.data, # spatial dataset to use
   map <- leaflet(.data) %>%
     addTiles()
 
-  for(i in 1:length(variables)) {
+  for (i in 1:length(variables)) {
     map <- map %>%
       add_poly_layer(variable = variables[i], group_name = group_names[i], color_scale = color_scale)
   }
