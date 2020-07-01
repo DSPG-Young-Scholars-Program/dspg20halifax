@@ -172,5 +172,5 @@ acs_mean_income_quantiles_county_sp <- left_join(virginia_counties, acs_mean_inc
 #          here::here("data", "original", "dec_group_pops_county.geojson"),
 #          driver = "GeoJSON")
 # st_write(acs_mean_income_quantiles_county_sp,
-#          here::here("data", "original", "acs_mean_income_quantiles_county_sp"),
+#          here::here("data", "original", "acs_mean_income_quantiles_county.geojson"),
 #          driver = "GeoJSON")

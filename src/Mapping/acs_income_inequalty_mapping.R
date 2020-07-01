@@ -1,0 +1,19 @@
+source(here::here("src", "Mapping", "map_template.R"))
+
+acs_mean_income_quantiles_county_sp <- st_read(here::here("data", "original", "acs_mean_income_quantiles_county.geojson"))
+
+
+top_bottom_difference <- acs_mean_income_quantiles_county_sp %>%
+  mutate("top_bottom_difference_estimate" = estimate_quintile_means_highest_quintile_estimate - estimate_quintile_means_lowest_quintile_estimate,
+         "top_bottom_difference_moe" = estimate_quintile_means_highest_quintile_moe + estimate_quintile_means_lowest_quintile_moe)
+
+
+create_map(top_bottom_difference,
+           variables= c("top_bottom_difference"),
+           group_names = NULL,
+           legend_name = "Mean Income Difference",
+           label_name = "Mean Income Difference",
+           scale_domain = c(90000, 420000),
+           scale_breaks = c(90000, 150000, 200000, 250000, 300000, 420000),
+           unstable_threshold = 2)
+
