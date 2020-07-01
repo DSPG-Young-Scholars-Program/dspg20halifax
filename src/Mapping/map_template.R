@@ -48,7 +48,7 @@ create_map <- function(.data, # spatial dataset to use
   map <- map %>%
     addLegend("bottomright", pal = color_scale, values = .data[[glue("{variables[1]}_estimate")]],
               title = legend_name,
-              opacity = .8
+              opacity = .9
     )
 
   if(!is.null(group_names)) {

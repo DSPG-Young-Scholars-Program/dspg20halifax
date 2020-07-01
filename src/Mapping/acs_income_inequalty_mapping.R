@@ -2,10 +2,10 @@ source(here::here("src", "Mapping", "map_template.R"))
 
 acs_mean_income_quantiles_county_sp <- st_read(here::here("data", "original", "acs_mean_income_quantiles_county.geojson"))
 
-
+# moe calculated following https://www2.census.gov/programs-surveys/acs/tech_docs/accuracy/MultiyearACSAccuracyofData2015.pdf
 top_bottom_difference <- acs_mean_income_quantiles_county_sp %>%
   mutate("top_bottom_difference_estimate" = estimate_quintile_means_highest_quintile_estimate - estimate_quintile_means_lowest_quintile_estimate,
-         "top_bottom_difference_moe" = estimate_quintile_means_highest_quintile_moe + estimate_quintile_means_lowest_quintile_moe)
+         "top_bottom_difference_moe" = moe_sum(sqrt(estimate_quintile_means_highest_quintile_moe^2 + estimate_quintile_means_lowest_quintile_moe^2)))
 
 
 create_map(top_bottom_difference,
