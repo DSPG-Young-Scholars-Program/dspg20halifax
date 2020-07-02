@@ -3,6 +3,8 @@ library(purrr)
 library(dplyr)
 library(glue)
 library(sf)
+library(ggplot2)
+library(gghighlight)
 
 acs_unemployment_county_sp <- st_read(here::here("data", "original", "acs_unemployment_county.geojson"))
 
@@ -70,3 +72,25 @@ m <- leaflet(acs_unemployment_county_sp) %>%
   )
 
 m
+
+
+###########################################################################################
+# Static Plot Using LAUS to Display Change Over Time
+###########################################################################################
+
+county_info <- tigris::counties("VA", cb = TRUE, resolution = "20m", year = 2018, class = "sf") %>%
+  st_drop_geometry()
+
+laus_unemployment_county <- read.csv(here::here("data", "original", "laus_unemployment_county.csv")) %>%
+  mutate(GEOID = substr(Series.ID, 6, 10)) %>%
+  left_join(county_info, by = "GEOID") %>%
+  mutate(year_month_frac = Year + 1/12 * as.numeric(substr(Period, 2, 3)))
+
+
+laus_unemployment_county %>%
+  filter(NAME != "Halifax") %>%
+  ggplot() +
+  geom_line(aes(x = year_month_frac, y = Value, group = NAME), color = "#AAAAAA", alpha = .5) +
+  geom_line(data = filter(laus_unemployment_county, NAME == "Halifax"), aes(x = year_month_frac, y = Value)) +
+  theme_minimal() +
+  labs(x = "Year", y = "Unemployment Rate")
