@@ -99,7 +99,7 @@ laus_unemployment_county %>%
        y = "Unemployment Rate",
        title = "Unemployment Rate of Halifax County",
        subtitle = "Against all other counties in Virginia",
-       caption = "Halifax county rate shown in purple. Grey lines show all other counties in Virginia\nData from the Local Area Unemployment Survey") +
+       caption = "Halifax county rate shown in purple. All other counties shown in grey\nData from the Local Area Unemployment Survey") +
   coord_cartesian(ylim = c(0, 20), clip = "off") +
   scale_x_continuous(breaks = seq(2010, 2020, by = 2),
                      labels = as.character(seq(2010, 2020, by = 2))) +
