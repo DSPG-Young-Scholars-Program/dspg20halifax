@@ -11,11 +11,10 @@ library(glue)
 # set my census api key
 # census_api_key(my_key)
 
-# make name tables
 
-
-
-# get tables we need
+###################################################################################
+# Load Variable Names
+###################################################################################
 
 v2018profile <- load_variables(2018, dataset = "acs5/profile")
 
@@ -23,6 +22,14 @@ v2018profile_unique <- v2018profile %>% # this works for this table, not sure if
   group_by(label) %>%
   top_n(1, wt = rev(name)) %>%
   ungroup()
+
+v2018subject <- load_variables(2018, dataset = "acs5/subject", cache = TRUE)
+
+v2018detailed <- load_variables(2018, dataset = "acs5", cache = TRUE)
+
+###################################################################################
+# Age, Sex, and Race General Demographics
+###################################################################################
 
 # load county wide age sex race variables
 acs_age_sex_race_county <- get_acs(geography = "county",
@@ -36,11 +43,11 @@ acs_age_sex_race_county <- get_acs(geography = "county",
               values_from = c(estimate, moe),
               names_glue = "{label}_{.value}")
 
-table(acs_age_sex_race_county$label)
-
-v2018subject <- load_variables(2018, dataset = "acs5/subject", cache = TRUE)
 
 
+###################################################################################
+# Median Income
+###################################################################################
 
 # load county wide income variables
 acs_median_income_county <- get_acs(geography = "county",
@@ -66,6 +73,10 @@ get_acs(geography = "county",
               values_from = c(estimate, moe),
               names_glue = "{label}_{.value}")
 
+###################################################################################
+# Transportation To Work
+###################################################################################
+
 # can get this data by age/sex/race, but table measurements are odd and would take work to fix.
 acs_transportation_county <- get_acs(geography = "county",
                                      year = 2018,
@@ -77,6 +88,10 @@ acs_transportation_county <- get_acs(geography = "county",
   pivot_wider(names_from = variable,
               values_from = c(estimate, moe),
               names_glue = "{variable}_{.value}")
+
+###################################################################################
+# Group Quarters Populations
+###################################################################################
 
 dec_group_pops_county <- get_decennial(geography = "county",
                                        year = 2010,
@@ -95,6 +110,26 @@ dec_group_pops_county <- get_decennial(geography = "county",
   select(NAME, fed_state_rate, local_rate, foster_care_rate, everything())
 
 
+###################################################################################
+# Mean Income By Quantiles
+###################################################################################
+acs_mean_income_quantiles_county <- get_acs(geography = "county",
+                                           year = 2018,
+                                           table = "B19081",
+                                           state = "VA") %>%
+  inner_join(v2018detailed, by = c("variable" = "name")) %>%
+  mutate(label = tolower(gsub(",", "", gsub(" ", "_", gsub("!!", "_", label))))) %>%
+  select(-variable) %>%
+  pivot_wider(names_from = label,
+              values_from = c(estimate, moe),
+              names_glue = "{label}_{.value}")
+
+
+###################################################################################
+# Load County Boundaries
+###################################################################################
+
+
 virginia_counties <- counties(state = "VA",
                               class = "sf",
                               cb = TRUE,
@@ -109,12 +144,20 @@ virginia_counties_2010 <- counties(state = "VA",
   st_transform(crs = 4326) %>%
   mutate(GEOID_short = str_sub(GEO_ID, 10))
 
-# bind to spatial data
+
+###################################################################################
+# Bind County Boundaries to Data
+###################################################################################
+
 acs_age_sex_race_county_sp <- left_join(virginia_counties, acs_age_sex_race_county, by = c("GEOID"))
 acs_median_income_county_sp <- left_join(virginia_counties, acs_median_income_county, by = c("GEOID"))
 acs_transportation_county_sp <- left_join(virginia_counties, acs_transportation_county, by = c("GEOID"))
 dec_group_pops_county_sp <- left_join(virginia_counties_2010, dec_group_pops_county, by = c("GEOID_short" = "GEOID"))
+acs_mean_income_quantiles_county_sp <- left_join(virginia_counties, acs_mean_income_quantiles_county, by = c("GEOID"))
 
+###################################################################################
+# Write Data to Server
+###################################################################################
 
 # st_write(acs_age_sex_race_county_sp,
 #          here::here("data", "original", "acs_age_sex_race_county.geojson"),
@@ -127,4 +170,7 @@ dec_group_pops_county_sp <- left_join(virginia_counties_2010, dec_group_pops_cou
 #          driver = "GeoJSON")
 # st_write(dec_group_pops_county_sp,
 #          here::here("data", "original", "dec_group_pops_county.geojson"),
+#          driver = "GeoJSON")
+# st_write(acs_mean_income_quantiles_county_sp,
+#          here::here("data", "original", "acs_mean_income_quantiles_county.geojson"),
 #          driver = "GeoJSON")

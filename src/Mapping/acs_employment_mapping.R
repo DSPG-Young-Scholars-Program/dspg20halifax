@@ -3,6 +3,8 @@ library(purrr)
 library(dplyr)
 library(glue)
 library(sf)
+library(ggplot2)
+library(gghighlight)
 
 acs_unemployment_county_sp <- st_read(here::here("data", "original", "acs_unemployment_county.geojson"))
 
@@ -70,3 +72,39 @@ m <- leaflet(acs_unemployment_county_sp) %>%
   )
 
 m
+
+
+###########################################################################################
+# Static Plot Using LAUS to Display Change Over Time
+###########################################################################################
+
+county_info <- tigris::counties("VA", cb = TRUE, resolution = "20m", year = 2018, class = "sf") %>%
+  st_drop_geometry()
+
+laus_unemployment_county <- read.csv(here::here("data", "original", "laus_unemployment_county.csv")) %>%
+  mutate(GEOID = substr(Series.ID, 6, 10)) %>%
+  left_join(county_info, by = "GEOID") %>%
+  mutate(year_month_frac = Year + 1/12 * (as.numeric(substr(Period, 2, 3))-1))
+
+
+laus_unemployment_county %>%
+  filter(NAME != "Halifax") %>%
+  ggplot() +
+  geom_line(aes(x = year_month_frac, y = Value, group = NAME), color = "#AAAAAA", alpha = .3) +
+  geom_line(data = filter(laus_unemployment_county, NAME == "Halifax"),
+            aes(x = year_month_frac, y = Value),
+            color = "#d400d0") +
+  theme_minimal() +
+  labs(x = "Year",
+       y = "Unemployment Rate",
+       title = "Unemployment Rate of Halifax County",
+       subtitle = "Against all other counties in Virginia",
+       caption = "Halifax county rate shown in purple. All other counties shown in grey\nData from the Local Area Unemployment Survey") +
+  coord_cartesian(ylim = c(0, 20), clip = "off") +
+  scale_x_continuous(breaks = seq(2010, 2020, by = 2),
+                     labels = as.character(seq(2010, 2020, by = 2))) +
+  theme(plot.caption = element_text(color = "#888888"),
+        axis.title = element_text(color = "#555555"),
+        axis.text = element_text(color = "#555555"),
+        plot.subtitle = element_text(color = "#555555"))
+
