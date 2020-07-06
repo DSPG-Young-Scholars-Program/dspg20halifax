@@ -107,13 +107,13 @@ plot_data <- va_data_filt %>%
 ## Plot of jail and prison population rate over time in Halifax against VA median grouped by race
 plot_data %>% filter(year >= 1990, county_name == "Halifax County") %>% 
   ggplot() + 
-  geom_line(aes(x = year, y = value, group = interaction(incarceration_type, race), color = incarceration_type), alpha = 1) +
-  geom_line(aes(x = year, y = med, group = interaction(incarceration_type, race), color = incarceration_type), linetype = "dashed", alpha = 0.5) +
+  geom_line(aes(x = year, y = value, group = interaction(incarceration_type, race), color = incarceration_type), alpha = 1, size = 0.7) +
+  geom_line(aes(x = year, y = med, group = interaction(incarceration_type, race), color = incarceration_type), linetype = "dashed", alpha = 0.5, size = 0.7) +
   scale_color_manual(values = c("#CA562C", "#214C62")) +
-  labs(y = "Incarceration rate per 100,000", x = "Year", color = "System", title = "Incarceration Rates by Race in Halifax Co.", subtitle = "Dashed lines represent Virginia median rate") +
+  labs(y = "Incarceration rate per 100,000", x = "Year", color = "System", title = "Incarceration Rates in Halifax Co.", subtitle = "Dashed lines represent Virginia median rate") +
   facet_grid(~race) +
-  theme(plot.title = element_text(hjust = 0.5),
-        plot.subtitle = element_text(hjust = 0.5, face = "italic", color = "gray30"))
+  theme(plot.title = element_text(hjust = 0.5, size = 22),
+        plot.subtitle = element_text(hjust = 0.5, face = "italic", color = "gray30", size = 14))
 
 
 # ---- Prison Admissions Rates ---- #
