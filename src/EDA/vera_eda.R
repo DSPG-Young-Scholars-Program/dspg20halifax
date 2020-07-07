@@ -112,9 +112,20 @@ plot_data %>% filter(year >= 1990, county_name == "Halifax County") %>%
   scale_color_manual(values = c("#CA562C", "#214C62")) +
   labs(y = "Incarceration rate per 100,000", x = "Year", color = "System", title = "Incarceration Rates in Halifax Co.", subtitle = "Dashed lines represent Virginia median rate") +
   facet_grid(~race) +
+  theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, size = 22),
-        plot.subtitle = element_text(hjust = 0.5, face = "italic", color = "gray30", size = 14))
+        plot.subtitle = element_text(hjust = 0.5, face = "italic", color = "gray30", size = 14),
+        axis.title.x = element_text(size = 20),
+        axis.title.y = element_text(size = 20),
+        axis.text.x = element_text(size = 14),
+        axis.text.y = element_text(size = 14),
+        strip.text = element_text(size = 16),
+        panel.spacing = unit(4, "lines"),
+        legend.key.size = unit(3, "line"),
+        legend.text = element_text(size = 14),
+        legend.title = element_text(size = 20))
 
+ggsave(here::here("output", "incarceration", "rates_by_race_and_system.png"), width = 16, height = 10)
 
 # ---- Prison Admissions Rates ---- #
 

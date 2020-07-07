@@ -25,7 +25,7 @@ pops <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA
 #
 
 ## Location of LIHTC projects in Halifax
-halifax_border <- counties %>% filter(COUNTYFP == "083")
+halifax_border <- pops %>% filter(GEOID == "51083")
 
 leaflet() %>%
   addTiles() %>%
@@ -47,7 +47,7 @@ leaflet() %>%
 ## Number of LIHTC projects per county, adjusted for population
 lihtc_va_tmp <- lihtc_va %>%
   group_by(GEOID) %>%
-  summarize(n = n())
+  summarize(n = n(), med_year = median(yr_pis, na.rm = TRUE))
 
 lihtc_va_summary <- left_join(pops, lihtc_va_tmp, by = "GEOID") %>% 
   st_transform(crs = 4326)
@@ -79,6 +79,36 @@ leaflet() %>%
     values = tmp$n_per_cap,
     title = "Projects per 10000 people"
   )
+
+# -----
+
+## Map of average year of project allocation
+pal <- colorBin("YlGnBu", range(lihtc_va_summary$med_year, na.rm = TRUE), bins = 5)
+
+leaflet() %>%
+  addProviderTiles("CartoDB.PositronNoLabels") %>%
+  addPolygons(
+    data = lihtc_va_summary,
+    weight = 2,
+    color = "#fafafa",
+    opacity = 0.3,
+    fillOpacity = 0.8,
+    fillColor = ~pal(med_year),
+    label = ~round(med_year)
+  ) %>% addPolylines(
+    data = pops %>% filter(GEOID == "51083") %>% st_transform(crs = 4326),
+    color = "red",
+    opacity = 1,
+    weight = 3
+  ) %>%
+  addLegend(
+    "bottomright",
+    pal = pal,
+    values = lihtc_va_summary$med_year,
+    title = "Median Year Placed in Service",
+    labFormat = labelFormat(big.mark = "")
+  )
+
 
 #
 #
@@ -145,4 +175,9 @@ leaflet() %>%
     values = tmp$alloc_proj_adj,
     title = "Median Allocation Dollars per Project"
   )
+
+
+
+
+
 
