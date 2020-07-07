@@ -1,11 +1,29 @@
+
+
+library(ggplot2)
+library(dplyr)
+library(RColorBrewer)
+
+
 #point graph about teen births in VA 
 ggplot(Teen_Births_VA, aes(x = County, y = Birth_Rate))+
 geom_point()
 
 #point graph about Teen Births in Southside VA
-ggplot(Teen_Births_Southside, aes(x = Birth_Rate, y = County))+
-  geom_col(fill = "blue", col = "black", position = "dodge")+
-  labs(title = "Teen Births in Virginia", subtitle = "Southside Region")
+new_data <- Teen_Births_Southside %>% mutate(is_halifax = case_when(County == "Halifax" ~ "Yes",
+                                                        County != "Halifax" ~ "No"))
+
+ggplot(new_data, aes(x = Birth_Rate, y = reorder(County, Birth_Rate), fill = is_halifax)) +
+  geom_col(position = "dodge") +
+  labs(title = "Teen Births in Virginia", subtitle = "Southside Region", fill = "Halifax", x = "Birth rate (per 1000 females aged 15-19)", y = "County") +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set2") +
+  theme(plot.title = element_text(size = 22, hjust = 0.5),
+        plot.subtitle = element_text(hjust = 0.5),
+        legend.position = "none",
+        axis.title = element_text(size = 16),
+        axis.text = element_text(size = 14))
+
 
 ggplot(Teen_Births_Southside, aes(x = County, y = Birth_Rate))+
   geom_col(fill = "blue", col = "blue", position = "dodge")+
