@@ -26,7 +26,8 @@ ggplot(SS_no_HS_degree, aes(fill= estimate))+
   theme_minimal()+
   scale_fill_viridis()+
   labs(title = "Virginians with no HS degree",
-       subtitle = "Southside Region")
+       subtitle = "Southside Region",
+       caption = "Birth Rate is per 1000 females aged 15 - 19")
 
 #creating a map about mental health counselors in VA
 mental_health <- get_acs(geography = "county", variable = "	B24114_141", 
