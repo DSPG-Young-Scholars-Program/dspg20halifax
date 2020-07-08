@@ -108,3 +108,6 @@ laus_unemployment_county %>%
         axis.text = element_text(color = "#555555"),
         plot.subtitle = element_text(color = "#555555"))
 
+# ggsave(here::here("src", "unemployment_plot.png"),
+#        width = 10,
+#        height = 6)
