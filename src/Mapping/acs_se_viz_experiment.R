@@ -18,6 +18,12 @@ halifax_sf <- left_join(halifax_op_insights, halifax_tracts) %>%
   st_as_sf() %>% 
   st_transform(crs = 4326)
 
+#
+#
+# Visualizing Uncertainty --------------------------------------------------------------------------------------------------------------------
+#
+#
+
 ## Just for exploration, create new columns where you add the SE to sub-median estimates and subtract a SE from above-median estimates
 ## Do this for both 1 SE and 2 SE
 halifax_sf <- halifax_sf %>%
@@ -61,15 +67,11 @@ leaflet(halifax_sf) %>%
 ## This isn't the whole story though - I guess it ought to be a MVN distribution?
 ## Just artificially adding to the low ones and subtracting from the high ones really seems conservative
 
-library(MASS)
-
-## Identity covariance matrix
-sigma = diag(9)
-
-##
-set.seed(13413)
-
-#random_vals <- mvrnorm(n = 5, mu = halifax_sf$jail_pooled_pooled_p25, Sigma = sigma)
+#
+#
+# Generating samples based on estimates and SEs recorded ------------------------------------------------------------------------------------
+#
+#
 
 ## Helper function used in map_samples to add sample polygons 
 addAdjPolygons <- function(map, variable, group_name, palette) {
@@ -83,6 +85,7 @@ addAdjPolygons <- function(map, variable, group_name, palette) {
 ## This function takes samples of the variable given and plots them on a single map so the user can toggle between them
 ## An attempt to visualize uncertainty in small-sample ACS estimates.
 ## For sampling it assumes that each value is independent of other values (obviously a simplification...)
+
 map_samples <- function(data, ## sf object with data being plotted and column of SE estimates for variable being plotted
                         var, ## string name of variable of interest
                         x, ## Number of samples for each region
@@ -137,6 +140,4 @@ map_samples <- function(data, ## sf object with data being plotted and column of
 pal <- colorBin("BuPu", c(0, max(halifax_sf$jail_pooled_pooled_p25) + max(jail_pooled_pooled_p25_se)), bins = 5)
 
 map_samples(data = halifax_sf, var = "jail_pooled_pooled_p25", x = 10, palette = pal)
-
-
 
