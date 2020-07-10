@@ -84,6 +84,7 @@ create_map <- function(.data, # spatial dataset to use
 map_samples <- function(data, ## sf object containing the variable and se_variable
                         var, ## string name of variable of interest
                         se_var, ## string name of variable storing standard error values
+                        moe = FALSE, ## Switch to true if the se_var is actually a moe
                         x, ## Number of samples for each region
                         palette) {
   
@@ -103,8 +104,15 @@ map_samples <- function(data, ## sf object containing the variable and se_variab
   ## Sample based on estimates and SEs in the data
   ## Assumes there is a column in the data labeled with the same name as the estimates plus an additional _se
   for (i in seq(1, nrow(data))) {
-    samp <- rnorm(x, mean = data[[i,var]], sd = data[[i,se_var]])
-    samps[i,] <- samp
+    
+    if (moe == TRUE) {
+      samp <- rnorm(x, mean = data[[i,var]], sd = data[[i,se_var]] / 1.64)
+      samps[i,] <- samp
+    } else {
+      samp <- rnorm(x, mean = data[[i,var]], sd = data[[i,se_var]])
+      samps[i,] <- samp
+    }
+
   }
   
   ## Add sampled data to sf object
