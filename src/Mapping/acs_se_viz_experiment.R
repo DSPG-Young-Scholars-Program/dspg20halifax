@@ -88,6 +88,7 @@ addAdjPolygons <- function(map, variable, group_name, palette) {
 
 map_samples <- function(data, ## sf object with data being plotted and column of SE estimates for variable being plotted
                         var, ## string name of variable of interest
+                        se_var, ## string name of variable storing standard error values
                         x, ## Number of samples for each region
                         palette) {
   
@@ -98,14 +99,13 @@ map_samples <- function(data, ## sf object with data being plotted and column of
   ## Sample based on estimates and SEs in the data
   ## Assumes there is a column in the data labeled with the same name as the estimates plus an additional _se
   for (i in seq(1, nrow(data))) {
-    samp <- rnorm(x, mean = data[[i,var]], sd = data[[i, paste0(var, "_se")]])
+    samp <- rnorm(x, mean = data[[i,var]], sd = data[[i, se_var]])
     samps[i,] <- samp
   }
   
   ## Add sampled data to sf object
   samp_data <- samps %>% 
-    cbind(data) %>% 
-    st_as_sf()
+    cbind(data)
   
   ## Generate base map based on actual estimates
   base_map <- leaflet(samp_data) %>%
@@ -137,7 +137,7 @@ map_samples <- function(data, ## sf object with data being plotted and column of
 }
  
 
-pal <- colorBin("BuPu", c(0, max(halifax_sf$jail_pooled_pooled_p25) + max(jail_pooled_pooled_p25_se)), bins = 5)
+# pal <- colorBin("BuPu", c(0, max(halifax_sf$jail_pooled_pooled_p25) + max(halifax_sf$jail_pooled_pooled_p25_se)), bins = 5, na.color = "#fafafa")
 
-map_samples(data = halifax_sf, var = "jail_pooled_pooled_p25", x = 10, palette = pal)
+# map_samples(data = halifax_sf, var = "jail_pooled_pooled_p25", se_var = "jail_pooled_pooled_p25_se", x = 10, palette = pal)
 

@@ -1,7 +1,6 @@
 
 library(traveltime)
 
-
 #Sys.setenv(TRAVEL_API_KEY = "91e334b756e84c7b68495785c1afa8e6")
 #Sys.setenv(TRAVEL_API_ID = "2df91b7e")
 
@@ -16,41 +15,62 @@ lihtc_halifax <- lihtc %>% filter(GEOID == "51083")
 lihtc_va <- lihtc %>% filter(str_detect(GEOID, "^(51)"))
 
 ## Get Isochrones
-iso_test_1 <- traveltime_map(appId = travel_api_id,
-                             apiKey = travel_api_key,
-                             location = c(lihtc_halifax$latitude[1], lihtc_halifax$longitude[1]),
-                             traveltime = 480,
-                             type = "biking",
-                             departure = "2020-08-07T08:00:00+01:00")
-
-iso_test_2 <- traveltime_map(appId = travel_api_id,
-                             apiKey = travel_api_key,
-                             location = c(lihtc_halifax$latitude[1], lihtc_halifax$longitude[1]),
-                             traveltime = 600,
-                             type = "biking",
-                             departure = "2020-08-07T08:00:00+01:00")
-
-iso_test_3 <- traveltime_map(appId = travel_api_id,
-                             apiKey = travel_api_key,
-                             location = c(lihtc_halifax$latitude[1], lihtc_halifax$longitude[1]),
-                             traveltime = 720,
-                             type = "biking",
-                             departure = "2020-08-07T08:00:00+01:00")
+# iso_bike_8 <- traveltime_map(appId = travel_api_id,
+#                              apiKey = travel_api_key,
+#                              location = c(lihtc_halifax$latitude[1], lihtc_halifax$longitude[1]),
+#                              traveltime = 480,
+#                              type = "biking",
+#                              departure = "2020-08-07T08:00:00+01:00")
+# 
+# iso_test_10 <- traveltime_map(appId = travel_api_id,
+#                              apiKey = travel_api_key,
+#                              location = c(lihtc_halifax$latitude[1], lihtc_halifax$longitude[1]),
+#                              traveltime = 600,
+#                              type = "biking",
+#                              departure = "2020-08-07T08:00:00+01:00")
+# 
+# iso_test_12 <- traveltime_map(appId = travel_api_id,
+#                              apiKey = travel_api_key,
+#                              location = c(lihtc_halifax$latitude[1], lihtc_halifax$longitude[1]),
+#                              traveltime = 720,
+#                              type = "biking",
+#                              departure = "2020-08-07T08:00:00+01:00")
+# 
+# iso_drive_8 <- traveltime_map(appId = travel_api_id,
+#                              apiKey = travel_api_key,
+#                              location = c(lihtc_halifax$latitude[1], lihtc_halifax$longitude[1]),
+#                              traveltime = 480,
+#                              type = "driving",
+#                              departure = "2020-08-07T08:00:00+01:00")
+# 
+# iso_drive_10 <- traveltime_map(appId = travel_api_id,
+#                               apiKey = travel_api_key,
+#                               location = c(lihtc_halifax$latitude[1], lihtc_halifax$longitude[1]),
+#                               traveltime = 600,
+#                               type = "driving",
+#                               departure = "2020-08-07T08:00:00+01:00")
+# 
+# iso_drive_12 <- traveltime_map(appId = travel_api_id,
+#                               apiKey = travel_api_key,
+#                               location = c(lihtc_halifax$latitude[1], lihtc_halifax$longitude[1]),
+#                               traveltime = 720,
+#                               type = "driving",
+#                               departure = "2020-08-07T08:00:00+01:00")
 
 ## Map
 leaflet() %>%
-  addProviderTiles("CartoDB.Positron") %>%
-  addPolygons(data = iso_test_3,
+  addTiles() %>%
+  addPolygons(data = iso_drive_8,
               fillColor = "red",
-              fillOpacity = 0.3,
+              fillOpacity = 0.2,
               opacity = 0) %>%
-  addPolygons(data = iso_test_2,
+  addPolygons(data = iso_drive_10,
               fillColor = "orange",
-              fillOpacity = 0.3,
+              fillOpacity = 0.2,
               opacity = 0) %>%
-  addPolygons(data = iso_test_1,
+  addPolygons(data = iso_drive_12,
               fillColor = "yellow",
-              fillOpacity = 0.3,
+              fillOpacity = 0.2,
               opacity = 0) %>%
   addCircleMarkers(data = lihtc_halifax,
                    lng = lihtc_halifax$longitude[1],
