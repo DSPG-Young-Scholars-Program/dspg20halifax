@@ -5,6 +5,8 @@ library(leaflet)
 library(tigris)
 library(ggplot2)
 
+source(here("src", "Mapping", "map_template.R"))
+
 ## Read in opportunity insights data and filter to Halifax
 op_insights <- readr::read_csv(here::here("data", "original", "tract_outcomes_simple.csv"))
 halifax_op_insights <- op_insights %>% filter(state == 51, county == 83) %>% mutate(GEOID = paste0("51083", tract))
@@ -73,71 +75,6 @@ leaflet(halifax_sf) %>%
 #
 #
 
-## Helper function used in map_samples to add sample polygons 
-addAdjPolygons <- function(map, variable, group_name, palette) {
-  addPolygons(map, color = "#444444", weight = 2, smoothFactor = 0.5,
-              opacity = 0.4, fillOpacity = 0.5,
-              fillColor = ~pal(variable),
-              group = group_name,
-              label = ~round(variable, 2))
-}
-
-## This function takes samples of the variable given and plots them on a single map so the user can toggle between them
-## An attempt to visualize uncertainty in small-sample ACS estimates.
-## For sampling it assumes that each value is independent of other values (obviously a simplification...)
-
-map_samples <- function(data, ## sf object with data being plotted and column of SE estimates for variable being plotted
-                        var, ## string name of variable of interest
-                        se_var, ## string name of variable storing standard error values
-                        x, ## Number of samples for each region
-                        palette) {
-  
-  ## Create matrix of sample values
-  samps <- matrix(nrow = nrow(data), ncol = x)
-  colnames(samps) <- paste("Sample", seq(1:x), sep = "_")
-  
-  ## Sample based on estimates and SEs in the data
-  ## Assumes there is a column in the data labeled with the same name as the estimates plus an additional _se
-  for (i in seq(1, nrow(data))) {
-    samp <- rnorm(x, mean = data[[i,var]], sd = data[[i, se_var]])
-    samps[i,] <- samp
-  }
-  
-  ## Add sampled data to sf object
-  samp_data <- samps %>% 
-    cbind(data)
-  
-  ## Generate base map based on actual estimates
-  base_map <- leaflet(samp_data) %>%
-    addProviderTiles("CartoDB.Positron") %>%
-    addPolygons(fillColor = ~pal(samp_data[[var]]),
-                fillOpacity = 0.5,
-                opacity = 0.4,
-                smoothFactor = 0.5,
-                weight = 2,
-                color = "#444444",
-                label = ~round(samp_data[[var]], 2),
-                group = "Estimates") %>%
-    addLegend("bottomright",
-              pal = pal,
-              values = samp_data[[var]])
-  
-  ## Add all sampled values as separate layers
-  for (i in seq(1, x)) {
-    variable <- paste("Sample", i, sep = "_")
-    base_map <- base_map %>% addAdjPolygons(var = samps[,variable], group_name = variable, palette = pal)
-  }
-  
-  ## Add layers control for toggling
-  group_names <- colnames(samps)
-  final_map <- base_map %>% addLayersControl(baseGroups = c("Estimates", group_names))
-  
-  return(final_map)
-  
-}
- 
-
-# pal <- colorBin("BuPu", c(0, max(halifax_sf$jail_pooled_pooled_p25) + max(halifax_sf$jail_pooled_pooled_p25_se)), bins = 5, na.color = "#fafafa")
-
-# map_samples(data = halifax_sf, var = "jail_pooled_pooled_p25", se_var = "jail_pooled_pooled_p25_se", x = 10, palette = pal)
+pal <- colorBin("BuPu", c(0, max(halifax_sf$jail_pooled_pooled_p25) + max(halifax_sf$jail_pooled_pooled_p25_se)), bins = 5, na.color = "#fafafa")
+map_samples(data = halifax_sf, var = "jail_pooled_pooled_p25", se_var = "jail_pooled_pooled_p25_se", x = 10, palette = pal)
 
