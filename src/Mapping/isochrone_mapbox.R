@@ -8,13 +8,15 @@ create_path <- function(profile, lat, lon, minutes, token) {
   return(api_path)
 }
 
-## Make API request for isochrone
+## Make single mapbox API request for isochrone
 get_isochrone <- function(profile, lat, lon, minutes, token) {
   
+  ## HTTP request from API
   path <- create_path(profile, lat, lon, minutes, token)
   req <- GET(path)
   status <- http_status(req)
   
+  ## Convert response to sf format if request successful
   if (status$category == "Success") {
     req_sf <- st_read(content(req, as = "text"))  
   } else {
@@ -25,19 +27,23 @@ get_isochrone <- function(profile, lat, lon, minutes, token) {
   
 }
 
+## Function to pull isochrones from the mapbox API for a set of profiles, coordinates, and travel times
 get_multi_isochrones <- function(profiles, ## vector of profiles desired (driving, cycling, walking) 
                                  coords, ## data frame with three columns: column 1 = the label for that point location, column 2 = latitude, column 3 = longitude
                                  minutes, ## numeric vector of minutes for the isochrones. Order matters for plotting
                                  token ## API token
 ) {
   
+  ## Initial values for iteration
   isochrones_list <- list()
   i <- 1
   
+  ## Iterate through input vectors
   for (profile in profiles) {
     for (coord_pair in seq(1, nrow(coords)))  {
       for (minute in minutes) {
         
+        ## Get point labels and latitudes for the curent point
         points <- coords[coord_pair,]
         
         label <- points[[1]]
@@ -45,6 +51,7 @@ get_multi_isochrones <- function(profiles, ## vector of profiles desired (drivin
         lat <- points[[2]]
         lon <- points[[3]]
         
+        ## Get isochrones from API and add to list. Remove unnecessary columns (can be input by user later) and store info about profile and label for each polygon
         isochrones_list[[i]] <- get_isochrone(profile, lat, lon, minute, token) %>% 
           select(-all_of(c("fillOpacity", "color", "fill", "fillColor", "opacity", "fill.opacity"))) %>%
           mutate(profile = profile, label = label)
@@ -55,24 +62,28 @@ get_multi_isochrones <- function(profiles, ## vector of profiles desired (drivin
     }
   }
   
+  ## Combine into single source
   isochrones_sf <- do.call(bind_rows, isochrones_list)
   
   return(isochrones_sf)
 }
 
+## Function to be used with a leaflet map to plot isochrone polygons
 plot_multi_isochrones <- function(map,
-                            data,
-                            color_var,
-                            label_var,
-                            group_var = label_var,
-                            palette,
+                            data, ## sf object of isochrone polygons, like the ones returned by get_multi_isochrones
+                            color_var = "contour", ## variable to color isochrones by. Most likely will be the contour (time) column returned by the mapbox API
+                            label_var, ## variable to label polygons with
+                            group_var = label_var, ## variable to group by for the basemap layers control
+                            palette, ## color palette for polygons
                             color = "gray",
                             opacity = 1,
                             weight = 1,
                             fillOpacity = 0.5) {
   
+  ## Iterate through all labels (identifiers for the point location that created the isochrones) present in isochrone data
   for (lab in unique(data[[label_var]])) {
     
+    ## Add isochrone polygons to map
     map <- map %>%
       addPolygons(data = data,
                   fillColor = ~palette(data[[color_var]]),
