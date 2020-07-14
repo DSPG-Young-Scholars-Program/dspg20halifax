@@ -27,7 +27,7 @@ get_isochrone <- function(profile, lat, lon, minutes, token) {
 
 get_multi_isochrones <- function(profiles, ## vector of profiles desired (driving, cycling, walking) 
                                  coords, ## data frame with three columns: column 1 = the label for that point location, column 2 = latitude, column 3 = longitude
-                                 minutes, ## numeric vector of minutes for the isochrones
+                                 minutes, ## numeric vector of minutes for the isochrones. Order matters for plotting
                                  token ## API token
 ) {
   
