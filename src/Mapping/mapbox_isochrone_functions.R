@@ -91,7 +91,7 @@ plot_multi_isochrones <- function(map,
                   opacity = opacity,
                   weight = weight,
                   fillOpacity = fillOpacity,
-                  label = ~data[[label_var]],
+                  #label = ~data[[label_var]],
                   group = ~data[[group_var]])
     
     
