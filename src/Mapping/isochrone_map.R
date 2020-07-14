@@ -9,7 +9,7 @@ library(sf)
 library(tidycensus)
 
 ## Isochrone retrieval functions
-source(here("src", "Mapping", "isochrone_mapbox.R"))
+source(here("src", "Mapping", "mapbox_isochrone_functions.R"))
 
 ## Mapbox API token
 token <- Sys.getenv("MAPBOX_TOKEN")
@@ -78,6 +78,7 @@ leaflet() %>%
   addMapPane("LIHTC", zIndex = 410) %>%
   addCircleMarkers(data = school_points_sf,
                    color = "blue",
+                   radius = 4,
                    label = ~school_name,
                    weight = 1,
                    fillOpacity = 0.6,
@@ -88,6 +89,7 @@ leaflet() %>%
                    lng = ~longitude,
                    lat = ~latitude,
                    color = "red",
+                   radius = 4,
                    label = ~project,
                    weight = 1,
                    fillOpacity = 0.6,
