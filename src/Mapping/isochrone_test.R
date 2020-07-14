@@ -1,9 +1,6 @@
 
 library(traveltime)
 
-#Sys.setenv(TRAVEL_API_KEY = "91e334b756e84c7b68495785c1afa8e6")
-#Sys.setenv(TRAVEL_API_ID = "2df91b7e")
-
 travel_api_key <- Sys.getenv("TRAVEL_API_KEY")
 travel_api_id <- Sys.getenv("TRAVEL_API_ID")
 
