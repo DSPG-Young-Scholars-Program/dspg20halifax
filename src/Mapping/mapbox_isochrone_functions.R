@@ -70,20 +70,34 @@ get_multi_isochrones <- function(profiles, ## vector of profiles desired (drivin
 
 ## Function to be used with a leaflet map to plot isochrone polygons
 plot_multi_isochrones <- function(map,
-                            data, ## sf object of isochrone polygons, like the ones returned by get_multi_isochrones
-                            color_var = "contour", ## variable to color isochrones by. Most likely will be the contour (time) column returned by the mapbox API
-                            label_var, ## variable to label polygons with
-                            group_var = label_var, ## variable to group by for the basemap layers control
-                            palette, ## color palette for polygons
-                            color = "gray",
-                            opacity = 1,
-                            weight = 1,
-                            fillOpacity = 0.5) {
+                                  data, ## sf object of isochrone polygons, like the ones returned by get_multi_isochrones
+                                  color_var = "contour", ## variable to color isochrones by. Most likely will be the contour (time) column returned by the mapbox API
+                                  label_var, ## variable to label polygons with
+                                  group_var = label_var, ## variable to group by for the basemap layers control
+                                  palette, ## color palette for polygons
+                                  color = "gray",
+                                  opacity = 1,
+                                  weight = 1,
+                                  fillOpacity = 0.5) {
   
   ## Iterate through all labels (identifiers for the point location that created the isochrones) present in isochrone data
-  for (lab in unique(data[[label_var]])) {
-    
-    ## Add isochrone polygons to map
+  # for (lab in unique(data[[label_var]])) {
+  #   
+  #   ## Add isochrone polygons to map
+  #   map <- map %>%
+  #     addPolygons(data = data,
+  #                 fillColor = ~palette(data[[color_var]]),
+  #                 color = color,
+  #                 opacity = opacity,
+  #                 weight = weight,
+  #                 fillOpacity = fillOpacity,
+  #                 #label = ~data[[label_var]],
+  #                 group = ~data[[group_var]])
+  #   
+  #   
+  # }
+  
+  for (poly in nrow(data)) {
     map <- map %>%
       addPolygons(data = data,
                   fillColor = ~palette(data[[color_var]]),
@@ -91,14 +105,12 @@ plot_multi_isochrones <- function(map,
                   opacity = opacity,
                   weight = weight,
                   fillOpacity = fillOpacity,
-                  #label = ~data[[label_var]],
+                  label = ~data[[label_var]],
                   group = ~data[[group_var]])
-    
-    
   }
   
   return(map)
-
+  
 }
 
 
