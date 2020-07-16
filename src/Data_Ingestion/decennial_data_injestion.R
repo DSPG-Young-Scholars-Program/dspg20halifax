@@ -60,12 +60,12 @@ group_quarters <- get_decennial(geography = "tract", state = "VA", county = "Hal
                             juvenile_rehab_pop = "PCT020012", juvenile_corrections_pop = "PCT020013", mental_hospitals_pop = "PCT020016",
                             homeless_shelters_pop = "PCT020027", adult_rehab_pop = "PCT020029", adult_group_homes_pop = "PCT020028"))
 
-#merging all of the above datasets into one large Hlaifax Dataset
-halifax_decennial_data <- Reduce(function(...) merge(..., all=TRUE), list(race, avg_household, household_status, homeowner_by_race, household_size, gender, median_age, adult_or_juvenile, household_type, institutionalized_pop, group_quarters))
+#merging all of the above datasets into one large Halifax Dataset
+Xhalifax_decennial_data <- Reduce(function(...) merge(..., all=TRUE), list(race, avg_household, household_status, homeowner_by_race, household_size, gender, median_age, adult_or_juvenile, household_type, institutionalized_pop, group_quarters))
 
 #adding spatial data to the Halifax dataset
 Halifax_tracts <- tracts("VA", county = "Halifax", cb = TRUE)
 Xhalifax__tracts <- st_as_sf(Halifax_tracts)
 
 #merging decennial dataset into the spatial dataset 
-Xhalifax_decennial_data <- full_join(halifax_decennial_data, Xhalifax__tracts, by = "GEOID")
+halifax_decennial_data <- full_join(Xhalifax_decennial_data, Xhalifax__tracts, by = "GEOID")
