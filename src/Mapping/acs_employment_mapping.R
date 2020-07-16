@@ -6,7 +6,7 @@ library(sf)
 library(ggplot2)
 library(gghighlight)
 
-acs_unemployment_county_sp <- st_read(here::here("data", "original", "acs_unemployment_county.geojson"))
+acs_unemployment_county_sp <- st_read(here::here("data", "original", "ACS", "acs_unemployment_county.geojson"))
 
 # -------------------------------------------------------------------------------------------------
 
@@ -81,11 +81,13 @@ m
 county_info <- tigris::counties("VA", cb = TRUE, resolution = "20m", year = 2018, class = "sf") %>%
   st_drop_geometry()
 
-laus_unemployment_county <- read.csv(here::here("data", "original", "laus_unemployment_county.csv")) %>%
+laus_unemployment_county <- read.csv(here::here("data", "original","Unemployment", "laus_unemployment_county.csv")) %>%
   mutate(GEOID = substr(Series.ID, 6, 10)) %>%
   left_join(county_info, by = "GEOID") %>%
   mutate(year_month_frac = Year + 1/12 * (as.numeric(substr(Period, 2, 3))-1))
 
+
+readr::write_csv(laus_unemployment_county, here::here("data", "original","Unemployment", "laus_unemployment_county.csv"))
 
 laus_unemployment_county %>%
   filter(NAME != "Halifax") %>%

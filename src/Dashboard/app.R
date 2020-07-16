@@ -2,6 +2,8 @@
 
 library(shiny)
 library(shinydashboard)
+library(shinybusy)
+library(fresh) # for eventual styling
 
 # modules loaded automatically from "R/" as of shiny 1.5.0
 
@@ -10,7 +12,7 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("Overview", tabName = "overview"),
-      menuItem("Core Factors", tabName = "core_factors",
+      menuItem("Social Determinants", tabName = "social_determinants",
                menuSubItem("Housing", tabName = "housing"),
                menuSubItem("Unemployment", tabName = "unemployment"),
                menuSubItem("Substance Abuse", tabName = "substance_abuse"),
@@ -19,6 +21,8 @@ ui <- dashboardPage(
     )
   ),
   dashboardBody(
+    add_busy_spinner(spin = "fading-circle",
+                     height = "30px", width = "30px"),
     tabItems(
       # First tab content
       tabItem(tabName = "overview",
