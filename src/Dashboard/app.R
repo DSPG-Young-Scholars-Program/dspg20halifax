@@ -4,6 +4,13 @@ library(shiny)
 library(shinydashboard)
 library(shinybusy)
 library(fresh) # for eventual styling
+library(purrr)
+library(sf)
+library(leaflet)
+library(dplyr)
+library(ggplot2)
+library(glue)
+
 
 # modules loaded automatically from "R/" as of shiny 1.5.0
 

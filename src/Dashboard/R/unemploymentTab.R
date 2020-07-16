@@ -2,6 +2,8 @@
 # Module containing code to create Unemployment Pane
 #######################################################
 
+
+
 laus_unemployment_county <- readr::read_csv(here::here("data", "original", "Unemployment", "laus_unemployment_county.csv"))
 acs_unemployment_county_sp <- st_read(here::here("data", "original", "ACS", "acs_unemployment_county.geojson"))
 check_unstable <- function(variable_name) {
