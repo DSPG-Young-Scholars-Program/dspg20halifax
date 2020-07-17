@@ -91,7 +91,8 @@ plot_multi_isochrones <- function(map,
                     opacity = opacity,
                     weight = weight,
                     fillOpacity = fillOpacity,
-                    group = ~data[[group_var]])
+                    group = ~data[[group_var]],
+                    highlightOptions = highlightOptions(opacity = 1, fillOpacity = ifelse(fillOpacity >= 0.8, 1, fillOpacity + 0.2)))
     }
     
   } else {
@@ -104,7 +105,8 @@ plot_multi_isochrones <- function(map,
                     weight = weight,
                     fillOpacity = fillOpacity,
                     label = ~data[[label_var]],
-                    group = ~data[[group_var]])
+                    group = ~data[[group_var]],
+                    highlightOptions = highlightOptions(opacity = 1, fillOpacity = ifelse(fillOpacity >= 0.8, 1, fillOpacity + 0.2)))
     }
   }
   
