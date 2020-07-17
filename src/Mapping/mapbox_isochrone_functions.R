@@ -30,6 +30,9 @@ get_isochrone <- function(profile, lat, lon, minutes, token) {
 ## Function to pull isochrones from the mapbox API for a set of profiles, coordinates, and travel times
 get_multi_isochrones <- function(profiles, ## vector of profiles desired (driving, cycling, walking) 
                                  coords, ## data frame with three columns: column 1 = the label for that point location, column 2 = latitude, column 3 = longitude
+                                 coord_lat_col = "lat", ## Name of latitude column in data
+                                 coord_lon_col = "lon", ## Name of longitude column in data
+                                 coord_id_col, ## column name that identifies each point
                                  minutes, ## numeric vector of minutes for the isochrones. Order matters for plotting
                                  token ## API token
 ) {
@@ -46,10 +49,10 @@ get_multi_isochrones <- function(profiles, ## vector of profiles desired (drivin
         ## Get point labels and latitudes for the curent point
         points <- coords[coord_pair,]
         
-        label <- points[[1]]
+        label <- points[[coord_id_col]]
         
-        lat <- points[[2]]
-        lon <- points[[3]]
+        lat <- points[[coord_lat_col]]
+        lon <- points[[coord_lon_col]]
         
         ## Get isochrones from API and add to list. Remove unnecessary columns (can be input by user later) and store info about profile and label for each polygon
         isochrones_list[[i]] <- get_isochrone(profile, lat, lon, minute, token) %>% 
@@ -72,41 +75,37 @@ get_multi_isochrones <- function(profiles, ## vector of profiles desired (drivin
 plot_multi_isochrones <- function(map,
                                   data, ## sf object of isochrone polygons, like the ones returned by get_multi_isochrones
                                   color_var = "contour", ## variable to color isochrones by. Most likely will be the contour (time) column returned by the mapbox API
-                                  label_var, ## variable to label polygons with
+                                  label_var = "none", ## variable to label isochrone polygons with
                                   group_var = label_var, ## variable to group by for the basemap layers control
                                   palette, ## color palette for polygons
-                                  color = "gray",
                                   opacity = 1,
                                   weight = 1,
                                   fillOpacity = 0.5) {
   
-  ## Iterate through all labels (identifiers for the point location that created the isochrones) present in isochrone data
-  # for (lab in unique(data[[label_var]])) {
-  #   
-  #   ## Add isochrone polygons to map
-  #   map <- map %>%
-  #     addPolygons(data = data,
-  #                 fillColor = ~palette(data[[color_var]]),
-  #                 color = color,
-  #                 opacity = opacity,
-  #                 weight = weight,
-  #                 fillOpacity = fillOpacity,
-  #                 #label = ~data[[label_var]],
-  #                 group = ~data[[group_var]])
-  #   
-  #   
-  # }
-  
-  for (poly in nrow(data)) {
-    map <- map %>%
-      addPolygons(data = data,
-                  fillColor = ~palette(data[[color_var]]),
-                  color = color,
-                  opacity = opacity,
-                  weight = weight,
-                  fillOpacity = fillOpacity,
-                  label = ~data[[label_var]],
-                  group = ~data[[group_var]])
+  if (label_var == "none") {
+    for (poly in nrow(data)) {
+      map <- map %>%
+        addPolygons(data = data,
+                    fillColor = ~palette(data[[color_var]]),
+                    color = ~palette(data[[color_var]]),
+                    opacity = opacity,
+                    weight = weight,
+                    fillOpacity = fillOpacity,
+                    group = ~data[[group_var]])
+    }
+    
+  } else {
+    for (poly in nrow(data)) {
+      map <- map %>%
+        addPolygons(data = data,
+                    fillColor = ~palette(data[[color_var]]),
+                    color = ~palette(data[[color_var]]),
+                    opacity = opacity,
+                    weight = weight,
+                    fillOpacity = fillOpacity,
+                    label = ~data[[label_var]],
+                    group = ~data[[group_var]])
+    }
   }
   
   return(map)
