@@ -164,8 +164,7 @@ leaflet() %>%
               fillOpacity = 0,
               color = "gray",
               weight = 2) %>%
-  addLayersControl(baseGroups = housing_iso_polys$label,
-                   overlayGroups = c("10", "20", "30")) %>%
+  addLayersControl(baseGroups = housing_iso_polys$label) %>%
   # addAwesomeMarkers(data = employers, 
   #                   icon = ~icons["employers"], 
   #                   label = ~purrr::map(glue("<strong>{empname}</strong>", "{codetitle}", .sep = "<br>"), htmltools::HTML)) %>%
