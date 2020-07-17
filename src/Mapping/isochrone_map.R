@@ -9,6 +9,7 @@ library(sf)
 library(tidycensus)
 library(leaflet.mapboxgl)
 library(ggmap)
+library(glue)
 
 # google_key <- Sys.getenv("GOOGLE_API_KEY")
 # register_google(google_key)
@@ -107,38 +108,38 @@ leaflet() %>%
   addMapPane("LIHTC", zIndex = 410) %>%
   addMapPane("Treatment Centers", zIndex = 410) %>%
   addMapPane("Employers", zIndex = 410) %>%
-  addCircleMarkers(data = school_points,
-                   color = "#7570B3",
-                   radius = 4,
-                   label = ~purrr::map(glue("<strong>{str_to_title(school_name)}</strong>", "{street_mailing}, {city_mailing}, {state_mailing}", .sep = "<br>"), htmltools::HTML),
-                   weight = 1,
-                   fillOpacity = 0.6,
-                   group = "Schools",
-                   options = pathOptions(pane = "Schools")) %>%
-  addCircleMarkers(data = assisted_housing_points,
-                   color = "#1B9E77",
-                   radius = 4,
-                   label = ~purrr::map(glue("<strong>{project}</strong>", "{address}, {city}, {state}<br>", "{cat_print}", .sep = "<br>"), htmltools::HTML),
-                   weight = 1,
-                   fillOpacity = 0.6,
-                   group = "LIHTC",
-                   options = pathOptions(pane = "LIHTC")) %>%
-  addCircleMarkers(data = treatment_centers,
-                   color = "#D95F02",
-                   radius = 4,
-                   label = ~purrr::map(glue("<strong>{Name}</strong>", "{Street}, {City}, {State}", .sep = "<br>"), htmltools::HTML),
-                   weight = 1,
-                   fillOpacity = 0.6,
-                   group = "Treatment Centers",
-                   options = pathOptions(pane = "Treatment Centers")) %>%
-  addCircleMarkers(data = employers[which(employers$empname != "Sentara Healthcare"),],
-                   color = "pink",
-                   radius = 4,
-                   label = ~purrr::map(glue("<strong>{empname}</strong>", "{codetitle}", .sep = "<br>"), htmltools::HTML),
-                   weight = 1,
-                   fillOpacity = 0.6,
-                   group = "Employers",
-                   options = pathOptions(pane = "Employers")) %>%
+  # addCircleMarkers(data = school_points,
+  #                  color = "#7570B3",
+  #                  radius = 4,
+  #                  label = ~purrr::map(glue("<strong>{str_to_title(school_name)}</strong>", "{street_mailing}, {city_mailing}, {state_mailing}", .sep = "<br>"), htmltools::HTML),
+  #                  weight = 1,
+  #                  fillOpacity = 0.6,
+  #                  group = "Schools",
+  #                  options = pathOptions(pane = "Schools")) %>%
+  # addCircleMarkers(data = assisted_housing_points,
+  #                  color = "#1B9E77",
+  #                  radius = 4,
+  #                  label = ~purrr::map(glue("<strong>{project}</strong>", "{address}, {city}, {state}<br>", "{cat_print}", .sep = "<br>"), htmltools::HTML),
+  #                  weight = 1,
+  #                  fillOpacity = 0.6,
+  #                  group = "LIHTC",
+  #                  options = pathOptions(pane = "LIHTC")) %>%
+  # addCircleMarkers(data = treatment_centers,
+  #                  color = "#D95F02",
+  #                  radius = 4,
+  #                  label = ~purrr::map(glue("<strong>{Name}</strong>", "{Street}, {City}, {State}", .sep = "<br>"), htmltools::HTML),
+  #                  weight = 1,
+  #                  fillOpacity = 0.6,
+  #                  group = "Treatment Centers",
+  #                  options = pathOptions(pane = "Treatment Centers")) %>%
+  # addCircleMarkers(data = employers[which(employers$empname != "Sentara Healthcare"),],
+  #                  color = "pink",
+  #                  radius = 4,
+  #                  label = ~purrr::map(glue("<strong>{empname}</strong>", "{codetitle}", .sep = "<br>"), htmltools::HTML),
+  #                  weight = 1,
+  #                  fillOpacity = 0.6,
+  #                  group = "Employers",
+  #                  options = pathOptions(pane = "Employers")) %>%
   plot_multi_isochrones(data = housing_iso_polys_drive,
                         color_var = "contour",
                         opacity = 0.5,
@@ -164,21 +165,26 @@ leaflet() %>%
               fillOpacity = 0,
               color = "gray",
               weight = 2) %>%
-  addLayersControl(baseGroups = housing_iso_polys$label) %>%
-  # addAwesomeMarkers(data = employers, 
-  #                   icon = ~icons["employers"], 
-  #                   label = ~purrr::map(glue("<strong>{empname}</strong>", "{codetitle}", .sep = "<br>"), htmltools::HTML)) %>%
-  # addAwesomeMarkers(data = school_points,
-  #                   icon = ~icons["schools"],
-  #                   label = ~purrr::map(glue("<strong>{str_to_title(school_name)}</strong>", "{street_mailing}, {city_mailing}, {state_mailing}", .sep = "<br>"), htmltools::HTML)) %>%
-  # addAwesomeMarkers(data = assisted_housing_points,
-  #                   icon = ~icons["housing"],
-  #                   label = ~purrr::map(glue("<strong>{project}</strong>", "{address}, {city}, {state}<br>", "{cat_print}", .sep = "<br>"), htmltools::HTML)) %>%
-  # addAwesomeMarkers(data = treatment_centers,
-  #                   icon = ~icons["treatment"],
-  #                   label = ~purrr::map(glue("<strong>{Name}</strong>", "{Street}, {City}, {State}", .sep = "<br>"), htmltools::HTML)) %>%
+  addAwesomeMarkers(data = employers,
+                    icon = ~icons["employers"],
+                    label = ~purrr::map(glue("<strong>{empname}</strong>", "{codetitle}", .sep = "<br>"), htmltools::HTML),
+                    group = "Employers") %>%
+  addAwesomeMarkers(data = school_points,
+                    icon = ~icons["schools"],
+                    label = ~purrr::map(glue("<strong>{str_to_title(school_name)}</strong>", "{street_mailing}, {city_mailing}, {state_mailing}", .sep = "<br>"), htmltools::HTML),
+                    group = "Schools") %>%
+  addAwesomeMarkers(data = assisted_housing_points,
+                    icon = ~icons["housing"],
+                    label = ~purrr::map(glue("<strong>{project}</strong>", "{address}, {city}, {state}<br>", "{cat_print}", .sep = "<br>"), htmltools::HTML),
+                    group = "Housing") %>%
+  addAwesomeMarkers(data = treatment_centers,
+                    icon = ~icons["treatment"],
+                    label = ~purrr::map(glue("<strong>{Name}</strong>", "{Street}, {City}, {State}", .sep = "<br>"), htmltools::HTML),
+                    group = "Wellness") %>%
+  addLayersControl(baseGroups = housing_iso_polys_drive$label,
+                   overlayGroups = c("Employers", "Schools", "Housing", "Wellness")) %>%
   addLegend(position = "bottomright",
             pal = pal,
-            values = housing_iso_polys$contour,
+            values = housing_iso_polys_drive$contour,
             title = "Driving Time (minutes)")
 
