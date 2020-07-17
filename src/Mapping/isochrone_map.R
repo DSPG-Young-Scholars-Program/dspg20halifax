@@ -8,6 +8,10 @@ library(tigris)
 library(sf)
 library(tidycensus)
 library(leaflet.mapboxgl)
+library(ggmap)
+
+# google_key <- Sys.getenv("GOOGLE_API_KEY")
+# register_google(google_key)
 
 ## Isochrone retrieval functions
 source(here("src", "Mapping", "mapbox_isochrone_functions.R"))
@@ -49,8 +53,10 @@ school_points_sf <- school_points %>%
 lihtc <- data.table::fread(here("data", "original", "Housing", "LIHTC_data", "lihtc_data_clean")) %>% as.data.frame()
 
 ## Subset to areas needed
-lihtc_halifax <- lihtc %>% filter(GEOID == "51083", 
-                                  hud_id != "VAA19970035") ## This appears to be a duplicate entry resulting from the same project having multiple owners
+lihtc_halifax <- lihtc %>% filter(GEOID == "51083", hud_id != "VAA19970035") ## This appears to be a duplicate entry resulting from the same project having multiple owners
+
+## Additional point locations manually recorded from HUD
+assisted_housing_points <- readr::read_csv(here("data", "original", "Housing", "assisted_housing_point_data.csv"))
 
 #
 #
@@ -67,9 +73,7 @@ treatment_centers <- readr::read_csv(here("data", "original", "Substance_Abuse",
 #
 #
 
-
-
-
+employers <- readr::read_csv(here("data", "original", "Unemployment", "halifax_largest_employers.csv"))
 
 #
 #
@@ -77,42 +81,31 @@ treatment_centers <- readr::read_csv(here("data", "original", "Substance_Abuse",
 #
 #
 
-## Point coordinates for isochrone centers
-lihtc_coords <- lihtc_halifax[, c("project", "latitude", "longitude")]
-#school_coords <- school_points[, c("school_name", "latitude", "longitude")]
-
 ## Get iso polygons based on these points
-lihtc_iso_polys <- get_multi_isochrones(profiles = "cycling", coords = lihtc_coords, minutes = c(30, 20, 10), token = token)
-# lihtc_iso_polys_walk <- get_multi_isochrones(profiles = "walking", coords = lihtc_coords, minutes = c(30, 20, 10), token = token)
-# lihtc_iso_polys_drive <- get_multi_isochrones(profiles = "driving", coords = lihtc_coords, minutes = c(30, 20, 10), token = token)
-
-#school_iso_polys <- get_multi_isochrones(profiles = "driving", coords = school_coords, minutes = c(15, 10, 5), token = token)
+housing_iso_polys <- get_multi_isochrones(profiles = "walking", coords = assisted_housing_points, coord_id_col = "project", minutes = c(30, 20, 10), token = token)
 
 ## Arrange to make sure smaller contours plotted on top of larger ones
-lihtc_iso_polys <- lihtc_iso_polys %>% arrange(desc(contour))
-#school_iso_polys <- school_iso_polys %>% arrange(desc(contour))
+housing_iso_polys <- housing_iso_polys %>% arrange(desc(contour))
 
 ## Color palette for contour fill
-pal <- colorFactor("OrRd", domain = as.factor(lihtc_iso_polys$contour), reverse = TRUE)
+pal <- colorFactor("OrRd", domain = as.factor(housing_iso_polys$contour), reverse = TRUE)
 
 ## Assemble map of point locations for schools, LIHTC projects, and isochrone polygons
 leaflet() %>%
-  #addProviderTiles("CartoDB.Positron") %>%
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
   addMapPane("Schools", zIndex = 410) %>%
   addMapPane("LIHTC", zIndex = 410) %>%
   addMapPane("Treatment Centers", zIndex = 410) %>%
+  addMapPane("Employers", zIndex = 410) %>%
   addCircleMarkers(data = school_points_sf,
                    color = "#7570B3",
                    radius = 4,
-                   label = ~school_name,
+                   label = ~str_to_title(school_name),
                    weight = 1,
                    fillOpacity = 0.6,
                    group = "Schools",
                    options = pathOptions(pane = "Schools")) %>%
-  addCircleMarkers(data = lihtc_halifax,
-                   lng = ~longitude,
-                   lat = ~latitude,
+  addCircleMarkers(data = assisted_housing_points,
                    color = "#1B9E77",
                    radius = 4,
                    label = ~project,
@@ -128,10 +121,18 @@ leaflet() %>%
                    fillOpacity = 0.6,
                    group = "Treatment Centers",
                    options = pathOptions(pane = "Treatment Centers")) %>%
-  plot_multi_isochrones(data = lihtc_iso_polys,
+  addCircleMarkers(data = employers[which(employers$empname != "Sentara Healthcare"),],
+                   color = "pink",
+                   radius = 4,
+                   label = ~empname,
+                   weight = 1,
+                   fillOpacity = 0.6,
+                   group = "Employers",
+                   options = pathOptions(pane = "Employers")) %>%
+  plot_multi_isochrones(data = housing_iso_polys,
                         color_var = "contour",
-                        label_var = "contour",
-                        opacity = 0,
+                        opacity = 0.5,
+                        weight = 1,
                         fillOpacity = 0.3,
                         palette = pal,
                         group_var = "label") %>%
@@ -139,14 +140,10 @@ leaflet() %>%
               fillOpacity = 0,
               color = "gray",
               weight = 2) %>%
-  # plot_multi_isochrones(data = lihtc_iso_polys_walk,
-  #                       color_var = "contour",
-  #                       label_var = "contour",
-  #                       opacity = 0,
-  #                       fillOpacity = 0.1,
-  #                       palette = pal) %>%
-  addLayersControl(baseGroups = lihtc_iso_polys$label) %>%
+  addLayersControl(baseGroups = housing_iso_polys$label) %>%
   addLegend(position = "bottomright",
             pal = pal,
-            values = test$contour,
-            title = "Biking Time (minutes)")
+            values = housing_iso_polys$contour,
+            title = "Driving Time (minutes)")
+  
+  
