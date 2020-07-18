@@ -4,11 +4,12 @@ library(dplyr)
 library(leaflet)
 library(tigris)
 library(ggplot2)
+library(here)
 
 source(here("src", "Mapping", "map_template.R"))
 
 ## Read in opportunity insights data and filter to Halifax
-op_insights <- readr::read_csv(here::here("data", "original", "tract_outcomes_simple.csv"))
+op_insights <- readr::read_csv(here::here("data", "original", "ACS", "tract_outcomes_simple.csv"))
 halifax_op_insights <- op_insights %>% filter(state == 51, county == 83) %>% mutate(GEOID = paste0("51083", tract))
 
 ## Read in spatial data for Halifax
