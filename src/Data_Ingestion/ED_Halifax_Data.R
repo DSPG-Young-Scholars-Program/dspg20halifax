@@ -4,13 +4,14 @@ library(dplyr)
 library(plotly)
 library(viridis)
 library(hrbrthemes)
+library(readr)
 
 #Ed.Data.VDH...Copy.of.Halifax$Drug <-
 #  factor(Ed.Data.VDH...Copy.of.Halifax$Drug , levels=c("Opiod", "Heroin") )
 
-data <- ggplot(Ed.Data.VDH...Copy.of.Halifax, aes(x =Year, y =Count, fill=Drug, text = Drug))+
-  geom_area() + theme_ipsum() + labs(x = "Year", y = "ED Overdose Visits") +
-  scale_fill_viridis(discrete = TRUE) + ggtitle("Emergency Department Overdose Visits in Halifax, VA")
-
-data_real <- ggplotly(data, tooltip = "text")
-data_real
+datasource <- readr::read_csv(here::here("git", "TestDSPG", "Halifaxx", "data",
+                                         "original", "Substance_Abuse",
+                                         "Ed Data VDH - Copy of Halifax.csv"))
+ggplot(datasource, aes(x =Year, y =Count, fill=Drug))+
+  geom_area() + theme_classic() + labs(x = "Year", y = "ED Overdose Visits") +
+  ggtitle("Emergency Department Overdose Visits in Halifax, VA")
