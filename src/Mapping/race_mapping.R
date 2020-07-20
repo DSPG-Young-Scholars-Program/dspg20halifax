@@ -48,7 +48,7 @@ ggplot()+
        caption = "Data source: 2018 ACS.\nData acquired with the R tidycensus package.")
 
 #homeowner by race mapping
-homeowner_by_race <- get_decennial(geography = "tract", state = "VA", county = "Halifax", output = "tidy",
+homeowner_by_race <- get_decennial(geography = "tract", state = "VA", county = "Halifax", output = "tidy", geometry = TRUE,
                                    variables = c(white_owner= "H014003", black_owner = "H014004", white_renter = "H014011",
                                                  black_renter = "H014012"))
 ggplot()+
@@ -64,3 +64,44 @@ ggplot()+
 
 ggplot()+
   geom_sf(data = halifax_decennial_data, aes(fill = black_race))
+
+halifax_decennial_data %>% 
+  mutate(pct_renters = pop_in_renters_housing / total_pop_in_housing) %>%
+ggplot()+
+  geom_sf(aes(fill = pct_renters))+
+  #facet_wrap(~variable)+
+  scale_fill_viridis_c()
+
+??(leaflet)
+
+
+ggplot()+
+  geom_sf(data = adult_or_juvenile, aes(fill = value))+
+  facet_wrap(~variable)+
+  scale_fill_viridis_c()
+
+ggplot()+
+  geom_sf(data = gender, aes(fill = value))+
+  facet_wrap(~variable)+
+  scale_fill_viridis_c()
+
+ggplot()+
+  geom_sf(data = household_status, aes(fill = value))+
+  facet_wrap(~variable)+
+  scale_fill_viridis_c()
+ggplot()+
+  geom_sf(data = race, aes(fill = value))+
+  facet_wrap(~variable)+
+  scale_fill_viridis_c()
+ggplot()+
+  geom_sf(data = median_age, aes(fill = value))+
+  facet_wrap(~variable)+
+  scale_fill_viridis_c()
+ggplot()+
+  geom_sf(data = group_quarters, aes(fill = value))+
+  facet_wrap(~variable)+
+  scale_fill_viridis_c()
+ggplot()+
+  geom_sf(data = institutionalized_pop, aes(fill = value))+
+  facet_wrap(~variable)+
+  scale_fill_viridis_c()
