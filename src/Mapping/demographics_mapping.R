@@ -1,10 +1,9 @@
 library(leaflet)
 library(dplyr)
 
-range(hfl_white_race$white_race)
 
-hist(hfl_white_race$white_race)
-       
+range(halifax_decennial_data$white_race)
+hist(halifax_decennial_data$white_race)
 BAMMtools::getJenksBreaks(halifax_decennial_data$pct_white_race, 5)
 
 Pct_colors <- colorBin("Blues", domain = c(0, 1), 
@@ -43,33 +42,24 @@ leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %
 
 saveWidget(race_halifax, file = "raceMapHalifax.html")
 
-race_halifax <- halifax_decennial_data %>%
+housing_mapping <- halifax_decennial_data %>%
   leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   addTiles()%>%
   addPolygons(fillColor = ~Pct_colors(pct_mortgage_owned_housing),
-              fillOpacity = 0.75, group = "Mortgage Owned",
+              fillOpacity = 0.75, group = "Mortgage Owned Housing",
               highlight = highlightOptions(color = "white", fillColor = "red", 
                                            bringToFront = TRUE),
               label = ~paste0("Mortgage Owned: ", (pop_in_mortgage_owned_housing))) %>%
-  addPolygons(fillColor = ~Pct_colors(pct_black_race),
-              fillOpacity = 0.75, group = "Black Race",
+  addPolygons(fillColor = ~Pct_colors(pct_full_owned_housing),
+              fillOpacity = 0.75, group = "Full Owned Housing",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
-              label = ~paste0("Black People: ", (black_race))) %>%
-  addPolygons(fillColor = ~Pct_colors(pct_asian_race),
-              fillOpacity = 0.75, group = "Asian Race",
+              label = ~paste0("Full Owned Housing: ", (pop_in_full_owned_housing))) %>%
+  addPolygons(fillColor = ~Pct_colors(pct_renters_housing),
+              fillOpacity = 0.75, group = "Renters Housing",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
-              label = ~paste0("Asian People: ", (asian_race))) %>%
-  addPolygons(fillColor = ~Pct_colors(pct_native_race),
-              fillOpacity = 0.75, group = "Native Race",
-              highlight = highlightOptions(color = "white", fillColor = "red",
-                                           bringToFront = TRUE),
-              label = ~paste0("Native People: ", (native_race))) %>%
-  addPolygons(fillColor = ~Pct_colors(pct_hispanic_ethnicity),
-              fillOpacity = 0.75, group = "Hispanic Ethnicity",
-              highlight = highlightOptions(color = "white", fillColor = "red",
-                                           bringToFront = TRUE),
-              label = ~paste0("Hispanic People: ", (hispanic_ethnicity))) %>%
-  addLayersControl(overlayGroups = c("White Race", "Black Race", "Asian Race", 
-                                     "Native Race", "Hipanic Ethnicity"))
+              label = ~paste0("Renters Housing: ", (pop_in_renters_housing))) %>%
+  addLayersControl(overlayGroups = c("Mortgage Owned Housing", "Full Owned Housing", 
+                                     "Renters Housing"))
+
