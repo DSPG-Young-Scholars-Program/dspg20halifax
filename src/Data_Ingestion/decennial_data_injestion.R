@@ -98,4 +98,4 @@ halifax_decennial_data <- halifax_decennial_data %>%
   mutate(pct_lives_alone_household = lives_alone_houshold/total_households) 
 
 
-?st_write()
+# st_write(halifax_decennial_data, here::here("data", "original", "ACS", "halifax_decennial_data.geojson"), driver = "GeoJSON")

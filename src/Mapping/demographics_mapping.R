@@ -1,6 +1,8 @@
 library(leaflet)
 library(dplyr)
+library(sf)
 
+halifax_decennial_data <- st_read(here::here("data", "original", "ACS", "halifax_decennial_data.geojson"))
 
 range(halifax_decennial_data$white_race)
 hist(halifax_decennial_data$white_race)
@@ -37,8 +39,9 @@ leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Hispanic People: ", (hispanic_ethnicity))) %>%
-  addLayersControl(overlayGroups = c("White Race", "Black Race", "Asian Race", 
-                                     "Native Race", "Hipanic Ethnicity"))
+  addLayersControl(baseGroups = c("White Race", "Black Race", "Asian Race", 
+                                     "Native Race", "Hipanic Ethnicity")) %>%
+  addLegend(position = "bottomright", pal = Pct_colors, values = c(0,1), title = "Proportion of Selected Race")
 
 saveWidget(race_halifax, file = "raceMapHalifax.html")
 
