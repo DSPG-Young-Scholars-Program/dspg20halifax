@@ -25,9 +25,12 @@ datasource <- readr::read_csv(here::here("git", "TestDSPG", "Halifaxx", "data",
                                          "original", "Substance_Abuse",
                                          "Excessive Drinking and Alcohol-Impaired Driving Deaths - Excessive Drinking.csv"))
 
+va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
+                      survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 
 create.map <- function(year) {
   datasource <- filter(datasource, Year == year)
+  new_tbl <- merge(va_borders, datasource, by.x = "GEOID", by.y = "FIPS")
 }
 
 mapping_2011 <- create.map('2011')
@@ -39,33 +42,74 @@ mapping_2016 <- create.map('2016')
 mapping_2017 <- create.map('2017')
 mapping_2018 <- create.map('2018')
 mapping_2019 <- create.map('2019')
+mapping_2020 <- create.map('2020')
 
-
-va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
-                      survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
-
-finish_map <- function(year_map, year) {
-  new_tbl <- merge(va_borders, year_map, by.x = "GEOID", by.y = "FIPS")
-  my_bins <- getJenksBreaks(new_tbl$`% Excessive Drinking`, k = 6)
-  palette <- colorBin("Reds", domain = new_tbl$'% Excessive Drinking', bins = my_bins)
-  my_label <- paste("County: ", new_tbl$NAME,"<br/>", "Rate: ", new_tbl$'% Excessive Drinking', "<br/>",
+generate.label <- function(year_mapping) {
+  my_label <- paste("County: ", year_mapping$County,"<br/>", "Rate: ", paste(year_mapping$'% Excessive Drinking', '%',
+                                                                           sep = ""), "<br/>",
                     sep="") %>%
     lapply(htmltools::HTML)
-  leaflet() %>%
+}
+general_bins <- getJenksBreaks(datasource$`% Excessive Drinking`, k = 6)
+general_palette <- colorBin("Reds", domain = datasource$'`% Excessive Drinking`', bins = general_bins)
+
+leaflet() %>%
     addProviderTiles("CartoDB.Positron") %>%
-    addPolygons(data = new_tbl, fillColor = ~palette(new_tbl$'% Excessive Drinking'),
-                weight = 1, color = "#fafafa", fillOpacity = 0.8, group = year,
-                label = my_label,
+  addPolygons(data = mapping_2020, fillColor = ~general_palette(mapping_2020$'% Excessive Drinking'),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = "2020",
+              label = generate.label(mapping_2020),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+    addPolygons(data = mapping_2019, fillColor = ~general_palette(mapping_2019$'% Excessive Drinking'),
+                weight = 1, color = "#fafafa", fillOpacity = 0.8, group = "2019",
+                label = generate.label(mapping_2019),
                 labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                             textsize = "13px", direction = "auto")) %>%
-    addLegend(pal = palette, values = my_bins,
-              title = paste("Opiod Prescription Rate per 100 People in", year), position = "bottomright") %>%
+  addPolygons(data = mapping_2018, fillColor = ~general_palette(mapping_2018$'% Excessive Drinking'),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = "2018",
+              label = generate.label(mapping_2018),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2017, fillColor = ~general_palette(mapping_2017$'% Excessive Drinking'),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = "2017",
+              label = generate.label(mapping_2017),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2016, fillColor = ~general_palette(mapping_2016$'% Excessive Drinking'),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = "2016",
+              label = generate.label(mapping_2016),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2015, fillColor = ~general_palette(mapping_2015$'% Excessive Drinking'),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = "2015",
+              label = generate.label(mapping_2015),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2014, fillColor = ~general_palette(mapping_2014$'% Excessive Drinking'),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = "2014",
+              label = generate.label(mapping_2014),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2013, fillColor = ~general_palette(mapping_2013$'% Excessive Drinking'),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = "2013",
+              label = generate.label(mapping_2013),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2012, fillColor = ~general_palette(mapping_2012$'% Excessive Drinking'),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = "2012",
+              label = generate.label(mapping_2012),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2011, fillColor = ~general_palette(mapping_2011$'% Excessive Drinking'),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = "2011",
+              label = generate.label(mapping_2011),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+    addLegend(pal = general_palette, values = general_bins,
+              title = paste("Opiod Prescription Rate per 100 People"), position = "bottomright") %>%
     addLayersControl(baseGroups = c("2011", "2012", "2013", "2014", "2015", "2016", "2017",
-                                    "2018", "2019", "2020"))
+                                    "2018", "2019", "2020"),
+                     options = layersControlOptions(collapsed = FALSE))
 
-}
 
-finish_map(mapping_2019, "2019")
-finish_map(mapping_2018, "2018")
-finish_map(mapping_2017, "2017")
-finish_map(mapping_2016, "2016")
+
