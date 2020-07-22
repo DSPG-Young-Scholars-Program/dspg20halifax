@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>app on UVA Biocomplexity Institute</title>
+    <link>/tags/app/</link>
+    <description>Recent content in app on UVA Biocomplexity Institute</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="/tags/app/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Results Section One</title>
+      <link>/findings/results-section-one/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/results-section-one/</guid>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Examples Page If you want to add in an image on an Rmd file, use this link here. It ends up being a little tricky, but as long as you have created a folder to insert your images, you can just use some markdown code or html to insert images in the format you want.</description>
+    </item>
+    
+  </channel>
+</rss>
