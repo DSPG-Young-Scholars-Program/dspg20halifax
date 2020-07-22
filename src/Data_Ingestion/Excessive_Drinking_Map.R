@@ -106,7 +106,7 @@ leaflet() %>%
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
     addLegend(pal = general_palette, values = general_bins,
-              title = paste("Opiod Prescription Rate per 100 People"), position = "bottomright") %>%
+              title = "Percentage of Adults Reporting Heavy or Binge Drinking", position = "bottomright") %>%
     addLayersControl(baseGroups = c("2011", "2012", "2013", "2014", "2015", "2016", "2017",
                                     "2018", "2019", "2020"),
                      options = layersControlOptions(collapsed = FALSE))
