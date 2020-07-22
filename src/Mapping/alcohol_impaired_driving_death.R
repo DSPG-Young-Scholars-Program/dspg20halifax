@@ -17,6 +17,7 @@ library(censusapi)
 library(hablar)
 library(BAMMtools)
 
+# need to add comments to code
 census_api_key("1288a5a1e23422dbd03d06071f74b4cd50af12be", install = TRUE)
 readRenviron("~/.Renviron")
 Sys.getenv("CENSUS_API_KEY")
