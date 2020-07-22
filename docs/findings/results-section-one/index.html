@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Results Section One</title>
+        <link rel="canonical" href="../../findings/results-section-one/">
+        <style>
+
+    html body {
+        font-family: 'Oxygen', sans-serif;
+        background-color: #FFFFFF;
+    }
+
+    :root {
+        --accent: #232D4B;
+        --border-width:  0 ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ascetic.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="../../css/main.css">
+
+
+
+
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/bash.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+
+
+<script>
+$(document).ready(function(){
+    
+  var input = $('#night-mode-toggle');
+  var container = $('#bigbody');
+  var stat = $('#button-status');
+  
+  container.toggleClass(localStorage.toggled);
+  stat.bootstrapToggle(localStorage.button).change();
+  
+  input.on('click', function() {
+      if (localStorage.toggled != "-nightmode" ) {
+          container.toggleClass("-nightmode", true );
+          localStorage.toggled = "-nightmode";
+          localStorage.button = "on";
+       } else {
+          container.toggleClass("-nightmode", false );
+          localStorage.toggled = "";
+          localStorage.button = "off"
+       }
+  })
+});
+</script>
+ <meta name="generator" content="Hugo 0.74.2" />
+        <link href="" rel="alternate" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        <link href="" rel="feed" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+    <link rel="manifest" href="../../site.webmanifest">
+    <link rel="mask-icon" href="../../img/favicon/safari-pinned-tab.svg" color="#000000">
+    <link rel="shortcut icon" href="../../img/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    
+    
+    
+    <meta property="og:title" content="Results Section One">
+    <meta property="og:type" content="article">
+      
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:image" content="/favicon/uva-dspg-logo.jpg" >
+      
+    <meta property="description" content="This page includes a bunch of example code.">
+    <meta property="og:description" content="This page includes a bunch of example code.">
+    
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:site" content="">
+    
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <body id = "bigbody">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">Results Section One</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="../../">Home</a></li>
+                            
+                                <li><a href="../../overview/">Overview</a></li>
+                            
+                                <li><a href="../../methods/">Data &amp; Methods</a></li>
+                            
+                                <li><a href="../../findings/">Findings</a></li>
+                            
+                                <li><a href="../../team/">Team</a></li>
+                            
+                        </ul>
+                    
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="https://biocomplexity.virginia.edu/social-decision-analytics/dspg-program"><i class="fas fa-globe-americas"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/DSPG-Young-Scholars-Program"><i class="fab fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/UVA_BI"><i class="fab fa-twitter"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="mailto:kb7hp@virginia.edu"><i class="far fa-envelope"></i></a></li>
+                            
+                            
+                        </ul>
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div class="item">
+
+    
+    
+    
+
+    
+      
+      
+    
+
+    <h4><a href="../../findings/results-section-one/">Results Section One</a></h4>
+    
+    <h5>This page includes a bunch of example code.</h5>
+
+    
+    
+    <a href="../../tags/r">
+        <kbd class="item-tag"> R </kbd>
+    </a>
+    
+    <a href="../../tags/geospatial">
+        <kbd class="item-tag"> geospatial </kbd>
+    </a>
+    
+    <a href="../../tags/app">
+        <kbd class="item-tag"> app </kbd>
+    </a>
+    
+
+</div>
+
+
+    <br> <div class="text-justify">
+<script src="../../rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="../../rmarkdown-libs/d3/d3.min.js"></script>
+<link href="../../rmarkdown-libs/collapsibleTree/collapsibleTree.css" rel="stylesheet" />
+<script src="../../rmarkdown-libs/collapsibleTree-binding/collapsibleTree.js"></script>
+
+
+<style type="text/css">
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+</style>
+<div id="examples-page" class="section level3">
+<h3>Examples Page</h3>
+<p>If you want to add in an image on an Rmd file, use this <a href="https://lcolladotor.github.io/2018/03/07/blogdown-insert-image-addin/">link here</a>. It ends up being a little tricky, but as long as you have created a folder to insert your images, you can just use some markdown code or html to insert images in the format you want.</p>
+</div>
+<div id="centering-images" class="section level3">
+<h3>Centering images</h3>
+<div class="figure">
+<img src="../../findings/results-section-one_files/hugo.png" style="width:20%; display: block; margin-left: auto; margin-right: auto;" />
+
+</div>
+</div>
+<div id="placing-images-side-by-side" class="section level3">
+<h3>Placing images side-by-side</h3>
+<p><img src="../../findings/results-section-one_files/hugo.png" width="150"/> <img src="../../findings/results-section-one_files/rmarkdown.png" width="150"/> <img src="../../findings/results-section-one_files/min_night.png" width="175"/> <img src="../../findings/results-section-one_files/netlify.png" width="175"/></p>
+</div>
+<div id="embedding-shiny-apps" class="section level3">
+<h3>Embedding Shiny Apps</h3>
+<iframe src="https://uva-sdad.shinyapps.io/gates-dashboard/?showcase=0" width="672" height="400px">
+</iframe>
+</div>
+<div id="embedding-r-code" class="section level3">
+<h3>Embedding R code</h3>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="collapsibleTree html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"data":{"name":"OSS","children":[{"name":"Academic","children":[{"name":"github","children":[{"name":"contributor","children":[{"name":"login"},{"name":"email"},{"name":"organization"},{"name":"company"}]},{"name":"commits","children":[{"name":"commits"}]}]},{"name":"orcid","children":[{"name":"orcid","children":[{"name":"orcid"}]}]},{"name":"hipolabs","children":[{"name":"hipolabs","children":[{"name":"institution"},{"name":"country"},{"name":"domains"}]}]},{"name":"NCSES","children":[{"name":"Survey of Federal Science and Engineering Support 2018","children":[{"name":"institution"},{"name":"rank"},{"name":"all federal obligations"},{"name":"R&D"}]},{"name":"Higher Education Research and Development Survey 2018","children":[{"name":"institution"},{"name":"rank"},{"name":"R&D expenditure"},{"name":"federal gov fund"},{"name":"state local gov fund"},{"name":"institution funds"}]}]}]},{"name":"Business","children":[{"name":"github","children":[{"name":"contributor","children":[{"name":"contributor"}]},{"name":"commits","children":[{"name":"commits"}]}]},{"name":"Enterprise-Driven OSS","children":[{"name":"cohort project details","children":[{"name":"cohort project details"}]},{"name":"enterprise project","children":[{"name":"enterprise project"}]}]},{"name":"forbes","children":[{"name":"Fortune's Annual Ranking of Companies 2018 (US 1000)","children":[{"name":"Fortune's Annual Ranking of Companies 2018 (US 1000)"}]},{"name":"Fortune's Annual Ranking of Companies 2019 (US 1000)","children":[{"name":"Fortune's Annual Ranking of Companies 2019 (US 1000)"}]},{"name":"Fortune's Annual Ranking of Companies 2020 (Global 2000)","children":[{"name":"Fortune's Annual Ranking of Companies 2020 (Global 2000)"}]}]},{"name":"Global Legal Entity Identifier Foundation (GLEIF)","children":[{"name":"GLEIF","children":[{"name":"country"}]}]},{"name":"Data Hub","children":[{"name":"email domains","children":[{"name":"domain"},{"name":"type"},{"name":"organization"}]}]},{"name":"2020 US Business Database","children":[{"name":"2020 US Business Database","children":[{"name":"2020 US Business Database"}]}]}]},{"name":"Government","children":[{"name":"github","children":[{"name":"commits","children":[{"name":"commits"}]}]},{"name":"System for Award Management (SAM)","children":[{"name":"System for Award Management (SAM)","children":[{"name":"parent2"},{"name":"fhorgtype"},{"name":"fhorgname"}]}]},{"name":"us gov","children":[{"name":"Federally Funded R&D Centers","children":[{"name":"ffrdc name"},{"name":"agency"}]},{"name":"A-Z Index","children":[{"name":"agency"},{"name":"gov branch"},{"name":"parent agency"},{"name":"parent agency parent"}]}]},{"name":"code gov","children":[{"name":"code gov","children":[{"name":"code gov"}]}]},{"name":"crowdsourced","children":[{"name":"crowdsourced","children":[{"name":"crowdsourced"}]}]}]},{"name":"International","children":[{"name":"github","children":[{"name":"contributor","children":[{"name":"contributor"}]},{"name":"commits","children":[{"name":"commits"}]}]},{"name":"mindmap","children":[{"name":"mindmap","children":[{"name":"mindmap"}]}]}]}]},"options":{"hierarchy":["Sector","DataSource","SubData","Variables"],"input":null,"attribute":"leafCount","linkLength":null,"fontSize":10,"tooltip":false,"collapsed":true,"zoomable":true,"margin":{"top":20,"bottom":20,"left":40,"right":305},"fill":"#E57200"}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+</main>
+
+        <footer id = "bigfooter">
+            <div style = "padding:15px;">
+                <p>Powered by <a href="https://gohugo.io">Hugo</a>. Themed by <a href="https://github.com/nathancday/min_night">min_night_dspg</a>. <a href="https://biocomplexity.virginia.edu/social-decision-analytics">Website by University of Virginia Biocomplexity Institute.</a>
+                </p>
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"
+                title="Creative Commons Attribution 4.0 International license">
+                <i class="fab fa-creative-commons" aria-hidden="true"></i> Attribution 4.0 International license
+                </a>
+            </div>
+        </footer>
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+          gtag('config', '');
+        </script>
+       
+    </body>
+
+</html>
+
