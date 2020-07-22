@@ -2,7 +2,7 @@
 
 [The Data Science for the Public Good (DSPG) Young Scholars program](https://biocomplexity.virginia.edu/social-decision-analytics/dspg-program) is a summer immersive program held at the [Biocomplexity Institute’s Social and Decision Analytics division (SDAD)](https://biocomplexity.virginia.edu/social-decision-analytics). In its seventh year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences to determine how information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program highlights, how to apply, and our annual symposium, please visit the official [Biocomplexity DSPG website]((https://biocomplexity.virginia.edu/social-decision-analytics/dspg-program)).
 
-### 2020 Fairfax County Summer Project {style=text-align:center}
+### 2020 Halifax County Summer Project {style=text-align:center}
 
 ##### [Optional: General description of your project, team members, and how they complement each other.] {style=text-align:center}
 
@@ -10,7 +10,7 @@
 
 ##### [Photos go about here.] {style=text-align:center}
 
-[Susweta Ray, Fellow (PhD Student at University of Nebraska-Lincoln, Agricultural Economics)](https://github.com/SuswetaRay), [Sarah McDonald, Intern (Marymount University, Mathematics)](https://github.com/sm9dv), [Owen Hart, Intern (University of California, Berkeley, Economics/Data Science)](https://github.com/hartowen), and [Sean Pietrowicz, Intern (Notre Dame, Mathematics)](https://github.com/sp3sd)
+[Finn Roberts, Fellow (MS Student at University of Minnesota, Biostatistics)](https://github.com/robe2037), [Ellen Graham, Intern (Macalaster College, Applied Mathematics and Statistics)](https://github.com/grahamammal), [Riya Berry, Intern (University of California, Berkeley, Data Science)](https://github.com/), and [Mychala Walker, Intern (Political Science, Virginia State University)](https://github.com/mew4kc)
 
 ### UVA SDAD Team Members {style=text-align:center}
 
