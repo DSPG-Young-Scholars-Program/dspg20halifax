@@ -3,6 +3,7 @@ install.packages('here')
 install.packages('rvest')
 install.packages('censusapi')
 install.packages('hablar')
+install.packages('BAMMtools')
 
 library(rvest)
 library(sf)
@@ -14,6 +15,7 @@ library(dplyr)
 library(here)
 library(censusapi)
 library(hablar)
+library(BAMMtools)
 
 census_api_key("1288a5a1e23422dbd03d06071f74b4cd50af12be", install = TRUE)
 readRenviron("~/.Renviron")
@@ -28,18 +30,23 @@ create.map <- function(year) {
   datasource <- filter(datasource, Year == year)
 }
 
-mapping_2018 <- create.map('2017')
-hist <- hist(mapping_2018$`% Excessive Drinking`, xlim = c(0, 30),
-             main = "Distribution of 2018 VA Opiod Rates (CDC)",
-             xlab = "Opiod Prescription Rate Per 100 People")
+mapping_2011 <- create.map('2011')
+mapping_2012 <- create.map('2012')
+mapping_2013 <- create.map('2013')
+mapping_2014 <- create.map('2014')
+mapping_2015 <- create.map('2015')
+mapping_2016 <- create.map('2016')
+mapping_2017 <- create.map('2017')
+mapping_2018 <- create.map('2018')
+mapping_2019 <- create.map('2019')
 
 
 va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
-                      survey = "acs5", geometry = TRUE) %>% st_transform(crs = 4326)
+                      survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 
 finish_map <- function(year_map, year) {
   new_tbl <- merge(va_borders, year_map, by.x = "GEOID", by.y = "FIPS")
-  my_bins <- c(0, 5, 10, 15, 20, 25, Inf)
+  my_bins <- getJenksBreaks(new_tbl$`% Excessive Drinking`, k = 6)
   palette <- colorBin("Reds", domain = new_tbl$'% Excessive Drinking', bins = my_bins)
   my_label <- paste("County: ", new_tbl$NAME,"<br/>", "Rate: ", new_tbl$'% Excessive Drinking', "<br/>",
                     sep="") %>%
@@ -59,3 +66,6 @@ finish_map <- function(year_map, year) {
 }
 
 finish_map(mapping_2019, "2019")
+finish_map(mapping_2018, "2018")
+finish_map(mapping_2017, "2017")
+finish_map(mapping_2016, "2016")
