@@ -100,3 +100,7 @@ halifax_decennial_data <- halifax_decennial_data %>%
 #Save Halifax Decennial Dataset to a GeoJson file
 #st_write(halifax_decennial_data, here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"), driver = "GeoJSON")
 
+<<<<<<< HEAD
+=======
+# st_write(halifax_decennial_data, here::here("data", "original", "ACS", "halifax_decennial_data.geojson"), driver = "GeoJSON")
+>>>>>>> 94d6fc70a38c849f42c4b5f854cc6ba2473f28e8

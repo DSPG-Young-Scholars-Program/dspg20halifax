@@ -2,10 +2,11 @@ library(leaflet)
 library(leaflet.extras)
 library(dplyr)
 library(BAMMtools)
-library(sp)
+library(sf)
 
 #importing the Halifax Decennial Dataset onto this R file
 halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
+
 
 #checking the range, histgram, and suggested breaks for selected variable
 range(halifax_decennial_data$pct_asian_race)
@@ -17,7 +18,7 @@ Pct_colors <- colorBin("YlGnBu", domain = c(0, 1),
          bins = c(0, 0.01, 0.05, 0.15, 0.30, 0.45, 0.60, 0.8))
 
 #Leaflet file on race in Halifax
-race_halifax <- halifax_decennial_data %>%
+race_mapping <- halifax_decennial_data %>%
   #limited dragging and set minimum and maximum zoom settings
 leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   #added base tiles
@@ -53,14 +54,14 @@ leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %
                                      "Native Race", "Hipanic Ethnicity")) %>%
   #add legend
   addLegend(position = "bottomright", pal = Pct_colors, values = c(0,1), 
-            title = "Proportion of Selected Race")
+            title = "Proportion of Selected Race") 
 
 #save Leaflet file as a Widget
 saveWidget(race_halifax, file = "raceMapHalifax.html")
 
 
 #Leaflet map of types of housing ownership in Halifax
-housing_mapping <- halifax_decennial_data %>%
+Housing_mapping <- halifax_decennial_data %>%
   leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   addTiles()%>%
   addPolygons(fillColor = ~Pct_colors(pct_mortgage_owned_housing),
@@ -81,16 +82,13 @@ housing_mapping <- halifax_decennial_data %>%
   addLayersControl(baseGroups = c("Mortgage Owned Housing", "Full Owned Housing", 
                                      "Renters Housing")) %>%
   addLegend(position = "bottomright", pal = Pct_colors, values = c(0,1), 
-            title = "Proportion of Ownership Type")
+            title = "Proportion of Ownership Type") 
 
 #leaflet map on racial disparities in houshing types
 Pct_colors_houseRace <- colorBin("YlGnBu", domain = c(190, 1700), 
-                       bins = c(190, 300, 450, 600, 750 , 850, 1000, 1400, 1700 ))
-range(halifax_decennial_data$black_owner)
-BAMMtools::getJenksBreaks(halifax_decennial_data$total_owner, 7)
+                       bins = c(0, 190, 300, 450, 600, 750 , 850, 1000, 1400, 1700 ))
 
-
-race_owning_mapping <- halifax_decennial_data %>%
+race_owning_mapping <-  halifax_decennial_data %>%
   leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   addTiles()%>%
   addPolygons(fillColor = ~Pct_colors_houseRace(total_owner),
@@ -110,8 +108,8 @@ race_owning_mapping <- halifax_decennial_data %>%
               label = ~paste0("Black Owners: ", (black_owner))) %>%
   addLayersControl(baseGroups = c("Total Population of Owners", "White Population of Owners", 
                                   "Black Population of Owners")) %>%
-  addLegend(position = "bottomright", pal = Pct_colors_houseRace(), values = c(0,1), 
-            title = "Ownership by race")
+  addLegend(position = "bottomright", pal = Pct_colors_houseRace, values = c(0,1), 
+            title = "Ownership by race") 
 
 
 #Map on renting in Halifax based on Race
@@ -132,11 +130,11 @@ race_renting_mapping <- halifax_decennial_data %>%
               fillOpacity = 0.75, group = "Black Population of Renters",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
-              label = ~paste0("Black Renters: ", (black_renters))) %>%
+              label = ~paste0("Black Renters: ", (black_renter))) %>%
   addLayersControl(baseGroups = c("Total Population of Renters", "White Population of Renters", 
                                   "Black Population of Renters")) %>%
-  addLegend(position = "bottomright", pal = Pct_colors_houseRace(), values = c(0,1), 
-            title = "Rentership by race")
+  addLegend(position = "bottomright", pal = Pct_colors_houseRace, values = c(0,1), 
+            title = "Rentership by race") 
 
 
 #Map on owning in Halifax based off of race
@@ -166,7 +164,7 @@ owning_race_mapping <- halifax_decennial_data %>%
   addLayersControl(baseGroups = c("White Owners", "Black Owners", 
                                   "White Renters", "Black Renters")) %>%
   addLegend(position = "bottomright", pal = Pct_colors, values = c(0,1), 
-            title = "Proportion of Ownership Type by race")
+            title = "Proportion of Ownership Type by race") 
 
 
 #Map on gender in Halifax
@@ -188,7 +186,7 @@ gender_mapping <- halifax_decennial_data %>%
               label = ~paste0("Percent of Female Population: ", (pct_female_pop))) %>%
   addLayersControl(baseGroups = c("Male Population", "Female Population")) %>%
   addLegend(position = "bottomright", pal = Pct_colors_gender, values = c(0,1), 
-            title = "Proportion of Gender")
+            title = "Proportion of Gender") 
 
 
 #Leaflet map on age in Halifax
@@ -210,7 +208,7 @@ Age_mapping <- halifax_decennial_data %>%
               label = ~paste0("Percent of Adult Population: ", (pct_adult))) %>%
   addLayersControl(baseGroups = c("Minor Population", "Adult Population")) %>%
   addLegend(position = "bottomright", pal = Pct_colors_age, values = c(0,1), 
-            title = "Proportion of Age")
+            title = "Proportion of Age") 
 
 
 #Leaflet map on family structure in Halifax
@@ -243,7 +241,7 @@ Family_structure_mapping <- halifax_decennial_data %>%
   addLayersControl(baseGroups = c("Husband and Wife Household", "Household with Male; no wife", 
                                   "Household with Female, no husband", "Households that live alove")) %>%
   addLegend(position = "bottomright", pal = Pct_colors_structure, values = c(0,1), 
-            title = "Family Household Structures")
+            title = "Family Household Structures") 
 
 
 #Leaflet map on median age in Halifax
@@ -270,4 +268,4 @@ Median_age_mapping <- halifax_decennial_data %>%
               label = ~paste0("Age: ", (black_median_age))) %>%
   addLayersControl(baseGroups = c("Total Median Age", "White Median Age", "Black Median Age")) %>%
   addLegend(position = "bottomright", pal = Pct_colors_med_age, values = c(0,1), 
-            title = "Median Age")
+            title = "Median Age") 
