@@ -97,5 +97,6 @@ halifax_decennial_data <- halifax_decennial_data %>%
   mutate(pct_female_no_husband_household = female_no_husband_household/total_households) %>%
   mutate(pct_lives_alone_household = lives_alone_houshold/total_households) 
 
+#Save Halifax Decennial Dataset to a GeoJson file
+#st_write(halifax_decennial_data, here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"), driver = "GeoJSON")
 
-?st_write()
