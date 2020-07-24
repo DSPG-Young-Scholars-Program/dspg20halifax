@@ -30,6 +30,9 @@ Sys.getenv("CENSUS_API_KEY")
 va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 
+data_2018_and_2017 <-readr::read_csv(here::here("git", "TestDSPG", "Halifaxx", "data",
+                                                "original", "Substance_Abuse",
+                                                "CDC Opioid Prescription Data - 2018 (1).csv"))
 create.map <- function(year) {
   link <- paste(paste("http://www.cdc.gov/drugoverdose/maps/rxcounty", year, sep = ""), ".html", sep = "")
   rate_for_year <- html(link)
@@ -44,6 +47,14 @@ create.map <- function(year) {
   new_tbl <- mutate(new_tbl, 'Rate' = column)
 }
 
+create.map.special <- function(year, table) {
+  table_for_year <- filter(table, Year == year)
+  new_tbl <- merge(va_borders, table_for_year, by.x = "GEOID", by.y = "State/County FIPS Code")
+  new_tbl <- rename(new_tbl, 'Rate' = 'Opiod Prescription Rate per 100')
+}
+
+mapping_2017 <- create.map.special("2017", data_2018_and_2017)
+mapping_2018 <- create.map.special("2018", data_2018_and_2017)
 mapping_2006 <- create.map("2006")
 mapping_2007 <- create.map("2007")
 mapping_2008 <- create.map("2008")
@@ -56,9 +67,11 @@ mapping_2014 <- create.map("2014")
 mapping_2015 <- create.map("2015")
 mapping_2016 <- create.map("2016")
 mapping_2016
+mapping_2016
 all_rates <- c(mapping_2006$Rate, mapping_2007$Rate, mapping_2008$Rate, mapping_2009$Rate,
                mapping_2010$Rate, mapping_2011$Rate, mapping_2012$Rate, mapping_2013$Rate,
-               mapping_2014$Rate, mapping_2015$Rate, mapping_2016$Rate)
+               mapping_2014$Rate, mapping_2015$Rate, mapping_2016$Rate, mapping_2017$Rate,
+               mapping_2018$Rate)
 
 all_rates <- na.omit(all_rates)
 
@@ -67,7 +80,7 @@ generic_bins <- sapply(generic_bins, round)
 generic_palette <-colorBin("Reds", domain = all_rates, bins = generic_bins)
 
 generate.label <- function(year_mapping) {
-  my_label <- paste("County: ", year_mapping$County,"<br/>", "Rate: ", year_mapping$Rate, "<br/>",
+  my_label <- paste("County: ", year_mapping$NAME,"<br/>", "Rate: ", year_mapping$Rate, "<br/>",
                     sep="") %>%
     lapply(htmltools::HTML)
 }
@@ -130,9 +143,19 @@ leaflet() %>%
               label = generate.label(mapping_2006),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2017, fillColor = ~generic_palette(mapping_2017$Rate),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2017',
+              label = generate.label(mapping_2017),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2018, fillColor = ~generic_palette(mapping_2018$Rate),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2018',
+              label = generate.label(mapping_2018),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
     addLegend(pal = generic_palette, values = generic_bins,
               title = paste("Opiod Prescription Rate per 100 People"), position = "bottomright") %>%
     addLayersControl(baseGroups = c("2006", "2007", "2008", "2009", "2010",
-      "2011", "2012", "2013", "2014", "2015", "2016"))
+      "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"))
 
 
