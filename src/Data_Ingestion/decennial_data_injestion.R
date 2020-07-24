@@ -76,7 +76,8 @@ halifax_decennial_data <- st_as_sf(halifax_data)
 
 #adding Percentage Columns
 halifax_decennial_data <- halifax_decennial_data %>%
-  mutate(pct_white_race = white_race/total_population) %>%
+  mutate(pct_white_race = white_race/total_population) %>% 
+  mutate(pct_non_white = 1 - pct_white_race) %>%
   mutate(pct_black_race = black_race/total_population) %>%
   mutate(pct_asian_race = asian_race/total_population) %>%
   mutate(pct_native_race = native_race/total_population) %>%
@@ -95,12 +96,9 @@ halifax_decennial_data <- halifax_decennial_data %>%
   mutate(pct_husband_wife_household = husband_wife_household/total_households) %>%
   mutate(pct_male_no_wife_household = male_no_wife_household/total_households) %>%
   mutate(pct_female_no_husband_household = female_no_husband_household/total_households) %>%
+  mutate(pct_single_parent = pct_male_no_wife_household + pct_female_no_husband_household) %>%
   mutate(pct_lives_alone_household = lives_alone_houshold/total_households) 
 
 #Save Halifax Decennial Dataset to a GeoJson file
-#st_write(halifax_decennial_data, here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"), driver = "GeoJSON")
+st_write(halifax_decennial_data, here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"), driver = "GeoJSON")
 
-<<<<<<< HEAD
-=======
-# st_write(halifax_decennial_data, here::here("data", "original", "ACS", "halifax_decennial_data.geojson"), driver = "GeoJSON")
->>>>>>> 94d6fc70a38c849f42c4b5f854cc6ba2473f28e8
