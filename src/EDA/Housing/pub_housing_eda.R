@@ -31,15 +31,15 @@ pub_housing_summary %>%
   scale_size_continuous(range = c(0, 20)) +
   #facet_wrap(~year) +
   scale_color_manual(values = c("#e4e0cd", "#6b6385", "#FC4444")) +
+  labs(y = "Percent Single Adults", x = "Percent Black (Non-Hispanic)") +
   scale_alpha_manual(values = c(0.3, 0.8)) +
-  theme_minimal()
+  theme_minimal() +
+  theme(legend.position = "none")
 
 ## Want to confirm wether there is pattern to missingness:
 # pub_housing_summary %>%
 #   filter(year == 2019, program_label == "Summary of All HUD Programs") %>%
 #   summarize(sum(is.na(pct_lt24_head)))
-
-
 
 ## Really want to compare to pct_black of county - get from ACS
 p1 <- pub_housing_summary %>%
@@ -76,3 +76,6 @@ p2 <- pub_housing_summary %>%
 # gridExtra::grid.arrange(p1, p2, ncol = 2)
 
 # plotly::ggplotly(p2)
+
+## NEXT: GET RELATIVE RATES OF DEMOGRAPHICS COMPARING TO COUNTY VALUES
+## ALSO SEE IF THIS CAN BE LINKED TO SCHOOL DATA - A STORY MAY START DEVELOPING?

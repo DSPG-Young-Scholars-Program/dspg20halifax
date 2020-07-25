@@ -13,68 +13,44 @@ va_rural_data <- va_data %>% filter(urbanicity == "rural")
 
 # ---- Jail Rate ---- #
 
-## Wrap plot in function just to make calling it easier
-jail_prison_plot <- function() {
-  
-  scale_max <- max(c(va_data$male_jail_pop_rate, va_data$female_jail_pop_rate), na.rm = TRUE)
-  
-  va_data_jail <- va_data %>% 
-    filter(!county_name %in% c("Hopewell city", "Charles City County", "Colonial Heights city")) %>%
-    select(year, county_name, male_jail_pop_rate, female_jail_pop_rate) %>%
-    rename(Male = male_jail_pop_rate, Female = female_jail_pop_rate) %>%
-    pivot_longer(names_to = "gender", cols = c("Male", "Female"))
-  
-  jail_plot_female <- va_data_jail %>% filter(gender == "Female") %>%
-    ggplot(aes(x = year, y = value, group = county_name)) +
-    geom_line(color = "#214C62") +
-    gghighlight(county_name == "Halifax County", use_direct_label = FALSE) +
-    scale_y_continuous(limits = c(0, scale_max)) +
-    labs(color = "Gender", title = "Female", y = "", x = "")  +
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
-  
-  jail_plot_male <- va_data_jail %>% filter(gender == "Male") %>%
-    ggplot(aes(x = year, y = value, group = county_name)) +
-    geom_line(color = "#CA562C") +
-    scale_y_continuous(limits = c(0, scale_max)) +
-    gghighlight(county_name == "Halifax County", use_direct_label = FALSE) +
-    labs(color = "Gender", title = "Male", y = "", x = "") +
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
-  
-  jail_plot <- gridExtra::grid.arrange(jail_plot_male, jail_plot_female, ncol = 2, top = "Jail and Prison Incarceration Rates in Halifax Co.\n", left = "Jail Population per 100,000")
-  
-  # ---- Prison Rate ---- #
-  
-  scale_max <- max(c(va_data$male_prison_pop_rate, va_data$female_prison_pop_rate), na.rm = TRUE)
-  
-  va_data_prison <- va_data %>% 
-    filter(!county_name %in% c("Hopewell city", "Charles City County", "Colonial Heights city")) %>%
-    select(year, county_name, male_prison_pop_rate, female_prison_pop_rate) %>%
-    rename(Male = male_prison_pop_rate, Female = female_prison_pop_rate) %>%
-    pivot_longer(names_to = "gender", cols = c("Male", "Female"))
-  
-  prison_plot_female <- va_data_prison %>% filter(gender == "Female") %>%
-    ggplot(aes(x = year, y = value, group = county_name)) +
-    geom_line(color = "#214C62") +
-    gghighlight(county_name == "Halifax County", use_direct_label = FALSE) +
-    scale_y_continuous(limits = c(0, scale_max)) +
-    labs(y = "", x = "")  +
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
-  
-  prison_plot_male <- va_data_prison %>% filter(gender == "Male") %>%
-    ggplot(aes(x = year, y = value, group = county_name)) +
-    geom_line(color = "#CA562C") +
-    scale_y_continuous(limits = c(0, scale_max)) +
-    gghighlight(county_name == "Halifax County", use_direct_label = FALSE) +
-    labs(y = "", x = "") +
-    theme(plot.title = element_text(hjust = 0.5), legend.position = "none")
-  
-  prison_plot <- gridExtra::grid.arrange(prison_plot_male, prison_plot_female, ncol = 2, bottom = "Year", left = "Prison population per 100,000")
-  
-  return(gridExtra::grid.arrange(jail_plot, prison_plot))
-  
-}
+rates_by_gender_system <- va_data %>% 
+  filter(!county_name %in% c("Hopewell city", "Charles City County", "Colonial Heights city")) %>%
+  select(year, county_name, male_jail_pop_rate, female_jail_pop_rate, male_prison_pop_rate, female_prison_pop_rate) %>%
+  #rename(Male = male_prison_pop_rate, Female = female_prison_pop_rate) %>%
+  pivot_longer(names_to = "jail_gender_combo", cols = c("male_jail_pop_rate", "female_jail_pop_rate", "male_prison_pop_rate", "female_prison_pop_rate")) %>%
+  mutate(system = ifelse(str_detect(jail_gender_combo, "jail"), "Jail", "Prison"),
+         gender = ifelse(str_detect(jail_gender_combo, "female"), "Female", "Male"),
+         gender = factor(gender, levels = c("Male", "Female")))
 
-jail_prison_plot()
+jail_plot <- rates_by_gender_system %>%
+  filter(system == "Jail") %>%
+  ggplot(aes(x = year, y = value, group = county_name, color = gender)) +
+  geom_line() +
+  scale_color_manual(values = c("#214C62", "#CA562C")) +
+  gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE) +
+  scale_y_continuous(limits = c(0, scale_max)) +
+  labs(color = "Gender", title = "Incarceration Rate in Halifax County", subtitle = "Relative to other Virginia Counties", y = "Incarcerated Individuals per 100,000", x = "Year")  +
+  facet_wrap(gender~.) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, color = "gray10"), 
+        plot.subtitle = element_text(hjust = 0.5, color = "gray10", face = "italic"),
+        legend.position = "none")
+
+prison_plot <- rates_by_gender_system %>%
+  filter(system == "Prison") %>%
+  ggplot(aes(x = year, y = value, group = county_name, color = gender)) +
+  geom_line() +
+  scale_color_manual(values = c("#214C62", "#CA562C")) +
+  gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE) +
+  scale_y_continuous(limits = c(0, scale_max)) +
+  labs(color = "Gender", title = "Incarceration Rate in Halifax County", y = "Incarcerated Individuals per 100,000", x = "Year")  +
+  facet_wrap(gender~.) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5), color = "gray10", 
+        plot.subtitle = element_text(hjust = 0.5, color = "gray10", face = "italic"),
+        legend.position = "none")
+
+# saveRDS(prison_plot, here::here("output", "for_website", "prison_incarceration_rate_plot.RDS"))
 
 
 # ---- Jail + Prison Rate by Race ---- #

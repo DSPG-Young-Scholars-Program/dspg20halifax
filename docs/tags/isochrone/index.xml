@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Isochrone on UVA Biocomplexity Institute</title>
+    <link>/tags/isochrone/</link>
+    <description>Recent content in Isochrone on UVA Biocomplexity Institute</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="/tags/isochrone/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Accessibility</title>
+      <link>/findings/isochrone_page/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/isochrone_page/</guid>
+      <description>Our ecological model framework encouraged us to consider how these various factors may interact in their effects on re-entry for formely incarcerated individuals in Halifax County.
+A key component of each factor is resource accessibliity: employment opportunities, availabile affordable housing options, and support for those with substance abuse problems are all rendered irrelevant if these resources are not accessible to those who rely on them.</description>
+    </item>
+    
+  </channel>
+</rss>

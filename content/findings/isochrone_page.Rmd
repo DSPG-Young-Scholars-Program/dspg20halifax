@@ -1,0 +1,55 @@
+---
+title: "Accessibility"
+description: "How are resources distributed in the community?"
+tags: ["R", "Geospatial", "Isochrone"]
+weight: 5
+draft: false
+output: html_document
+---
+
+Our ecological model framework encouraged us to consider how these various factors may interact in their effects on re-entry for formely incarcerated individuals in Halifax County.
+
+A key component of each factor is resource accessibliity: employment opportunities, availabile affordable housing options, and support for those with substance abuse problems are all rendered irrelevant if these resources are not accessible to those who rely on them.
+
+A comprehensive consideration of accessibility would also include considerations of the culture, values, and circumstances that may encourage or discourage individuals from even attempting to access certain resources. But at its most fundamental level, resource accessibility is also a question of physical proximity.
+
+We therefore sought to visualize the spatial distribution of employment opportunities, substance abuse treatment, and other community resources relative to low-income housing opportunities. We use isochrone lines to deliniate areas of equal travel time from a given point.
+
+### Main Findings
+
+#### Accessibility by Car
+
+```{r, echo = FALSE}
+drive_map <- readRDS(here::here("data", "working", "isochrones", "drive_map.RDS"))
+drive_map
+```
+
+#### Accessibility by Bike
+
+```{r, echo = FALSE}
+bike_map <- readRDS(here::here("data", "working", "isochrones", "bike_map.RDS"))
+bike_map
+```
+
+#### Accessibility on Foot
+
+```{r, echo = FALSE}
+walk_map <- readRDS(here::here("data", "working", "isochrones", "walk_map.RDS"))
+walk_map
+```
+
+### Conclusion and Policy Implications 
+
+[Here you could highlight the main takeaways and the potential policy implications of your findings.] 
+
+### Future Directions
+
+_Add info about other things that could be done with this in the future?_
+
+Potentially could include stuff about adding zoning information, including public transit travel times, etc.
+
+### References 
+
+_May just include these in a different tab elsewhere?_
+<br>
+[List your references here using APA format (or at least standardize all of the references using the same format).]
