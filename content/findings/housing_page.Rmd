@@ -9,9 +9,17 @@ output: html_document
 
 [Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data & Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.] 
 
+
 ### Main Findings 
 
-[Here you will describe the results and include important visualizations from your project.] 
+![](/findings/housing_page_files/race_single_user_hud.png)
+
+
+<br><br><br>
+And here
+<br><br><br>
+
+![](/findings/housing_page_files/relative_race_single_user_hud.png)
 
 ### Conclusion and Policy Implications 
 
