@@ -21,20 +21,55 @@ pub_housing_summary <- vroom::vroom(here("data", "original", "Housing", "county_
          name = str_to_title(trimws(ifelse(str_detect(name, "city county"), str_replace_all(name, "county", ""), name)))) ## Clean duplicated counties that are labeled as both city and county
 
 ## Pct of households headed by a single parent (most are females in Halifax - can show)
-pub_housing_summary %>%
-  filter(year == 2019, program_label == "Summary of All HUD Programs") %>%
+va_data <- pub_housing_summary %>%
+  filter(year == 2019, program_label %in% c("Housing Choice Vouchers", "Project Based Section 8")) %>%
   mutate(isVA = ifelse(state == "VA", TRUE, FALSE),
-         isHalifax = ifelse(state == "VA" & name == "Halifax County", TRUE, FALSE)) %>%
-  ggplot() +
-  geom_point(aes(x = pct_black_nonhsp, y = pct_1adult, color = interaction(isVA, isHalifax), size = pct_lt24_head, alpha = isVA), stroke = 1.25) +
+         isHalifax = ifelse(state == "VA" & name == "Halifax County", TRUE, FALSE),
+         pct_lt24_head = ifelse(is.na(pct_lt24_head), 100 - pct_age25_50 - pct_age51_61 - pct_age62plus, pct_lt24_head)) %>%
+  filter(isVA == TRUE)
+  
+us_data <- pub_housing_summary %>%
+  filter(year == 2019, program_label %in% c("Housing Choice Vouchers", "Project Based Section 8")) %>%
+  mutate(isVA = ifelse(state == "VA", TRUE, FALSE),
+         isHalifax = ifelse(state == "VA" & name == "Halifax County", TRUE, FALSE),
+         pct_lt24_head = ifelse(is.na(pct_lt24_head), 100 - pct_age25_50 - pct_age51_61 - pct_age62plus, pct_lt24_head)) %>%
+  filter(isVA == FALSE)
+  
+plot <- ggplot() +
+  geom_point(data = us_data, aes(x = pct_black_nonhsp, y = pct_1adult, color = interaction(isVA, isHalifax), size = pct_lt24_head, alpha = isVA), stroke = 1.25) +
+  geom_point(data = va_data, aes(x = pct_black_nonhsp, y = pct_1adult, color = interaction(isVA, isHalifax), size = pct_lt24_head, alpha = isVA), stroke = 1.25) +
   coord_flip() +
-  scale_size_continuous(range = c(0, 20)) +
-  #facet_wrap(~year) +
-  scale_color_manual(values = c("#e4e0cd", "#6b6385", "#FC4444")) +
-  labs(y = "Percent Single Adults", x = "Percent Black (Non-Hispanic)") +
+  scale_size_continuous(range = c(0, 20), labels = c("0%", "10%", "20%", "30%", "40%")) +
+  scale_color_manual(labels = c("U.S.", "Virginia", "Halifax County"), values = c("#e4e0cd", "#6b6385", "#FC4444"), na.translate=FALSE) +
+  labs(y = "\nPercent Single Adults", x = "Percent Black (Non-Hispanic)\n", 
+       title = "Characteristics of Subsidized Housing Population", 
+       size = "Houshold heads less \nthan 24 years old") +
+  guides(alpha = FALSE, color = guide_legend(title = "Locale", override.aes = list(size=10)), size = guide_legend(override.aes = list(shape = 21, alpha = 0.8))) +
   scale_alpha_manual(values = c(0.3, 0.8)) +
+  facet_wrap(~program_label, ncol = 2) +
   theme_minimal() +
-  theme(legend.position = "none")
+  theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 22), 
+        plot.subtitle = element_text(hjust = 0.5, color = "gray30", face = "italic", size = 18),
+        axis.title = element_text(size = 18, color = "gray10"),
+        axis.text = element_text(size = 16, color = "gray30"),
+        strip.text = element_text(size = 20, color = "gray30"),
+        panel.spacing = unit(4, "lines"),
+        legend.key.size = unit(3, "line"),
+        legend.text = element_text(size = 14, color = "gray30"),
+        legend.title = element_text(size = 20, color = "gray10"))
+
+plot
+
+
+
+
+
+
+
+
+
+
+
 
 ## Want to confirm wether there is pattern to missingness:
 # pub_housing_summary %>%
