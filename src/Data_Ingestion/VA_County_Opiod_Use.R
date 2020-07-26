@@ -21,18 +21,16 @@ census_api_key("1288a5a1e23422dbd03d06071f74b4cd50af12be", install = TRUE)
 readRenviron("~/.Renviron")
 Sys.getenv("CENSUS_API_KEY")
 
-
-# ggplot(CDC.Opioid.Prescription.Data...2018, aes(x = V4)) + geom_histogram(stat = "count", binwidth = 50)
-# column <- as.numeric(as.character(CDC.Opioid.Prescription.Data...2018$V4))
-# hist <- hist(column, xlim = c(0, 200), main = "Distribution of 2018 VA Opiod Rates (CDC)",
-#              xlab = "Opiod Prescription Rate Per 100 People")
-
+#load VA border geographical data
 va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 
+#get data from 2017 and 2018 separately bc it has a different format
 data_2018_and_2017 <-readr::read_csv(here::here("git", "TestDSPG", "Halifaxx", "data",
                                                 "original", "Substance_Abuse",
                                                 "CDC Opioid Prescription Data - 2018 (1).csv"))
+
+#get the relevant data - merged with va borders data - to create maps for each year
 create.map <- function(year) {
   link <- paste(paste("http://www.cdc.gov/drugoverdose/maps/rxcounty", year, sep = ""), ".html", sep = "")
   rate_for_year <- html(link)
@@ -40,19 +38,23 @@ create.map <- function(year) {
   table_for_year <- tables[[1]]
   rate_description <- paste(year, "Prescribing Rate")
   table_for_year <- filter(table_for_year, State == 'VA')
+  #merge new_tbl with va_borders data
   new_tbl <- merge(va_borders, table_for_year, by.x = "GEOID", by.y = "FIPS County Code")
   column <- new_tbl[ ,8]
   column$geometry = NULL
+  #conver the column containing opiod prescription rates to a numeric column instead of character
   column <- as.numeric(sapply(column, noquote))
   new_tbl <- mutate(new_tbl, 'Rate' = column)
 }
 
+#special create_maps function for 2017 and 2018
 create.map.special <- function(year, table) {
   table_for_year <- filter(table, Year == year)
   new_tbl <- merge(va_borders, table_for_year, by.x = "GEOID", by.y = "State/County FIPS Code")
   new_tbl <- rename(new_tbl, 'Rate' = 'Opiod Prescription Rate per 100')
 }
 
+#create corresponding maps for all the years
 mapping_2017 <- create.map.special("2017", data_2018_and_2017)
 mapping_2018 <- create.map.special("2018", data_2018_and_2017)
 mapping_2006 <- create.map("2006")
@@ -68,26 +70,30 @@ mapping_2015 <- create.map("2015")
 mapping_2016 <- create.map("2016")
 mapping_2016
 mapping_2016
+
+#combine all possible rates from all years together into one dataset
 all_rates <- c(mapping_2006$Rate, mapping_2007$Rate, mapping_2008$Rate, mapping_2009$Rate,
                mapping_2010$Rate, mapping_2011$Rate, mapping_2012$Rate, mapping_2013$Rate,
                mapping_2014$Rate, mapping_2015$Rate, mapping_2016$Rate, mapping_2017$Rate,
                mapping_2018$Rate)
-
 all_rates <- na.omit(all_rates)
 
+#use Jenks breaks to see ideal disribution of Opioid Prescription Rates for map scale
 generic_bins <-getJenksBreaks(all_rates, k = 6)
 generic_bins <- sapply(generic_bins, round)
 generic_palette <-colorBin("Reds", domain = all_rates, bins = generic_bins)
 
+#label function for each respective year and map
 generate.label <- function(year_mapping) {
   my_label <- paste("County: ", year_mapping$NAME,"<br/>", "Rate: ", year_mapping$Rate, "<br/>",
                     sep="") %>%
     lapply(htmltools::HTML)
 }
 
-
+#create the leaflet
 leaflet() %>%
     addProviderTiles("CartoDB.Positron") %>%
+  #add polygon for each year with respective template, label, and data
     addPolygons(data = mapping_2016, fillColor = ~generic_palette(mapping_2016$Rate),
                 weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2016',
                 label = generate.label(mapping_2016),
@@ -155,7 +161,8 @@ leaflet() %>%
                                           textsize = "13px", direction = "auto")) %>%
     addLegend(pal = generic_palette, values = generic_bins,
               title = paste("Opiod Prescription Rate per 100 People"), position = "bottomright") %>%
-    addLayersControl(baseGroups = c("2006", "2007", "2008", "2009", "2010",
+   #layer for each year
+   addLayersControl(baseGroups = c("2006", "2007", "2008", "2009", "2010",
       "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"))
 
 
