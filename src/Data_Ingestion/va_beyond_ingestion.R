@@ -32,5 +32,3 @@ va_society_offenses <- va_society_offenses %>%
 
 #vroom::vroom_write(va_property_offenses, here::here("data", "original", "Crime", "full_va_crime", "va_crimes_property_all_years.csv"), delim = ",")
 
-
-

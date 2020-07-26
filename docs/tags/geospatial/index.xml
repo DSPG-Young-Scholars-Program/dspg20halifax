@@ -11,22 +11,26 @@
     
     
     <item>
-      <title>General Overview of the Project</title>
-      <link>/findings/general-overview/</link>
+      <title>Incarceration &#43; Crime</title>
+      <link>/findings/incarceration_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/general-overview/</guid>
-      <description>While this page is optional, it probably makes sense to have one weighted at the top (see the front matter at the top of this Rmd file) that gives a general overview of the project. This could be something like the final poster while the other pages highlight more in-depth observations. Here is a general schema of what should be covered throughout your website:
-Main Findings [Here you will describe the results and include important visualizations from your project.</description>
+      <guid>/findings/incarceration_page/</guid>
+      <description> Main Findings Here is a prison incarceration rate plot:
+ And here   Conclusion and Policy Implications [Here you could highlight the main takeaways and the potential policy implications of your findings.]
+Other things to visualize: admissions rates? Discharge rates? Juvenile detention rates?
+ References [List your references here using APA format (or at least standardize all of the references using the same format).]
+ </description>
     </item>
     
     <item>
-      <title>Results Section One</title>
-      <link>/findings/results-section-one/</link>
+      <title>Accessibility</title>
+      <link>/findings/isochrone_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/results-section-one/</guid>
-      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Examples Page If you want to add in an image on an Rmd file, use this link here. It ends up being a little tricky, but as long as you have created a folder to insert your images, you can just use some markdown code or html to insert images in the format you want.</description>
+      <guid>/findings/isochrone_page/</guid>
+      <description>Our ecological model framework encouraged us to consider how these various factors may interact in their effects on re-entry for formely incarcerated individuals in Halifax County.
+A key component of each factor is resource accessibliity: employment opportunities, availabile affordable housing options, and support for those with substance abuse problems are all rendered irrelevant if these resources are not accessible to those who rely on them.</description>
     </item>
     
   </channel>

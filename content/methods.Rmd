@@ -1,0 +1,36 @@
+---
+title: "Data & Methods"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{css, echo=FALSE}
+/* this chunk of code centers all of the headings */
+  h1, h2, h3 {
+    text-align: center;
+  }
+
+body {
+  text-align: justify
+}
+```
+
+## Background
+
+This is where we will include demographics maps of Halifax?
+
+```{r pressure, echo=FALSE}
+
+```
+
+## Data Sources
+
+This is where we will discuss general data sources, their applicability/coverage, and limitations?
+
+## Challenges
+
+This is where we will discuss challenges covering incarceration in general as well as specific challenges we encountered during the project?
+

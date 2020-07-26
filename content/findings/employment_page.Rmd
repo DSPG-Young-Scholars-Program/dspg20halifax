@@ -1,0 +1,45 @@
+---
+title: "Employment"
+description: "What is the state of employment opportunities?"
+tags: ["R"]
+weight: 2
+draft: false
+output: html_document
+---
+
+```{css, echo=FALSE}
+/* this chunnk of code centers all of the headings */
+h1, h2, h3 {
+  text-align: center;
+}
+
+body {
+  text-align: justify
+}
+```
+
+### Examples Page
+
+If you want to add in an image on an Rmd file, use this [link here](https://lcolladotor.github.io/2018/03/07/blogdown-insert-image-addin/). It ends up being a little tricky, but as long as you have created a folder to insert your images, you can just use some markdown code or html to insert images in the format you want. 
+
+### Centering images  
+
+![](/findings/results-section-one_files/hugo.png){style="width:20%; display: block; margin-left: auto; margin-right: auto;"}
+
+### Placing images side-by-side
+
+<img src="/findings/results-section-one_files/hugo.png" width="150"/> <img src="/findings/results-section-one_files/rmarkdown.png" width="150"/> <img src="/findings/results-section-one_files/min_night.png" width="175"/> <img src="/findings/results-section-one_files/netlify.png" width="175"/>
+
+### Embedding Shiny Apps
+
+```{r, echo=FALSE, fig.fullwidth=TRUE}
+knitr::include_app('https://uva-sdad.shinyapps.io/gates-dashboard/')
+```
+
+### Embedding R code
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+
+```
+
+
