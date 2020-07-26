@@ -5,16 +5,35 @@ library(ggplot2)
 library(gghighlight)
 library(plotly)
 library(stringr)
+library(purrr)
 
 vera_data <- data.table::fread(here::here("data", "original", "Incarceration", "vera_incarceration_trends.csv")) %>% as.data.frame()
 
 va_data <- vera_data %>% filter(state == "VA")
 va_rural_data <- va_data %>% filter(urbanicity == "rural")
 
-scale_max <- max(c(va_data$male_prison_pop_rate, va_data$female_prison_pop_rate), na.rm = TRUE)
+## General look at distributions
 
+## General right skew for all population/rate variables
+## Missing values for VA for prison admissions and populations
+## Same across levels though
+va_data %>%
+  select(contains("white")) %>%
+  gather() %>% 
+  ggplot(aes(value)) +
+  facet_wrap(~ key, scales = "free") +
+  geom_histogram()
+
+va_data %>%
+  select(contains("black")) %>%
+  gather() %>% 
+  ggplot(aes(value)) +
+  facet_wrap(~ key, scales = "free") +
+  geom_histogram()
 
 # ---- Jail Rate ---- #
+
+scale_max <- max(c(va_data$male_prison_pop_rate, va_data$female_prison_pop_rate), na.rm = TRUE)
 
 rates_by_gender_system <- va_data %>% 
   filter(!county_name %in% c("Hopewell city", "Charles City County", "Colonial Heights city")) %>%
@@ -110,33 +129,10 @@ race_incarceration_plot <- plot_data %>% filter(year >= 1990, county_name == "Ha
 
 #ggsave(here::here("static", "findings", "incarceration_page_files", "race_incarceration_plot.png"), plot = race_incarceration_plot)
 
-#races <- c("aapi", "black", "latinx", "native", "white")
-races <- c("black", "white")
-race_cols <- paste(races, "prison_adm_rate", sep = "_")
-
-va_data %>% 
-  filter(!county_name %in% c("Hopewell city", "Charles City County", "Colonial Heights city")) %>%
-  select(year, county_name, all_of(race_cols)) %>%
-  #rename(Male = male_prison_pop_rate, Female = female_prison_pop_rate) %>%
-  pivot_longer(names_to = "race", cols = race_cols) %>%
-  mutate(race = case_when(str_detect(race, "white") ~ "White",
-                          str_detect(race, "black") ~ "Black"))
-
-
-
-
-
-
-
-
-
-
-
-
 
 # ---- Prison Admissions Rates ---- #
 
-## Not sure how much there will be in here.
+## Not sure how much there is in here - looks pretty noisy
 
 #races <- c("aapi", "black", "latinx", "native", "white")
 races <- c("black", "white")

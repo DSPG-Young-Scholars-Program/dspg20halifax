@@ -42,8 +42,8 @@ va_voucher_data %>%
   geom_area(aes(x = year, y = 1 - pct_vouchers_in_use, fill = agency_name), alpha = 0.2, position = "dodge") +
   geom_line(aes(x = year, y = 1 - pct_vouchers_in_use, color = agency_name), alpha = 1) +
   gghighlight(agency_name == "VHDA", use_direct_label = FALSE, unhighlighted_params = list(alpha = 0.1, colour = alpha("black", 0.1))) +
-  scale_fill_manual(values = c("VHDA" = "#04776c")) +
-  scale_color_manual(values = c("VHDA" = "#04776c")) +
+  scale_fill_manual(values = c("VHDA" =  "#FC4444")) +
+  scale_color_manual(values = c("VHDA" =  "#FC4444")) +
   coord_cartesian(ylim = c(0, 0.5), expand = FALSE) +
   labs(title = "Percent Unused Vouchers by Housing Authority: VA", x = "Year", y = "Percent Unused") +
   theme_minimal() +
