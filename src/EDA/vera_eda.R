@@ -159,4 +159,13 @@ plot_data %>% filter(year >= 1990, county_name == "Halifax County") %>%
   scale_color_manual(values = c("#CA562C", "#214C62"))
 
 
-
+## Not much jumping out when investigating ratio of black jail population to total jail population
+## Most other variables are either confounded with this (both related to population, other factors) or completely unrelated
+vera_data %>%
+  filter(region == "South", year == 2017, black_jail_pop / total_jail_pop < 1,  total_jail_pretrial / total_jail_pop < 1) %>%
+  ggplot() +
+  geom_point(aes(x = black_jail_pop / total_jail_pop, y = log(total_jail_pop), color = urbanicity, size = total_pop), alpha = 0.8) +
+  scale_size_continuous(range = c(1, 15)) +
+  #coord_cartesian(ylim = c(0,1.5), xlim = c(0,1.5)) +
+  #geom_smooth(aes(x = black_jail_pop / total_jail_pop, y = total_jail_pretrial / total_jail_pop, color = urbanicity, size = total_pop), alpha = 0.7, se=FALSE) +
+  gghighlight(state == "VA", unhighlighted_params = list(alpha = 0.3))

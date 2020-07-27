@@ -3,11 +3,19 @@ library(ggplot2)
 library(dplyr)
 library(leaflet)
 library(sf)
+library(here)
 
 ## Vera incarceration data
 vera_data <- data.table::fread(here::here("data", "original", "Incarceration", "vera_incarceration_trends.csv")) %>% 
   as.data.frame() %>%
   mutate(fips = as.character(fips))
+
+## Public housing data
+pub_housing_summary <- vroom::vroom(here("data", "original", "Housing", "county_pub_housing_2013_2019.csv")) %>%
+  replace("NA", NA) %>%
+  mutate(across(everything(), function(col) ifelse(col == -1 | col == -4 | col == -5, NA, col))) %>% ## -1 = NA, -4 = Suppressed, -5 = % reporting too low
+  mutate(name = str_extract(str_replace_all(str_to_lower(name), "[0-9]{3} ", ""), "^([^,])+"), ## County names have numbers for some years, include state name after a comma for some years. Clean these
+         name = str_to_title(trimws(ifelse(str_detect(name, "city county"), str_replace_all(name, "county", ""), name)))) ## Clean duplicated counties that are labeled as both city and county
 
 #adm_dis_data <- vera_data %>% filter(str_detect(fips, "^51[0-9]{3}"))
 
@@ -86,13 +94,17 @@ va_housing_vera <- vera_data %>%
 ## Dumbell plot for discharges to subsidized housing capacity
 va_housing_vera %>%
   filter(year == 2017, !is.na(people_total), !is.na(total_jail_dis)) %>%
+  mutate(isHalifax = ifelse(fips == "51083", "yes", "no")) %>%
   ggplot() +
-  geom_segment(aes(x = reorder(fips,-people_total), xend = reorder(fips,-people_total), yend = people_total, y = total_jail_dis), color = "black") +
-  geom_point(aes(x = reorder(fips,-people_total), y = total_jail_dis), color = "#FC4444", size = 3) +
-  geom_point(aes(x = reorder(fips,-people_total), y = people_total), color = "#6b6385", size = 3) +
-  gghighlight(fips == "51083") +
+  geom_segment(aes(x = reorder(fips,-people_total), xend = reorder(fips,-people_total), yend = people_total, y = total_jail_dis, alpha = isHalifax), color = "black") +
+  geom_point(aes(x = reorder(fips,-people_total), y = total_jail_dis, alpha = isHalifax), color = "#FC4444", size = 3) +
+  geom_point(aes(x = reorder(fips,-people_total), y = people_total, alpha = isHalifax), color = "#6b6385", size = 3) +
+  scale_alpha_manual(values = c(0.1, 1)) +
   labs(x = "County", y = "Population") +
   theme_minimal() +
   theme(panel.grid.minor = element_blank(),
         panel.grid.major.x = element_blank(),
         axis.text.x = element_blank())
+
+
+
