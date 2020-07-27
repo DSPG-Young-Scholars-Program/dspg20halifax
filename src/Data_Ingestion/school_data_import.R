@@ -56,7 +56,8 @@ for (year in seq(2011, 2015)) {
 }
 
 halifax_schools <- do.call(bind_rows, nces_data) %>%
-  mutate(across(c("ncessch", "fips", "leaid"), as.character))
+  mutate(across(c("ncessch", "fips", "leaid"), as.character)) %>%
+  select(-enrollment) ## Will add this later grouped by sex and race rather than total
 
 #
 #
@@ -66,24 +67,29 @@ halifax_schools <- do.call(bind_rows, nces_data) %>%
 
 ## May not be needed if included in directory
 
-# ## Initialize loop variables
-# nces_data <- list()
-# i <- 1
-# 
-# ## Pull Halifax enrollment data for years 2011-2015
-# for (school in halifax_school_ids) {
-#   for (year in seq(2011, 2015))
-#     nces_data[[i]] <- get_education_data(level = "schools", source = "ccd", topic = "enrollment", filters = list(ncessch = school, year = year), by = list("race", "sex"))
-#     i <- i + 1
-# }
-# 
-# ## Combine into single source
-# enrollment_data <- do.call(bind_rows, nces_data) %>% 
-#   mutate(across(c("ncessch", "fips", "leaid", "race", "sex"), as.character)) %>%
-#   mutate(race = recode(race, "1" = "White", "2" = "Black", "3" = "Hispanic", "4" = "Asian", "5" = "American Indian or Alaska Native", 
-#                        "6" = "Native Hawaiian or other Pacific Islander", "7" = "Two or more races",  "8" = "Nonresident alien",  
-#                        "9" = "Unknown",  "20" = "Other", "99" = "Total"),
-#          sex = recode(sex, "1" = "Male", "2" = "Female", "9" = "Unknown", "99" = "Total"))
+## Initialize loop variables
+nces_enrollment_data <- list()
+i <- 1
+
+## Get enrollment by sex and race for each school 
+for (year in seq(2011, 2015)) {
+  for (school in halifax_school_ids) {
+    nces_enrollment_data[[i]] <- get_education_data(level = "schools", source = "ccd", topic = "enrollment", filters = list(year = year, ncessch = school), by = list("sex", "race"))
+    i <- i + 1
+  }
+}
+
+halifax_enrollments <- do.call(bind_rows, nces_enrollment_data) %>%
+  mutate(across(c("ncessch", "fips", "leaid"), as.character)) %>%
+    mutate(race = recode(race, "1" = "White", "2" = "Black", "3" = "Hispanic", "4" = "Asian", "5" = "American Indian or Alaska Native",
+                         "6" = "Native Hawaiian or other Pacific Islander", "7" = "Two or more races",  "8" = "Nonresident alien",
+                         "9" = "Unknown",  "20" = "Other", "99" = "Total"),
+           sex = recode(sex, "1" = "Male", "2" = "Female", "9" = "Unknown", "99" = "Total")) %>%
+  group_by(year, ncessch, race, sex) %>%
+  summarize(enrollment = sum(enrollment))
+
+
+halifax_enrollment_data <- left_join(halifax_schools, halifax_enrollments)
 
 #
 #
@@ -122,7 +128,9 @@ halifax_discpline_data <- left_join(halifax_schools, discipline_data)
 ## Merge and write
 halifax_school_data <- full_join(halifax_absentee_data, halifax_discpline_data)
 
-# readr::write_csv(halifax_school_data, here::here("data", "original", "halifax_school_data.csv"))
+halifax_school_data_2 <- full_join(halifax_school_data, halifax_enrollment_data)
+
+# readr::write_csv(halifax_school_data_2, here::here("data", "original", "halifax_school_data_updated.csv"))
 
 
 
