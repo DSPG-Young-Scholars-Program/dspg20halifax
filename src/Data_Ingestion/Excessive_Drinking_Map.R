@@ -21,18 +21,22 @@ census_api_key("1288a5a1e23422dbd03d06071f74b4cd50af12be", install = TRUE)
 readRenviron("~/.Renviron")
 Sys.getenv("CENSUS_API_KEY")
 
+#get csv to read in
 datasource <- readr::read_csv(here::here("git", "TestDSPG", "Halifaxx", "data",
                                          "original", "Substance_Abuse",
                                          "Excessive Drinking and Alcohol-Impaired Driving Deaths - Excessive Drinking.csv"))
 
+#get VA border geographic data
 va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 
+#create map for each year (respectively) by filtering by year and merging with va_borders data
 create.map <- function(year) {
   datasource <- filter(datasource, Year == year)
   new_tbl <- merge(va_borders, datasource, by.x = "GEOID", by.y = "FIPS")
 }
 
+#create relevant map for each year
 mapping_2011 <- create.map('2011')
 mapping_2012 <- create.map('2012')
 mapping_2013 <- create.map('2013')
@@ -44,15 +48,19 @@ mapping_2018 <- create.map('2018')
 mapping_2019 <- create.map('2019')
 mapping_2020 <- create.map('2020')
 
+#generate label on map for each respective year
 generate.label <- function(year_mapping) {
   my_label <- paste("County: ", year_mapping$County,"<br/>", "Rate: ", paste(year_mapping$'% Excessive Drinking', '%',
                                                                            sep = ""), "<br/>",
                     sep="") %>%
     lapply(htmltools::HTML)
 }
+
+#generate bins using Jenks Breaks and palette for all the maps
 general_bins <- getJenksBreaks(datasource$`% Excessive Drinking`, k = 6)
 general_palette <- colorBin("Reds", domain = datasource$'`% Excessive Drinking`', bins = general_bins)
 
+#leaflet code to plot all the mpas data
 leaflet() %>%
     addProviderTiles("CartoDB.Positron") %>%
   addPolygons(data = mapping_2020, fillColor = ~general_palette(mapping_2020$'% Excessive Drinking'),
