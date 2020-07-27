@@ -10,7 +10,7 @@ library(readr)
 datasource <- readr::read_csv(here::here("git", "TestDSPG", "Halifaxx", "data",
                                          "original", "Substance_Abuse",
                                          "Ed Data VDH - Copy of Halifax.csv"))
-
+datasource
 # ggplot for the data
 ggplot(datasource, aes(x =Year, y =Count, fill=Drug))+
   geom_area() + theme_classic() + labs(x = "Year", y = "ED Overdose Visits") +
