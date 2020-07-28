@@ -8,7 +8,10 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 20, fig.height = 10)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 10)
+
+options(knitr.duplicate.label = "allow")
+
 ```
 
 ```{r}
@@ -135,7 +138,7 @@ The subsidized housing system obviously serves a broad population beyond those w
 
 Below, we display the size of the annual number of jail discharges relative to the overall subsidized housing capacity, with Halifax County highlighted. Very few Virginia counties have a general subsidized housing supply on par with the annual discharge rate, and while Halifax is by no means an outlier, it still discharges roughly three times the number of individuals from jail as people in its subsidized housing system. While many of these individuals will find housing elsewhere, this finding speaks to the limitations of considering the federally subsidized housing as a sole option to help re-integrate these individuals affordably and effectively.
 
-```{r, fig.width = 15, fig.height = 10}
+```{r}
 ## Relative plot
 va_housing_vera %>%
   filter(year == 2017, !is.na(people_total), !is.na(total_jail_dis)) %>%
@@ -151,20 +154,10 @@ va_housing_vera %>%
   scale_color_manual(values = c("#FC4444","#6b6385")) +
   scale_y_continuous(breaks = c(1, 5, 10, 25, 50)) +
   labs(x = "County", y = "Size of Jail Discharge Population \nRelative to Subsidized Housing Capacity", title = "Capacity of Subsidized Housing System") +
-  theme_minimal() + 
-  theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 24),
-        plot.subtitle = element_text(hjust = 0.5, color = "gray30", face = "italic", size = 20),
-        axis.title = element_text(size = 20, color = "gray10"),
-        axis.text = element_text(size = 18, color = "gray30"),
-        strip.text = element_text(size = 22, color = "gray30"),
-        panel.spacing = unit(4, "lines"),
-        legend.key.size = unit(3, "line"),
-        legend.text = element_text(size = 16, color = "gray30"),
-        legend.title = element_text(size = 22, color = "gray10"))
-# theme_update(panel.grid.minor = element_blank(),
-#              panel.grid.major.x = element_blank(),
-  #              axis.text.x = element_blank(),
-  #              legend.position = "none")
+  theme(legend.position = "none",
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.x = element_blank())
 ```
 
 Identifying and connecting individuals with other affordable housing options may therefore be a valuable role for a potential Family and Consumer Science Agent in the county. Similarly, motivating the community to consider alternative options for developing a robust affordable housing stock may be warranted, and bringing private landlords into the discussion may be an important component of a successful strategy.
