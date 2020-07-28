@@ -7,20 +7,37 @@ draft: false
 output: html_document
 ---
 
-[Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data & Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.] 
+There were many government data sources used for this research, most prominent of which were the Center for Disease and Prevention’s (CDC) and Department of Health and Human Services (HHS)’ many articles regarding teen births. Other sources include the County Health Rankings website, Youth.gov website, Guttmacher Institute, Child Trends website, and the National Center for Biotechnology Information (NCBI). Many of these sources had information up to 2018, which is still relevant for statistics. However, social and economic consequences of teen pregnancy varied by source which made it difficult to compile an accurate list of consequences. Further research should be done regarding the economic costs of teen pregnancy. 
+
+### Background
+
+Decades of research has found that family structure has the power to either positively or negatively impact a child’s development into society. It has been suggested from numerous scientific studies that children growing up in two parent homes tend to have better health and social outcomes then those that do not. However familial standards are changing and married couples are no longer the only people having children. So, what are these changing demographics looking like and how does it affect childhood development and more importantly, juvenile delinquency? Well, one example which will be discussed is teen pregnancy. It is important to note that while there is a link between juvenile delinquency and adult incarceration, juvenile delinquency is not a direct indicator of any future arrests or felonies.
 
 ### Main Findings 
 
-[Here you will describe the results and include important visualizations from your project.] 
+Teen pregnancy is generally described as women getting pregnant between the ages of 15 and 19 years old. In the United States in 2017 the rate (per 1,000 women) was 18.8. In Virginia that number was 15, whereas in Halifax county that number was estimated at 30.8. It is normally found that rural counties have much higher rates on teen birth than urban counties. However, the teen birth rate has decreased on the local, state, and national levels. It is also important to note that Halifax county only has one publicly funded clinic and zero federally qualified health centers to aid in female contraception usage. By the age of 18, a woman is more than 3 times likely to have a teen birth if they do not use a proper method of contraception. There are also major disparities in teen birth rates among different races with those being highest among the black and hispanic communities.Other risk factors include, low income, low academic achievement, high familial conflict, and high unemployment rates. With Halifax’s rural status, limited number of health centers, high Black population, and high poverty rates it is no surprise that in 2017 Halifax was 24th highest (out of 134 counties in VA) in teen birth rates. 
 
 ### Conclusion and Policy Implications 
 
-[Here you could highlight the main takeaways and the potential policy implications of your findings.] 
+Teen pregnancy can have drastic effects on the individual, interpersonal, and the school/work environments of both the mother and their child, as well as costly effects on society. For the mother, low academic achievement, higher high school dropout rates, high unemployment rates, and high likelihood to use public assistance and be in poverty have resulted in teen pregnancy. For the child, low academic achievement, low health and behavioral outcomes, high unemployment, and juvenile delinquency have been linked to being birthed by a teenage mother. Children of teenage mothers are also more likely to continue the cycle of teenage pregnancy. In society, teen pregnancies are estimated to cost U.S. taxpayers between $9 and $11 billion dollars per year and Virginia is estimated to spend $183 million dollars on factors related to teen pregnancy.  
 
 ### References 
 
-[List your references here using APA format (or at least standardize all of the references using the same format).]
+Guttmacher Data Center. (n.d.). Guttmacher Institute. Retrieved July 25, 2020, from https://data.guttmacher.org/counties/
 
+National Center for Health Statistics. (n.d.). NCHS Data Visualization Gallery - Teen Birth Rates for Age Group 15-19 in the United States by County. Center for Disease Control and Prevention. Retrieved July 25, 2020, from https://www.cdc.gov/nchs/data-visualization/county-teen-births/
+
+Office of Adolescent Health. (2019, May 30). Trends in Teen Pregnancy and Childbearing. U.S. Department of Health & Human Services. https://www.hhs.gov/ash/oah/adolescent-development/reproductive-health-and-teen-pregnancy/teen-pregnancy-and-childbearing/trends/index.html
+
+Pregnancy Prevention | Youth.gov. (n.d.). Youth.Gov. Retrieved July 25, 2020, from https://youth.gov/youth-topics/pregnancy-prevention
+
+Products - Data Briefs - Number 209 - July 2015. (2015, July). Center for Disease and Prevention. https://www.cdc.gov/nchs/products/databriefs/db209.htm
+
+Products - Data Briefs - Number 264 - November 2016. (2016, November). Center for Disease Control and Prevention. https://www.cdc.gov/nchs/products/databriefs/db264.htm#:%7E:text=From%202007%20through%202015%2C%20the%20rates%20in%20these%20counties%20were,greater%20than%20the%20national%20rate.
+
+Teen births. (n.d.). County Health Rankings. Retrieved July 25, 2020, from https://www.countyhealthrankings.org/explore-health-rankings/measures-data-sources/county-health-rankings-model/health-factors/health-behaviors/sexual-activity/teen-births
+
+Teen Births. (2019, May 24). Child Trends. https://www.childtrends.org/indicators/teen-births
 
 
 
