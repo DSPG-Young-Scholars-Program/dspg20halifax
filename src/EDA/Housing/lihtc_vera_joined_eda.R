@@ -53,32 +53,32 @@ ggplot(rur_data) +
 ## -----------------------------------------------------------------------------------------------
 
 ## Public Housing Characteristics Data
-va_housing <- pub_housing_summary %>%
-  filter(year == 2017, program_label == "Summary of All HUD Programs", state == "VA")
-
-## Join on incarceration data by county
-joined_pub <- vera_data %>%
-  filter(state == "VA", year == 2017) %>%
-  full_join(va_housing, by = c("fips" = "code")) %>%
-  full_join(va_borders, by = c("fips" = "GEOID")) %>%
-  mutate(dis_to_units = total_jail_dis / total_units,
-         dis_to_pop = total_jail_dis / people_total) %>%
-  st_as_sf() %>%
-  st_transform(crs = 4326)
-
-BAMMtools::getJenksBreaks(joined_pub$dis_to_pop, k = 5)
-pal <- colorBin("BuPu", domain = range(joined_pub$dis_to_pop, na.rm = TRUE), bins = c(0, 1, 5, 10, 25, 50))
-
-## Map of discharges relative to population
-leaflet() %>%
-  addProviderTiles("CartoDB.Positron") %>%
-  addPolygons(data = joined_pub,
-              weight = 1,
-              fillColor = ~pal(dis_to_pop),
-              fillOpacity = 0.8,
-              label = ~paste(dis_to_pop),
-              group = "discharges") %>%
-  addLegend("bottomright", title = "Ratio of Jail Discharges <br>to Population: 2017", pal = pal, values = c(0, 6, 14, 27, 63))
+# va_housing <- pub_housing_summary %>%
+#   filter(year == 2017, program_label == "Summary of All HUD Programs", state == "VA")
+# 
+# ## Join on incarceration data by county
+# joined_pub <- vera_data %>%
+#   filter(state == "VA", year == 2017) %>%
+#   full_join(va_housing, by = c("fips" = "code")) %>%
+#   full_join(va_borders, by = c("fips" = "GEOID")) %>%
+#   mutate(dis_to_units = total_jail_dis / total_units,
+#          dis_to_pop = total_jail_dis / people_total) %>%
+#   st_as_sf() %>%
+#   st_transform(crs = 4326)
+# 
+# BAMMtools::getJenksBreaks(joined_pub$dis_to_pop, k = 5)
+# pal <- colorBin("BuPu", domain = range(joined_pub$dis_to_pop, na.rm = TRUE), bins = c(0, 1, 5, 10, 25, 50))
+# 
+# ## Map of discharges relative to population
+# leaflet() %>%
+#   addProviderTiles("CartoDB.Positron") %>%
+#   addPolygons(data = joined_pub,
+#               weight = 1,
+#               fillColor = ~pal(dis_to_pop),
+#               fillOpacity = 0.8,
+#               label = ~paste(dis_to_pop),
+#               group = "discharges") %>%
+#   addLegend("bottomright", title = "Ratio of Jail Discharges <br>to Population: 2017", pal = pal, values = c(0, 6, 14, 27, 63))
 
 ## -----------------------------------------------------------------------------------------------
 
