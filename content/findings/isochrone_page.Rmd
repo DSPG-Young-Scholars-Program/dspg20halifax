@@ -15,6 +15,8 @@ A comprehensive consideration of accessibility would also include considerations
 
 We therefore sought to visualize the spatial distribution of employment opportunities, substance abuse treatment, and other community resources relative to low-income housing opportunities. We use isochrone lines to deliniate areas of equal travel time from a given point.
 
+Each map below displays the areas within 10, 20, and 30 minutes of a selected subsidized housing property in Halifax County. Also displayed are the locations of the top employers in the county, schools, and substance abuse treatment/support centers.
+
 ### Main Findings
 
 #### Accessibility by Car
@@ -40,16 +42,17 @@ walk_map
 
 ### Conclusion and Policy Implications 
 
-[Here you could highlight the main takeaways and the potential policy implications of your findings.] 
+While many of these necessary resources are within a reasonable travel distance by car, many of those re-entering society may not have access to a private vehicle. Similar maps are displayed for the travel times from the same properties by bike and on foot. These maps demonstrate that many necessary resources encouraging a safe transition back to society may be difficult to access for those without access to a car.
 
 ### Future Directions
 
-_Add info about other things that could be done with this in the future?_
+As mentioned before, physical distance, while a valuable starting point, is only one component of resource accessibility. One limitation of the above maps is that they are calculated using subsidized housing properties as their starting destinations, but most people re-entering society will likely live elsewhere. More data on where re-entering individuals tend to find housing opportunities would be valuable in providing a more accurate picture of resource accessibility in the county.
 
-Potentially could include stuff about adding zoning information, including public transit travel times, etc.
+Similarly, zoning information from the county could be incorporated to provide a clearer picture of the distritbution of residential opportunities for the formerly incarcerated population in the county, and may be a reasonable next step since this information is likely already collected within the county.
+
+Also valuable would be the inclusion of public transit travel times and distances, as public transit may be relied upon extensively by those re-entering society.
+
+Finally, incorporating more information about which employers are known to provide opportunities to those with past convictions would provide a more nuanced look at work accessibility. Given the difficulties finding work after being released from incarceration, it is unlikely that each of the top employers in the area is equally open to hiring those with past convictions.
 
 ### References 
 
-_May just include these in a different tab elsewhere?_
-<br>
-[List your references here using APA format (or at least standardize all of the references using the same format).]
