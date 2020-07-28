@@ -5,6 +5,7 @@ install.packages('censusapi')
 install.packages('hablar')
 install.packages('BAMMtools')
 
+#import libraries
 library(rvest)
 library(sf)
 library(tigris)
@@ -17,23 +18,25 @@ library(censusapi)
 library(hablar)
 library(BAMMtools)
 
-# need to add comments to code
+# load census api key
 census_api_key("1288a5a1e23422dbd03d06071f74b4cd50af12be", install = TRUE)
 readRenviron("~/.Renviron")
 Sys.getenv("CENSUS_API_KEY")
 
+#read datasource and va borders data
 datasource <- readr::read_csv(here::here("git", "TestDSPG", "Halifaxx", "data",
                                          "original", "Substance_Abuse",
                                          "Excessive Drinking and Alcohol-Impaired Driving Deaths - Alcohol Impaired Driving Deaths.csv"))
 va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 
+#create a map based on each year
 create.map <- function(year) {
   datasource <- filter(datasource, Year == year)
   new_tbl <- merge(va_borders, datasource, by.x = "GEOID", by.y = "FIPS")
 }
 
-
+#call create.map for each year
 mapping_2014 <- create.map("2014")
 mapping_2015 <- create.map("2015")
 mapping_2016 <- create.map("2016")
@@ -42,6 +45,7 @@ mapping_2018 <- create.map("2018")
 mapping_2019 <- create.map("2019")
 mapping_2020 <- create.map("2020")
 
+#generate label for each year and respective mapping
 generate.label <- function(year_mapping) {
   my_label <- paste("County: ", year_mapping$County,"<br/>", "Rate: ", paste(year_mapping$'% Driving Deaths with Alcohol Involvement', '%',
                                                                              sep = ""), "<br/>",

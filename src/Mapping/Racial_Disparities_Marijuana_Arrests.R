@@ -28,7 +28,11 @@ datasource <- readr::read_csv(here::here("git", "TestDSPG", "Halifaxx", "data",
 va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 datasource <- merge(va_borders, datasource, by.x = "GEOID", by.y = "FIPS Code")
+
+
 general_bins <- getJenksBreaks(datasource$`Times more likely Black person arrested in 2018`, k = 6)
+general_bins <- sapply(general_bins, round)
+
 general_palette <- colorBin("Reds", domain = datasource$`Times more likely Black person arrested in 2018`, bins = general_bins)
 label <- paste("County: ", datasource$County,"<br/>", "Rate: ",
                paste(datasource$`Times more likely Black person arrested in 2018`, 'x',
@@ -44,4 +48,4 @@ leaflet() %>%
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addLegend(pal = general_palette, values = general_bins,
-            title = "Rates of Black vs white arrests for marijuana possession per 100k people", position = "bottomright")
+            title = "Rates of Black vs White arrests for marijuana possession (100k people)", position = "bottomright")

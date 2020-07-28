@@ -3,28 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/findings/general-overview/</loc>
+    <loc>/findings/incarceration_page/</loc>
   </url>
   
   <url>
-    <loc>/findings/results-section-one/</loc>
+    <loc>/findings/employment_page/</loc>
   </url>
   
   <url>
-    <loc>/findings/results-section-two/</loc>
+    <loc>/findings/family_structure_page/</loc>
   </url>
   
   <url>
-    <loc>/findings/results-section-three/</loc>
+    <loc>/findings/housing_page/</loc>
   </url>
   
   <url>
-    <loc>/methods/</loc>
+    <loc>/findings/substance_abuse_page/</loc>
+  </url>
+  
+  <url>
+    <loc>/findings/isochrone_page/</loc>
+  </url>
+  
+  <url>
+    <loc>/methods_old/</loc>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>/overview/</loc>
+    <loc>/overview_old/</loc>
     <priority>0</priority>
   </url>
   
@@ -34,15 +42,11 @@
   </url>
   
   <url>
-    <loc>/tags/app/</loc>
-  </url>
-  
-  <url>
     <loc>/categories/</loc>
   </url>
   
   <url>
-    <loc>/tags/collapsibletree/</loc>
+    <loc>/methods/</loc>
   </url>
   
   <url>
@@ -54,7 +58,15 @@
   </url>
   
   <url>
+    <loc>/tags/isochrone/</loc>
+  </url>
+  
+  <url>
     <loc>/tags/networks/</loc>
+  </url>
+  
+  <url>
+    <loc>/overview/</loc>
   </url>
   
   <url>
@@ -67,6 +79,10 @@
   
   <url>
     <loc>/</loc>
+  </url>
+  
+  <url>
+    <loc>/tags/visualization/</loc>
   </url>
   
 </urlset>

@@ -11,60 +11,82 @@
     
     
     <item>
-      <title>General Overview of the Project</title>
-      <link>/findings/general-overview/</link>
+      <title>Incarceration &#43; Crime</title>
+      <link>/findings/incarceration_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/general-overview/</guid>
-      <description>While this page is optional, it probably makes sense to have one weighted at the top (see the front matter at the top of this Rmd file) that gives a general overview of the project. This could be something like the final poster while the other pages highlight more in-depth observations. Here is a general schema of what should be covered throughout your website:
-Main Findings [Here you will describe the results and include important visualizations from your project.</description>
+      <guid>/findings/incarceration_page/</guid>
+      <description> Main Findings Here is a prison incarceration rate plot:
+ And here   Conclusion and Policy Implications [Here you could highlight the main takeaways and the potential policy implications of your findings.]
+Other things to visualize: admissions rates? Discharge rates? Juvenile detention rates?
+ References [List your references here using APA format (or at least standardize all of the references using the same format).]
+ </description>
     </item>
     
     <item>
-      <title>Results Section One</title>
-      <link>/findings/results-section-one/</link>
+      <title>Employment</title>
+      <link>/findings/employment_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/results-section-one/</guid>
-      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; }  Examples Page If you want to add in an image on an Rmd file, use this link here. It ends up being a little tricky, but as long as you have created a folder to insert your images, you can just use some markdown code or html to insert images in the format you want.</description>
+      <guid>/findings/employment_page/</guid>
+      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; } body { text-align: justify }  Examples Page If you want to add in an image on an Rmd file, use this link here. It ends up being a little tricky, but as long as you have created a folder to insert your images, you can just use some markdown code or html to insert images in the format you want.</description>
     </item>
     
     <item>
-      <title>Results Section Two</title>
-      <link>/findings/results-section-two/</link>
+      <title>Family Structure</title>
+      <link>/findings/family_structure_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/results-section-two/</guid>
+      <guid>/findings/family_structure_page/</guid>
       <description>[Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data &amp;amp; Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.]
 Main Findings [Here you will describe the results and include important visualizations from your project.</description>
     </item>
     
     <item>
-      <title>Results Section Three</title>
-      <link>/findings/results-section-three/</link>
+      <title>Housing</title>
+      <link>/findings/housing_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/results-section-three/</guid>
+      <guid>/findings/housing_page/</guid>
+      <description>Background Despite being previously overshadowed in the literature, housing affordability has recently begun to situate itself at the center of efforts to transition incarcerated people back into the community after release. Many now see access to affordable housing as one of the primary limiting factors for reentering individuals; an unstable living situation can severely impact employment opportunities, predispose individuals to returning to criminal activity, and hinder efforts to reestablish family relationships and friendships1.</description>
+    </item>
+    
+    <item>
+      <title>Substance Abuse</title>
+      <link>/findings/substance_abuse_page/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/substance_abuse_page/</guid>
       <description>[Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data &amp;amp; Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.]
 Main Findings [Here you will describe the results and include important visualizations from your project.</description>
+    </item>
+    
+    <item>
+      <title>Accessibility</title>
+      <link>/findings/isochrone_page/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/isochrone_page/</guid>
+      <description>Our ecological model framework encouraged us to consider how these various factors may interact in their effects on re-entry for formely incarcerated individuals in Halifax County.
+A key component of each factor is resource accessibliity: employment opportunities, availabile affordable housing options, and support for those with substance abuse problems are all rendered irrelevant if these resources are not accessible to those who rely on them.</description>
     </item>
     
     <item>
       <title></title>
-      <link>/methods/</link>
+      <link>/methods_old/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/methods/</guid>
+      <guid>/methods_old/</guid>
       <description>2020 Fairfax County Summer Project Data and Methodology Example text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in varius purus. Nullam ut sodales ante. Fusee justo nisi, suscipit a lacus et, posuere sagittis ex. Nulla convallis ante elit, at consequat ipsum ultricies ut. Aliquam erat volutpat. nderline. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in variu convallis ante elit, at consequat ipsum ultricies ut.
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.</description>
     </item>
     
     <item>
       <title></title>
-      <link>/overview/</link>
+      <link>/overview_old/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/overview/</guid>
+      <guid>/overview_old/</guid>
       <description>2020 Fairfax County Summer Project Example text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in varius purus. Nullam ut sodales ante. Fusee justo nisi, suscipit a lacus et, posuere sagittis ex. Nulla convallis ante elit, at consequat ipsum ultricies ut. Aliquam erat volutpat. nderline. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam in variu convallis ante elit, at consequat ipsum ultricies ut.
 Project Goals Example text: We&amp;rsquo;re devising and assessing methods that make human populations more resilient not just during, but also before and after natural disasters.</description>
     </item>
@@ -76,6 +98,26 @@ Project Goals Example text: We&amp;rsquo;re devising and assessing methods that 
       
       <guid>/team/</guid>
       <description>UVA Data Science for the Public Good Program The Data Science for the Public Good (DSPG) Young Scholars program is a summer immersive program held at the Biocomplexity Institute’s Social and Decision Analytics division (SDAD). In its seventh year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences to determine how information generated within every community can be leveraged to improve quality of life and inform public policy.</description>
+    </item>
+    
+    <item>
+      <title>Data &amp; Methods</title>
+      <link>/methods/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/methods/</guid>
+      <description>/* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; } body { text-align: justify }  Background This is where we will include demographics maps of Halifax?
+ Data Sources This is where we will discuss general data sources, their applicability/coverage, and limitations?
+ Challenges This is where we will discuss challenges covering incarceration in general as well as specific challenges we encountered during the project?</description>
+    </item>
+    
+    <item>
+      <title>Overview</title>
+      <link>/overview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/overview/</guid>
+      <description>h1, h2, h3 { text-align: center; } body { text-align: justify }  2020 Halifax County Summer Project The United States incarcerates more people per capita than anywhere else in the world (Sentencing Project), and a disproportionate number of those incarcerated are Black and Hispanic (APA). Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for white males.</description>
     </item>
     
   </channel>

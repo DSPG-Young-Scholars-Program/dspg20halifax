@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Visualization on UVA Biocomplexity Institute</title>
+    <link>/tags/visualization/</link>
+    <description>Recent content in Visualization on UVA Biocomplexity Institute</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="/tags/visualization/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Family Structure</title>
+      <link>/findings/family_structure_page/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/family_structure_page/</guid>
+      <description>[Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data &amp;amp; Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.]
+Main Findings [Here you will describe the results and include important visualizations from your project.</description>
+    </item>
+    
+    <item>
+      <title>Housing</title>
+      <link>/findings/housing_page/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/housing_page/</guid>
+      <description>Background Despite being previously overshadowed in the literature, housing affordability has recently begun to situate itself at the center of efforts to transition incarcerated people back into the community after release. Many now see access to affordable housing as one of the primary limiting factors for reentering individuals; an unstable living situation can severely impact employment opportunities, predispose individuals to returning to criminal activity, and hinder efforts to reestablish family relationships and friendships1.</description>
+    </item>
+    
+  </channel>
+</rss>

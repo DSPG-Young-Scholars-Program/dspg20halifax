@@ -11,11 +11,11 @@
     
     
     <item>
-      <title>Results Section Three</title>
-      <link>/findings/results-section-three/</link>
+      <title>Substance Abuse</title>
+      <link>/findings/substance_abuse_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/results-section-three/</guid>
+      <guid>/findings/substance_abuse_page/</guid>
       <description>[Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data &amp;amp; Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.]
 Main Findings [Here you will describe the results and include important visualizations from your project.</description>
     </item>
