@@ -137,3 +137,9 @@ m
 TODO
 
 #### Additional Data Sources
+
+In order to properly understand the complicated relationship between incarceration, recidivism, and employment in Halifax, more data is required. Ideally, we would have an understanding of employment rates for those who are formerly incarcerated, as well as information on the wages of these jobs to understand if the jobs the formerly incarcerated are able to get pay enough to survive. 
+
+More detailed data on how unemployment varies within Halifax would also be extremly helpful. Due to its small population, census estimates for different regions within Halifax county are extremely uncertain, making it difficult to understand how unemployment connects with features such as housing.
+
+One way to get around this would be if there were data on where the largest employers in Halfiax were located in order to determine if those who are formerly incarcerated would have adequate transport to work in these locations. While data on the largest employers does exist, finding the actual locations they are cited in is extremely difficult. 
