@@ -1,45 +1,136 @@
 ---
 title: "Employment"
 description: "What is the state of employment opportunities?"
-tags: ["R"]
+tags: ["R", "Visualization"]
 weight: 2
 draft: false
 output: html_document
 ---
 
-```{css, echo=FALSE}
-/* this chunnk of code centers all of the headings */
-h1, h2, h3 {
-  text-align: center;
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 10)
+```
+
+```{r}
+library(leaflet)
+library(purrr)
+library(dplyr)
+library(glue)
+library(sf)
+library(ggplot2)
+library(gghighlight)
+
+acs_unemployment_county_sp <- st_read(here::here("data", "original", "ACS", "acs_unemployment_county.geojson"),
+                                      quiet = TRUE)
+
+theme_set(theme_minimal() +
+            theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 24),
+                  plot.subtitle = element_text(hjust = 0.5, color = "gray30", face = "italic", size = 20),
+                  axis.title = element_text(size = 20, color = "gray10"),
+                  axis.text = element_text(size = 18, color = "gray30"),
+                  strip.text = element_text(size = 22, color = "gray30"),
+                  panel.spacing = unit(4, "lines"),
+                  legend.key.size = unit(3, "line"),
+                  legend.text = element_text(size = 16, color = "gray30"),
+                  legend.title = element_text(size = 22, color = "gray10")))
+
+
+county_info <- st_read(here::here("data", "working", "va_counties.geojson"),
+                       quiet = TRUE)
+
+laus_unemployment_county <- read.csv(here::here("data", "original","Unemployment", "laus_unemployment_county.csv")) %>%
+  mutate(GEOID = substr(Series.ID, 6, 10)) %>%
+  left_join(county_info, by = "GEOID") %>%
+  mutate(year_month_frac = Year + 1/12 * (as.numeric(substr(Period, 2, 3)) - 1))
+```
+
+
+
+### Background
+
+A discussion of factors related to incarceration would be remiss without discussing unemployment. Empirical analyses have consistently found unemployment to be one of the factors most strongly correlated with crime. A 2005 meta-analysis of over 200 studies quantifying predictors of crime found that local unemployment rates had the second-largest effect size out of 31 predictors.^[Pratt, T. C., & Cullen, F. T. (2005). Assessing Macro-Level Predictors and Theories of Crime: A Meta-Analysis. Crime and Justice, 32, 373–450. https://doi.org/10.1086/655357
+] There are several reasonable theories as to why this is true. Within the framework of the ecological model, unemployment could enter at several different levels, and is likely both causes incarceration and is caused by incarceration. At the individual level, those who are unemployed have an incentive to commit crimes for financial gain in order to support themselves or their families. Similarly, those who are formerly incarcerated often face barriers to employment such as being required to disclose their incarceration histories to apply for jobs. And at the policy level, governments have a variety of laws relating unemployment to incarceration. Some governments have banned employers from asking about incarceration history, which has had mixed results. And in some regions, it can be impossible to find affordable housing near enough to employment opportunities due to laws banning affordable housing for formerly incarcerated people.  
+	Unfortunately, reliable data on unemployment for rural regions is sparse. The most reliable data source is likely the Local Area Unemployment Survey, which is collected by the Bureau of Labor Statistics. Updates to this are released monthly, allowing for easy overtime comparisons of unemployment. Unfortunately, these data are not split by demographic factors, so it is impossible to tell say whether those under 30 are unemployed more or less often than those over 30 with this data set. Luckily, the American Community Survey, collected by the Census Bureau has unemployment rates broken down by key demographics such as age, race, and sex. Unfortunately, due to small sample sizes in rural areas, it is difficult to find reliable estimates at anything below the county level, and comparison over time is difficult due to data aggregation across years. Ideally, there would be detailed and accurate data on unemployment rates across demographic groups across time, as well as a better measurement of those who are underemployed, and how these levels change when considering formerly incarcerated people against those who have never been incarcerated. 
+
+### Main Findings
+
+Along the scale of unemployment, as well as with many other financial features such as poverty rates and income inequality, Halifax does not stand out. They have a slightly higher unemployment rate than average, but not significantly so. Of particular note in the graph below is the massive spike in unemployment across all of Virginia due to Covid-19. While unemployment rates this high hurt all people, vulnerable populations such as the formerly incarcerated are at even higher risk then average from disruptions like this. 
+
+```{r}
+plot <- laus_unemployment_county %>%
+  filter(NAME.x != "Halifax") %>%
+  ggplot() +
+  geom_line(aes(x = year_month_frac, y = Value, group = NAME.x), color = "#AAAAAA", alpha = .3) +
+  geom_line(data = filter(laus_unemployment_county, NAME.x == "Halifax"),
+            aes(x = year_month_frac, y = Value),
+            color = "#d400d0") +
+  theme_minimal() +
+  labs(x = "Year",
+       y = "Unemployment Rate",
+       title = "Unemployment Rate of Halifax County",
+       subtitle = "Against all other counties in Virginia",
+       caption = "Halifax county rate shown in purple. All other counties shown in grey\nData from the Local Area Unemployment Survey") +
+  coord_cartesian(ylim = c(0, 20)) +
+  scale_x_continuous(breaks = seq(2010, 2020, by = 2),
+                     labels = as.character(seq(2010, 2020, by = 2)))
+
+plot
+```
+
+Below we present the 5 year ACS unemployment estimates for counties in Virginia broken down by race. Counties with excessivly large margins of errors have been colored grey. This map displays how both within Halifax and across Virginia more broadly, African Americans are less likely to be employed than their white peers due to the effects of systemic racism, further increasing their vulnerability. 
+
+```{r}
+
+check_unstable <- function(variable_name) {
+  ifelse((acs_unemployment_county_sp[[glue("{variable_name}_estimate")]]) < 2 * acs_unemployment_county_sp[[glue("{variable_name}_moe")]],
+         NA,
+         acs_unemployment_county_sp[[glue("{variable_name}_estimate")]])
+
 }
 
-body {
-  text-align: justify
-}
+# quick map of unemployment by white and black. Note that unemployments above 30% are assumed unstable
+unemployment_scale <- colorBin("BuPu", c(0,100), c(0, 3, 5, 7.5, 10, 30))
+m <- leaflet(acs_unemployment_county_sp) %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.8,
+              fillColor = unemployment_scale(check_unstable("estimate_unemployment_rate_population_16_years_and_over")),
+              group = "Overall Unemployment",
+              label = ~map(glue("{NAME.x} County<br/>
+                                Unemployment Rate: {estimate_unemployment_rate_population_16_years_and_over_estimate}%<br/>
+                                MOE: {estimate_unemployment_rate_population_16_years_and_over_moe}%"), htmltools::HTML)
+              ) %>%
+  addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
+              opacity = 1.0, fillOpacity = 0.8,
+              fillColor = unemployment_scale(check_unstable("estimate_unemployment_rate_population_16_years_and_over_race_and_hispanic_or_latino_origin_white_alone")),
+              group = "White Alone Unemployment",
+              label = ~map(glue("{NAME.x} County<br/>
+                                Unemployment Rate: {estimate_unemployment_rate_population_16_years_and_over_race_and_hispanic_or_latino_origin_white_alone_estimate}%<br/>
+                                MOE: {estimate_unemployment_rate_population_16_years_and_over_race_and_hispanic_or_latino_origin_white_alone_moe}%"), htmltools::HTML)
+  ) %>%
+  addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
+              opacity = , fillOpacity = 0.8,
+              fillColor = unemployment_scale(check_unstable("estimate_unemployment_rate_population_16_years_and_over_race_and_hispanic_or_latino_origin_black_or_african_american_alone")),
+              group = "Black Alone Unemployment",
+              label = ~map(glue("{NAME.x} County<br/>
+                                Unemployment Rate: {estimate_unemployment_rate_population_16_years_and_over_race_and_hispanic_or_latino_origin_black_or_african_american_alone_estimate}%<br/>
+                                MOE: {estimate_unemployment_rate_population_16_years_and_over_race_and_hispanic_or_latino_origin_black_or_african_american_alone_moe}%"), htmltools::HTML)
+  ) %>%
+  addLegend("bottomright", pal = unemployment_scale, values = ~estimate_unemployment_rate_population_16_years_and_over_estimate,
+            title = "Unemployment Rate",
+            opacity = .8,
+            labFormat = labelFormat(suffix = "%")
+  ) %>%
+  addLayersControl(
+    baseGroups = c("Overall Unemployment", "White Alone Unemployment", "Black Alone Unemployment"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+
+m
 ```
 
-### Examples Page
+### Conclusion and Policy Implications
 
-If you want to add in an image on an Rmd file, use this [link here](https://lcolladotor.github.io/2018/03/07/blogdown-insert-image-addin/). It ends up being a little tricky, but as long as you have created a folder to insert your images, you can just use some markdown code or html to insert images in the format you want. 
+TODO
 
-### Centering images  
-
-![](/findings/results-section-one_files/hugo.png){style="width:20%; display: block; margin-left: auto; margin-right: auto;"}
-
-### Placing images side-by-side
-
-<img src="/findings/results-section-one_files/hugo.png" width="150"/> <img src="/findings/results-section-one_files/rmarkdown.png" width="150"/> <img src="/findings/results-section-one_files/min_night.png" width="175"/> <img src="/findings/results-section-one_files/netlify.png" width="175"/>
-
-### Embedding Shiny Apps
-
-```{r, echo=FALSE, fig.fullwidth=TRUE}
-knitr::include_app('https://uva-sdad.shinyapps.io/gates-dashboard/')
-```
-
-### Embedding R code
-
-```{r, warning=FALSE, message=FALSE, echo=FALSE}
-
-```
-
-
+#### Additional Data Sources
