@@ -4,6 +4,10 @@ library(purrr)
 library(dplyr)
 library(glue)
 library(sf)
+library(leaflet.mapboxgl)
+
+token <- Sys.getenv("MAPBOX_TOKEN")
+options(mapbox.accessToken = token)
 
 create_map <- function(.data, # spatial dataset to use
                        variables, # character vector of names to be used, does not include _estimate or _moe at end. Example: estimate_percent_below_poverty_level_population_for_whom_poverty_status_is_determined
@@ -86,7 +90,9 @@ map_samples <- function(data, ## sf object containing the variable and se_variab
                         se_var, ## string name of variable storing standard error values
                         moe = FALSE, ## Switch to true if the se_var is actually a moe
                         x, ## Number of samples for each region
-                        palette) {
+                        palette,
+                        legend_pos = "bottomright",
+                        legend_title) {
   
   ## Helper function used in map_samples to add sample polygons 
   addAdjPolygons <- function(map, variable, group_name, palette) {
@@ -121,29 +127,30 @@ map_samples <- function(data, ## sf object containing the variable and se_variab
     st_as_sf()
   
   ## Generate base map based on actual estimates
-  base_map <- leaflet(samp_data) %>%
-    addProviderTiles("CartoDB.Positron") %>%
+  base_map <- leaflet(samp_data, options = leafletOptions(minZoom = 9, maxZoom = 9), width = "100%") %>%
+    addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
     addPolygons(fillColor = ~pal(samp_data[[var]]),
-                fillOpacity = 0.5,
+                fillOpacity = 0.8,
                 opacity = 0.4,
                 smoothFactor = 0.5,
                 weight = 0.5,
                 color = "#444444",
                 label = ~round(samp_data[[var]], 2),
                 group = "Estimates") %>%
-    addLegend("bottomright",
+    addLegend(legend_pos,
+              title = legend_title,
               pal = pal,
               values = samp_data[[var]])
   
   ## Add all sampled values as separate layers
   for (i in seq(1, x)) {
     variable <- paste("Sample", i, sep = "_")
-    base_map <- base_map %>% addAdjPolygons(var = samps[,variable], group_name = variable, palette = pal)
+    base_map <- base_map %>% addAdjPolygons(var = samps[,variable], group_name = gsub("_", " ", variable), palette = pal)
   }
   
   ## Add layers control for toggling
-  group_names <- colnames(samps)
-  final_map <- base_map %>% addLayersControl(baseGroups = c("Estimates", group_names))
+  group_names <- gsub("_", " ", colnames(samps))
+  final_map <- base_map %>% addLayersControl(baseGroups = c("Estimates", group_names), options = layersControlOptions(collapsed = FALSE))
   
   return(final_map)
   

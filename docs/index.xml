@@ -57,8 +57,7 @@ Main Findings [Here you will describe the results and include important visualiz
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/substance_abuse_page/</guid>
-      <description>[Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data &amp;amp; Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.]
-Main Findings [Here you will describe the results and include important visualizations from your project.</description>
+      <description>Background In many states and communities, substance abuse related felonies make up a large amount of convictions. As stated by a publication from Georgetown’s Journal on Poverty Law and Policy, ¾ state prisoners and ⅘ federal prisoners are alcohol/drug involved offenders. Additionally, 58% of state prisoners and 63% of sentenced jail inmates met the criteria for drug dependence or abuse, compared to 5% of the total adult population.</description>
     </item>
     
     <item>
@@ -92,23 +91,13 @@ Project Goals Example text: We&amp;rsquo;re devising and assessing methods that 
     </item>
     
     <item>
-      <title></title>
-      <link>/team/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/team/</guid>
-      <description>UVA Data Science for the Public Good Program The Data Science for the Public Good (DSPG) Young Scholars program is a summer immersive program held at the Biocomplexity Institute’s Social and Decision Analytics division (SDAD). In its seventh year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences to determine how information generated within every community can be leveraged to improve quality of life and inform public policy.</description>
-    </item>
-    
-    <item>
       <title>Data &amp; Methods</title>
       <link>/methods/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/methods/</guid>
       <description>/* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; } body { text-align: justify }  Background This is where we will include demographics maps of Halifax?
- Data Sources This is where we will discuss general data sources, their applicability/coverage, and limitations?
- Challenges This is where we will discuss challenges covering incarceration in general as well as specific challenges we encountered during the project?</description>
+ Data Sources As is the case with any new project, significant time must be devoted to identifying data sources and assessing their quality, accessibility, and relevance to the topics at hand.</description>
     </item>
     
     <item>
@@ -117,7 +106,16 @@ Project Goals Example text: We&amp;rsquo;re devising and assessing methods that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/overview/</guid>
-      <description>h1, h2, h3 { text-align: center; } body { text-align: justify }  2020 Halifax County Summer Project The United States incarcerates more people per capita than anywhere else in the world (Sentencing Project), and a disproportionate number of those incarcerated are Black and Hispanic (APA). Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for white males.</description>
+      <description>body { text-align: justify }  2020 Halifax County Summer Project The United States incarcerates more people per capita than anywhere else in the world1, and a disproportionate number of those incarcerated are Black and Hispanic2. Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for white males.</description>
+    </item>
+    
+    <item>
+      <title>Team</title>
+      <link>/team/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/team/</guid>
+      <description>{ box-sizing: border-box; } .column { float: left; width: 25%; } .row:after { content: &#34;&#34;; display: table; clear: both; }  UVA Data Science for the Public Good Program The Data Science for the Public Good (DSPG) Young Scholars program is a summer immersive program held at the Biocomplexity Institute’s Social and Decision Analytics division (SDAD). In its seventh year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today.</description>
     </item>
     
   </channel>

@@ -52,7 +52,7 @@ pal <- colorFactor("OrRd", domain = as.factor(drive_time_polys$contour), reverse
 create_map <- function(data) {
   
   ## Assemble map of point locations for schools, LIHTC projects, and isochrone polygons
-  map <- leaflet() %>%
+  map <- leaflet(width = "100%") %>%
     addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
     addMapPane("Schools", zIndex = 410) %>%
     addMapPane("LIHTC", zIndex = 410) %>%
@@ -86,7 +86,8 @@ create_map <- function(data) {
                       label = ~purrr::map(glue("<strong>{Name}</strong>", "{Street}, {City}, {State}", .sep = "<br>"), htmltools::HTML),
                       group = "Wellness") %>%
     addLayersControl(baseGroups = data$label,
-                     overlayGroups = c("Employers", "Schools", "Housing", "Wellness")) %>%
+                     overlayGroups = c("Employers", "Schools", "Housing", "Wellness"),
+                     options = list(collapsed = FALSE)) %>%
     addLegend(position = "bottomright",
               pal = pal,
               values = data$contour,
@@ -96,11 +97,14 @@ create_map <- function(data) {
   
 }
 
-drive_map <- create_map(drive_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 11)
-bike_map <- create_map(bike_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 12)
-walk_map <- create_map(walk_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 13)
+drive_map <- create_map(drive_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 10)
+bike_map <- create_map(bike_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 11)
+walk_map <- create_map(walk_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 12)
 
-# saveRDS(drive_map, here::here("data", "working", "isochrones", "drive_map.RDS"))
+saveRDS(drive_map, here::here("data", "working", "isochrones", "drive_map.RDS"))
+saveRDS(bike_map, here::here("data", "working", "isochrones", "bike_map.RDS"))
+saveRDS(walk_map, here::here("data", "working", "isochrones", "walk_map.RDS"))
+
 
 #
 #

@@ -117,11 +117,10 @@ plot <- ggplot() +
   scale_color_manual(labels = c("U.S.", "Virginia", "Halifax County"), values = c("#e4e0cd", "#6b6385", "#FC4444"), na.translate=FALSE) +
   labs(y = "\nPercent Single Adults with Children", x = "Percent Black (Non-Hispanic)\n", 
        title = "Characteristics of Subsidized Housing Population", 
-       size = "Houshold heads less \nthan 24 years old") +
+       size = "Household heads less \nthan 24 years old") +
   guides(alpha = FALSE, color = guide_legend(title = "Locale", override.aes = list(size=10)), size = guide_legend(override.aes = list(shape = 21, alpha = 0.8))) +
   scale_alpha_manual(values = c(0.3, 0.8)) +
-  facet_wrap(~program_label, ncol = 2) +
-  theme(legend.position = "none")
+  facet_wrap(~program_label, ncol = 2)
 
 plot
 ```
@@ -169,7 +168,7 @@ _Maybe should move some of the above discussion to this section? Or remove?_
 
 #### Additional Data Sources
 
-To effectively understand the relationships between housing affordability patterns in Halifax and recidivism, we would need more comprehensive data on the frequency that subsidized housing options are used by those re-entering society, as well as outcomes (forced removals, criminal activity, length of stay in housing, etc.) for these individuals. Unfortunately, while HUD's Picture of Subsidized Households dataset does not explicitly record any information about individuals with prior convictions and their outcomes in subsidized housing. Historically, prior convictions would have rendered someone ineligible for many of these housing options[^3] on the grounds that these individuals constituted a high risk to the community. Evaluating the validity of these concerns would be valuable to inform the conversation about potentially increasing access to these affordable housing options for formerly incarcerated persons in Halifax.
+To effectively understand the relationships between housing affordability patterns in Halifax and recidivism, we would need more comprehensive data on the frequency that subsidized housing options are used by those re-entering society, as well as outcomes (forced removals, criminal activity, length of stay in housing, etc.) for these individuals. Unfortunately, while HUD's Picture of Subsidized Households dataset does not explicitly record any information about individuals with prior convictions and their outcomes in subsidized housing. Historically, prior convictions would have rendered someone ineligible for many of these housing options[^6] on the grounds that these individuals constituted a high risk to the community. Evaluating the validity of these concerns would be valuable to inform the conversation about potentially increasing access to these affordable housing options for formerly incarcerated persons in Halifax.
 
 Similarly, data on private landlord attitudes surrounding renting to those with prior convictions would be extremely helpful to determine how accessible non-subsidized housing options are for those re-entering society. Reluctance on the part of landlords to rent to those with prior convictions may effectively close off an entire subset of housing to these individuals, potentially concentrating them into lower-income and more vulnerable areas.
 
@@ -186,4 +185,6 @@ Data on these issues would allow for the evaluation the quantity and quality of 
 [^4]: Lynskey, D. P., Winfree Jr, L. T., Esbensen, F. A., & Clason, D. L. (2000). Linking gender, minority group status and family matters to self‐control theory: A multivariate analysis of key self‐control concepts in a youth‐gang context. Juvenile and Family Court Journal, 51(3), 1-19.
 
 [^5]: Tasca, M., Rodriguez, N., & Zatz, M. S. (2011). Family and residential instability in the context of paternal and maternal incarceration. Criminal Justice and Behavior, 38(3), 231-247.
+
+[^6]: See footnote 3
 
