@@ -19,6 +19,7 @@ library(glue)
 library(sf)
 library(ggplot2)
 library(gghighlight)
+library(leaflet.mapboxgl)
 
 acs_unemployment_county_sp <- st_read(here::here("data", "original", "ACS", "acs_unemployment_county.geojson"),
                                       quiet = TRUE)
@@ -42,6 +43,8 @@ laus_unemployment_county <- read.csv(here::here("data", "original","Unemployment
   mutate(GEOID = substr(Series.ID, 6, 10)) %>%
   left_join(county_info, by = "GEOID") %>%
   mutate(year_month_frac = Year + 1/12 * (as.numeric(substr(Period, 2, 3)) - 1))
+
+options(mapbox.accessToken = Sys.getenv("MAPBOX_API_KEY"))
 ```
 
 
@@ -91,7 +94,7 @@ check_unstable <- function(variable_name) {
 # quick map of unemployment by white and black. Note that unemployments above 30% are assumed unstable
 unemployment_scale <- colorBin("BuPu", c(0,100), c(0, 3, 5, 7.5, 10, 30))
 m <- leaflet(acs_unemployment_county_sp) %>%
-  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%  
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.8,
               fillColor = unemployment_scale(check_unstable("estimate_unemployment_rate_population_16_years_and_over")),
