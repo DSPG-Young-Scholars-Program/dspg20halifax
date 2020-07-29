@@ -6,12 +6,158 @@ weight: 4
 draft: false
 output: html_document
 ---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 10)
 
-[Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data & Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.] 
+options(knitr.duplicate.label = "allow")
+
+```
+### Background 
+In many states and communities, substance abuse related felonies make up a large amount of convictions. As stated by a publication from Georgetown’s Journal on Poverty Law and Policy, ¾ state prisoners and ⅘ federal prisoners are alcohol/drug involved offenders. Additionally, 58% of state prisoners and 63% of sentenced jail inmates met the criteria for drug dependence or abuse, compared to 5% of the total adult population. There are also high rates of drug related crime; 17% of state prisoners and 18% of federal inmates committed their offense to obtain money to purchase drugs.
+
+Successful substance abuse treatment has been shown to decrease rates of recidivism. However, many inmates do not receive effective treatment and thus experience higher likelihood of recidivism as well as more difficulty integrating into society when released. Unfortunately, 95% of offenders return to drug abuse and 60-80% commit a new drug-related crime upon being released from prison. 
+
+Substance abuse intersects with incarceration at recidivism at various levels of the ecological model. Though stable housing is critical for recovery from SUDS, on an individual level, many people struggle to find places to live and become homeless. Individuals with former SUD-related convictions may also struggle with mental health issues and use substances to self-medicate, which may aggravate symptoms and lead to an addiction disorder. On the employment level, various federal employment guidelines as well as corporate stigma against substance-usage lead to people with substance abuse convictions losing their jobs or having difficulty getting hired. On the policy level, systematic racism in the law enforcement and criminal justice system leads to vast racial disparities in substance related arrests, convictions, and felonies. 
 
 ### Main Findings 
 
-[Here you will describe the results and include important visualizations from your project.] 
+The raging opioid epidemic has hit states like Virginia, especially its rural communities such as Halifax county, the hardest. However, data from the Center for Disease Control on opioid usage in Virginia counties -- specifically, the opioid prescription rate per 100 people, proposes a positive perspective on how Halifax has handled the opioid epidemic. The line graph illustrates that while prescription rates peaked in 2010, they have been steadily decreasing since. In fact, Halifax seems to fare better than Virginia as a whole; opioid prescription rates have also gone down, but at a lesser rate and have peaked more frequently in 2012 and 2015. 
+
+A map of the same data provides further context of Halifax’s opioid prescription rates compared to other Virginia counties, as well as the change in prescription rates over time for Virginia. The scale goes from 0 to 584 opioid prescription rates per 100 people, suggesting that in several counties, the majority of people have at least one prescription. Halifax is consistently in the second lowest bucket of prescription rates: 60 to 122. The spikes in Virginia rates are also evident through these maps. 
+
+```{r}
+library(ggplot2)
+library(rvest)
+library(sf)
+library(tigris)
+library(leaflet)
+library(tidycensus)
+library(stringr)
+library(dplyr)
+library(here)
+#library(censusapi)
+#library(hablar)
+library(BAMMtools)
+library(tidyr)
+#set the theme 
+theme_set(theme_minimal() +
+            theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 24),
+                  plot.subtitle = element_text(hjust = 0.5, color = "gray30", face = "italic", size = 20),
+                  axis.title = element_text(size = 20, color = "gray10"),
+                  axis.text = element_text(size = 18, color = "gray30"),
+                  strip.text = element_text(size = 22, color = "gray30"),
+                  panel.spacing = unit(4, "lines"),
+                  legend.key.size = unit(3, "line"),
+                  legend.text = element_text(size = 16, color = "gray30"),
+                  legend.title = element_text(size = 22, color = "gray10")))
+
+#read CSV
+datasource <- readr::read_csv(here::here("data",
+                                         "original", "Substance_Abuse",
+                                         "CDC Opioid Prescription Data - Halifax (1).csv"))
+total <- datasource$`US Total`
+
+#plot the data
+ggplot(data = datasource, aes(x= Year)) +
+  #plot of Halifax and VA state over time
+  geom_line(aes(y = Halifax, colour = "red")) + geom_line(aes(y = total, colour = "green")) +
+  labs(y = 'Opioid Prescription Rates per 100 People') +
+  #relabel the scale appropriately
+  scale_color_discrete(name = "Location", labels = c("Halifax, VA", "US")) +
+  geom_point(aes(y = Halifax)) + geom_point(aes(y = total))
+```
+The Virginia Department of Health Office of Epidemiology provides further insight into substance abuse into Halifax county. Data from unintentional drug overdose in Halifax illustrates that the majority of overdoses are due to opioids, followed by other drugs and with a small portion being heroin related. 
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(plotly)
+library(viridis)
+#library(hrbrthemes)
+library(readr)
+
+#read in data source
+datasource <- readr::read_csv(here::here("data",
+                                         "original", "Substance_Abuse",
+                                         "Ed Data VDH - Copy of Halifax.csv"))
+# ggplot for the data
+ggplot(datasource, aes(x =Year, y =Count, fill=Drug))+
+  geom_area() + theme_classic() + labs(x = "Year", y = "ED Overdose Visits") +
+  ggtitle("Emergency Department Overdose Visits in Halifax, VA")
+```
+
+Another important aspect of substance abuse, especially as it relates to incarceration and recidivism, is looking at alcohol related abuse and overdose. Data provided by County Health Rankings illustrates that the percentage of adults reporting heavy or binge drinking has increased steadily since 2011. This trend parallels that of Virginia as a whole, which has a consistently higher rate than Halifax. The corresponding map of this data illustrates how the majority of counties in Virginia, Halifax included, become redder over time as rates steadily increase. 
+
+```{r}
+library(ggplot2)
+
+#load the data source from the CSV
+datasource <- readr::read_csv(here::here("data", "original", "Substance_Abuse",
+                                         "Excessive Drinking and Alcohol-Impaired Driving Deaths - Halifax (1).csv"))
+
+#grab the '% Excessive Drinking' column for Halifax
+list <- c(14, 14, 14, 13, 13, 10 ,10, 11, 8, 8)
+#grab the '% Excessive Drinking' column for VA in general
+va <- c(17, 17, 17, 17, 17, 16, 16, 16, 16, 16)
+ggplot(data = datasource, aes(x = X1)) +
+  #add geom_lines for each location
+   geom_line(aes(y = list, colour = "#CC6666")) +
+  geom_line(aes(y = va, colour = "#9999CC")) +
+  labs(x = 'Year', y = '% Excessive Drinking') + scale_x_continuous(breaks = seq(2011, 2020, 2), lim = c(2011, 2020)) +
+  #add relevant scaling for y axis
+  scale_y_continuous(breaks = seq(5, 20, 5), lim = c(5, 20))  +
+  #relabel the scale appropriately
+  scale_color_manual(labels = c("VA", "Halifax, VA"), values = c("#CC6666",  "#9999CC")) +
+  guides(color=guide_legend("Location"))
+```
+Lastly, it is important to understand substance abuse and its relationship with incarceration through the policy level of the ecological model. Data from the American Civil Liberties Union (ACLU) shows the racial disparities in marijuana arrests between Black and White people (per 100k people). In Virginia, Black people are 3.4x times more likely to be arrested for marijuana possession than white people, a rate that has steadily increased from 2010 to 2018. In some counties, the rates are as high as above 88 times. Halifax contains a more moderate rate of 2.9x; however, these numbers still illustrate racial disparities for substance abuse as it relates to  criminal justice and law enforcement systems. 
+
+```{r}
+library(rvest)
+library(sf)
+library(tigris)
+library(leaflet)
+library(tidycensus)
+library(stringr)
+library(dplyr)
+library(here)
+#library(censusapi)
+#library(hablar)
+library(BAMMtools)
+
+census_api_key("1288a5a1e23422dbd03d06071f74b4cd50af12be", install = TRUE, overwrite = TRUE)
+readRenviron("~/.Renviron")
+Sys.getenv("CENSUS_API_KEY")
+
+datasource <- readr::read_csv(here::here("data",
+                                         "original", "Substance_Abuse",
+                                         "Racial Disparities in Marijuana Arrests by VA County - 2018 (1).csv"))
+
+va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
+                      survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
+datasource <- merge(va_borders, datasource, by.x = "GEOID", by.y = "FIPS Code")
+unstable <- filter(datasource, `Meets Population & Reporting Thresholds` == "No")
+
+general_bins <- getJenksBreaks(datasource$`Times more likely Black person arrested in 2018`, k = 6)
+general_bins <- sapply(general_bins, round)
+
+general_palette <- colorBin("Reds", domain = datasource$`Times more likely Black person arrested in 2018`, bins = general_bins)
+label <- paste("County: ", datasource$County,"<br/>", "Rate: ",
+               paste(datasource$`Times more likely Black person arrested in 2018`, 'x',
+                                                                       sep = ""), "<br/>",
+              sep="") %>%
+  lapply(htmltools::HTML)
+
+leaflet() %>%
+  addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(data = datasource, fillColor = ~general_palette(datasource$`Times more likely Black person arrested in 2018`),
+              weight = 1, color = "#fafafa", fillOpacity = 0.8,
+              label = label,
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addLegend(pal = general_palette, values = general_bins,
+            title = "Rates of Black vs White arrests for marijuana possession (100k people)", position = "bottomright")
+```
 
 ### Conclusion and Policy Implications 
 

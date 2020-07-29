@@ -8,8 +8,13 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 20, fig.height = 10)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 10)
 
+options(knitr.duplicate.label = "allow")
+
+```
+
+```{r}
 library(here)
 library(dplyr)
 library(stringr)
@@ -19,16 +24,16 @@ library(tidyr)
 library(leaflet)
 library(sf)
 
-theme_set(theme_minimal() + 
-            theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 22), 
-                  plot.subtitle = element_text(hjust = 0.5, color = "gray30", face = "italic", size = 18),
-                  axis.title = element_text(size = 18, color = "gray10"),
-                  axis.text = element_text(size = 16, color = "gray30"),
-                  strip.text = element_text(size = 20, color = "gray30"),
+theme_set(theme_minimal() +
+            theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 24),
+                  plot.subtitle = element_text(hjust = 0.5, color = "gray30", face = "italic", size = 20),
+                  axis.title = element_text(size = 20, color = "gray10"),
+                  axis.text = element_text(size = 18, color = "gray30"),
+                  strip.text = element_text(size = 22, color = "gray30"),
                   panel.spacing = unit(4, "lines"),
                   legend.key.size = unit(3, "line"),
-                  legend.text = element_text(size = 14, color = "gray30"),
-                  legend.title = element_text(size = 20, color = "gray10")))
+                  legend.text = element_text(size = 16, color = "gray30"),
+                  legend.title = element_text(size = 22, color = "gray10")))
 
 ## Read in all public housing data and clean county strings
 pub_housing_summary <- vroom::vroom(here("data", "original", "Housing", "county_pub_housing_2013_2019.csv")) %>%
@@ -38,7 +43,7 @@ pub_housing_summary <- vroom::vroom(here("data", "original", "Housing", "county_
          name = str_to_title(trimws(ifelse(str_detect(name, "city county"), str_replace_all(name, "county", ""), name)))) ## Clean duplicated counties that are labeled as both city and county
 
 ## Vera incarceration data
-vera_data <- data.table::fread(here::here("data", "original", "Incarceration", "vera_incarceration_trends.csv")) %>% 
+vera_data <- vroom::vroom(here::here("data", "original", "Incarceration", "vera_incarceration_trends.csv")) %>%
   as.data.frame() %>%
   mutate(fips = as.character(fips))
 
@@ -60,14 +65,23 @@ Despite being previously overshadowed in the literature, housing affordability h
 
 Housing thus enters the ecological model at multiple levels: at the policy level, eligibility for low-income housing opportunities may be limited by prior convictions (despite HUD recommendations to the contrary)[^2]. At the community level, affordable housing locations can impact an individual’s access to other services that they may need, including substance abuse treatment, education, and employment opportunities. And at the relationship level, housing can serve as either a platform for successful reintegration by allowing for the re-establishment of family connections (or can present a challenge when these relationships are already frayed)[^3].
 
-To assess housing affordability in Halifax County, we relied on multiple datasets curated by the Department of Housing and Urban Development (HUD). HUD maintains datasets on low-income housing tax credit funding, characteristics of individuals living in federally subsidized housing, and administrative data used to calculate income limits for subsidized housing. While these datasets provide a picture of housing affordability in an area, they do not focus explicitly on the formerly incarcerated population, and often don’t address the unique challenges these individuals have accessing these housing opportunities.
+To assess housing affordability in Halifax County, we relied primarily on the Picture of Subsidized Households dataset (https://www.huduser.gov/portal/datasets/assthsg.html) as well as Low-Income Housing Tax Credit property data (https://www.huduser.gov/portal/datasets/lihtc.html), both of which are furnished by the Department of Housing and Urban Development (HUD).
+
+HUD maintains datasets on low-income housing tax credit funding, characteristics of individuals living in federally subsidized housing, and administrative data used to calculate income limits for subsidized housing. While these datasets provide a picture of housing affordability in an area, they do not focus explicitly on the formerly incarcerated population, and often don’t address the unique challenges these individuals have accessing these housing opportunities.
 
 ### Main Findings
 
 As of 2019, the Department of Housing and Urban development lists a total of 171 units across 9 official properties in Halifax County designed to support low-income individuals. The relative income distribution of those living in HUD subsidized housing has been shifting upwards in recent years, and extremely low income individuals and families make up a slightly smaller proportion of the subsidized housing population. These patterns are in keeping with the patterns followed by many other Virginia counties between 2012 and 2019.
 
 ```{r}
-knitr::kable(halifax_pub_housing %>% select(year, pct_lt5k , pct_5k_lt10k, pct_10k_lt15k, pct_15k_lt20k, pct_ge20k, pct_lt50_median, pct_lt30_median), "pipe")
+library(kableExtra)
+
+halifax_pub_housing %>%
+  select(year, pct_lt5k , pct_5k_lt10k, pct_10k_lt15k, pct_15k_lt20k, pct_ge20k, pct_lt50_median, pct_lt30_median) %>%
+  mutate(across(c(pct_lt5k , pct_5k_lt10k, pct_10k_lt15k, pct_15k_lt20k, pct_ge20k, pct_lt50_median, pct_lt30_median), function(x) paste0(x, "%"))) %>%
+  knitr::kable(., col.names = c("Year", "< $5", "$5 - $10", "$10 - $15", "$15 - $20", "> $20", "< 50% median income", "< 30% median income"), "html", caption = "Income Distribution of Subsidized Housing Population: Halifax County") %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "bordered"), full_width = FALSE) %>%
+  kableExtra::add_header_above(c(" " = 1, "Raw Income (thousands of dollars)" = 5, "Relative to Median" = 2))
 
 # va_pub_housing %>% ggplot() + geom_line(aes(x = year, y = pct_lt30_median, group = name)) + gghighlight(code == "51083")
 ```
@@ -103,7 +117,7 @@ plot <- ggplot() +
   scale_color_manual(labels = c("U.S.", "Virginia", "Halifax County"), values = c("#e4e0cd", "#6b6385", "#FC4444"), na.translate=FALSE) +
   labs(y = "\nPercent Single Adults with Children", x = "Percent Black (Non-Hispanic)\n", 
        title = "Characteristics of Subsidized Housing Population", 
-       size = "Houshold heads less \nthan 24 years old") +
+       size = "Household heads less \nthan 24 years old") +
   guides(alpha = FALSE, color = guide_legend(title = "Locale", override.aes = list(size=10)), size = guide_legend(override.aes = list(shape = 21, alpha = 0.8))) +
   scale_alpha_manual(values = c(0.3, 0.8)) +
   facet_wrap(~program_label, ncol = 2)
@@ -111,13 +125,11 @@ plot <- ggplot() +
 plot
 ```
 
-These characteristics are notable when considered in the context of incarceration because they highlight a distinctly vulnerable population in Halifax County. Research unsurprisingly corroborates the intuition that low levels of family supervision are related to higher rates of juvenile delinquency in adolescents [^4]. The children of single parents, particularly those also experiencing financial strain, are thus at heightened risk of delinquent behavior, putting them at increased risk of encounters with law enforcement. Over time, these encounters may predispose these individuals to heightened risk of spending time in the criminal justice system. When these individuals are thus absent from family life themselves, the potential exists for the cycle to repeat itself.
+These characteristics are notable when considered in the context of incarceration because they highlight a distinctly vulnerable population in Halifax County. Research unsurprisingly corroborates the intuition that low levels of family supervision are related to higher rates of juvenile delinquency in adolescents [^4]. The children of single parents, particularly those also experiencing financial strain, are thus at heightened risk of delinquent behavior, putting them at increased risk of encounters with law enforcement. Over time, these encounters may predispose these individuals to heightened risk of spending time in the criminal justice system. When these individuals are thus absent from family life themselves, the potential exists for the cycle to repeat itself, as children of incarcerated parents are more likely to be involved with the criminal justice system themselves [^5].
 
 Also of note in this plot is the overall difference in the ages of heads-of-households across the two common subsidized housing types in the county. Families headed by younger adults are more likely to live in project-based housing.
 
 While nothing about these patterns suggests any relationship to incarceration trends in the county, they do suggest a population that could benefit from community programs tailored specifically to its particular needs.
-
-------
 
 Of course, a key question when considering the ability of federally subsidized housing to help address issues of recidivism and incarceration is whether the subsidized housing system has the capacity to serve as a resource to formerly incarcerated individuals as they re-enter society.
 
@@ -125,7 +137,7 @@ The subsidized housing system obviously serves a broad population beyond those w
 
 Below, we display the size of the annual number of jail discharges relative to the overall subsidized housing capacity, with Halifax County highlighted. Very few Virginia counties have a general subsidized housing supply on par with the annual discharge rate, and while Halifax is by no means an outlier, it still discharges roughly three times the number of individuals from jail as people in its subsidized housing system. While many of these individuals will find housing elsewhere, this finding speaks to the limitations of considering the federally subsidized housing as a sole option to help re-integrate these individuals affordably and effectively.
 
-```{r, fig.width = 15, fig.height = 10}
+```{r}
 ## Relative plot
 va_housing_vera %>%
   filter(year == 2017, !is.na(people_total), !is.na(total_jail_dis)) %>%
@@ -141,10 +153,10 @@ va_housing_vera %>%
   scale_color_manual(values = c("#FC4444","#6b6385")) +
   scale_y_continuous(breaks = c(1, 5, 10, 25, 50)) +
   labs(x = "County", y = "Size of Jail Discharge Population \nRelative to Subsidized Housing Capacity", title = "Capacity of Subsidized Housing System") +
-  theme_update(panel.grid.minor = element_blank(),
-               panel.grid.major.x = element_blank(),
-               axis.text.x = element_blank(),
-               legend.position = "none")
+  theme(legend.position = "none",
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.text.x = element_blank())
 ```
 
 Identifying and connecting individuals with other affordable housing options may therefore be a valuable role for a potential Family and Consumer Science Agent in the county. Similarly, motivating the community to consider alternative options for developing a robust affordable housing stock may be warranted, and bringing private landlords into the discussion may be an important component of a successful strategy.
@@ -152,13 +164,15 @@ Identifying and connecting individuals with other affordable housing options may
 
 ### Conclusion and Policy Implications 
 
-_Maybe should move some of the above discussion to this section?_
+_Maybe should move some of the above discussion to this section? Or remove?_
 
-- More Data if we could have it:
+#### Additional Data Sources
 
-- Data on community NIMBY attitudes
-- Data on removals from subsidized housing. Data on removals from private housings. Answer question: do formerly incarcerated individuals pose undue risk to these areas?
+To effectively understand the relationships between housing affordability patterns in Halifax and recidivism, we would need more comprehensive data on the frequency that subsidized housing options are used by those re-entering society, as well as outcomes (forced removals, criminal activity, length of stay in housing, etc.) for these individuals. Unfortunately, while HUD's Picture of Subsidized Households dataset does not explicitly record any information about individuals with prior convictions and their outcomes in subsidized housing. Historically, prior convictions would have rendered someone ineligible for many of these housing options[^6] on the grounds that these individuals constituted a high risk to the community. Evaluating the validity of these concerns would be valuable to inform the conversation about potentially increasing access to these affordable housing options for formerly incarcerated persons in Halifax.
 
+Similarly, data on private landlord attitudes surrounding renting to those with prior convictions would be extremely helpful to determine how accessible non-subsidized housing options are for those re-entering society. Reluctance on the part of landlords to rent to those with prior convictions may effectively close off an entire subset of housing to these individuals, potentially concentrating them into lower-income and more vulnerable areas.
+
+Data on these issues would allow for the evaluation the quantity and quality of housing options available to those re-entering Halifax County after serving a sentence and would likely help a potential FCSA advise these individuals on the most appropriate housing options after release.
 
 ### References 
 
@@ -170,4 +184,7 @@ _Maybe should move some of the above discussion to this section?_
 
 [^4]: Lynskey, D. P., Winfree Jr, L. T., Esbensen, F. A., & Clason, D. L. (2000). Linking gender, minority group status and family matters to self‐control theory: A multivariate analysis of key self‐control concepts in a youth‐gang context. Juvenile and Family Court Journal, 51(3), 1-19.
 
+[^5]: Tasca, M., Rodriguez, N., & Zatz, M. S. (2011). Family and residential instability in the context of paternal and maternal incarceration. Criminal Justice and Behavior, 38(3), 231-247.
+
+[^6]: See footnote 3
 
