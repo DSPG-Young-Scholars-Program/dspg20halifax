@@ -7,6 +7,10 @@ draft: false
 output: html_document
 ---
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.height = 10)
+```
+
 Our ecological model framework encouraged us to consider how these various factors may interact in their effects on re-entry for formely incarcerated individuals in Halifax County.
 
 A key component of each factor is resource accessibliity: employment opportunities, availabile affordable housing options, and support for those with substance abuse problems are all rendered irrelevant if these resources are not accessible to those who rely on them.
@@ -18,30 +22,30 @@ We therefore sought to visualize the spatial distribution of employment opportun
 Each map below displays the areas within 10, 20, and 30 minutes of a selected subsidized housing property in Halifax County. Also displayed are the locations of the top employers in the county, schools, and substance abuse treatment/support centers.
 
 ### Main Findings
-
+<br><br><br>
 #### Accessibility by Car
 
-```{r, echo = FALSE}
+```{r}
 drive_map <- readRDS(here::here("data", "working", "isochrones", "drive_map.RDS"))
 drive_map
 ```
-
+<br><br><br>
 #### Accessibility by Bike
 
-```{r, echo = FALSE}
+```{r}
 bike_map <- readRDS(here::here("data", "working", "isochrones", "bike_map.RDS"))
 bike_map
 ```
-
+<br><br><br>
 #### Accessibility on Foot
 
-```{r, echo = FALSE}
+```{r}
 walk_map <- readRDS(here::here("data", "working", "isochrones", "walk_map.RDS"))
 walk_map
 ```
 
-### Conclusion and Policy Implications 
-
+### Conclusions
+ 
 While many of these necessary resources are within a reasonable travel distance by car, many of those re-entering society may not have access to a private vehicle. Similar maps are displayed for the travel times from the same properties by bike and on foot. These maps demonstrate that many necessary resources encouraging a safe transition back to society may be difficult to access for those without access to a car.
 
 ### Future Directions
@@ -55,4 +59,6 @@ Also valuable would be the inclusion of public transit travel times and distance
 Finally, incorporating more information about which employers are known to provide opportunities to those with past convictions would provide a more nuanced look at work accessibility. Given the difficulties finding work after being released from incarceration, it is unlikely that each of the top employers in the area is equally open to hiring those with past convictions.
 
 ### References 
+
+??
 

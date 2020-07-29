@@ -107,8 +107,7 @@ Project Goals Example text: We&amp;rsquo;re devising and assessing methods that 
       
       <guid>/methods/</guid>
       <description>/* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; } body { text-align: justify }  Background This is where we will include demographics maps of Halifax?
- Data Sources This is where we will discuss general data sources, their applicability/coverage, and limitations?
- Challenges This is where we will discuss challenges covering incarceration in general as well as specific challenges we encountered during the project?</description>
+ Data Sources As is the case with any new project, significant time must be devoted to identifying data sources and assessing their quality, accessibility, and relevance to the topics at hand.</description>
     </item>
     
     <item>
@@ -117,7 +116,7 @@ Project Goals Example text: We&amp;rsquo;re devising and assessing methods that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/overview/</guid>
-      <description>h1, h2, h3 { text-align: center; } body { text-align: justify }  2020 Halifax County Summer Project The United States incarcerates more people per capita than anywhere else in the world (Sentencing Project), and a disproportionate number of those incarcerated are Black and Hispanic (APA). Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for white males.</description>
+      <description>body { text-align: justify }  2020 Halifax County Summer Project The United States incarcerates more people per capita than anywhere else in the world1, and a disproportionate number of those incarcerated are Black and Hispanic2. Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for white males.</description>
     </item>
     
   </channel>

@@ -4,10 +4,6 @@ output: html_document
 ---
 
 ```{css, echo = FALSE}
-h1, h2, h3 {
-  text-align: center;
-}
-
 body {
   text-align: justify
 }
@@ -15,11 +11,15 @@ body {
 
 ### 2020 Halifax County Summer Project
 
-The United States incarcerates more people per capita than anywhere else in the world (Sentencing Project), and a disproportionate number of those incarcerated are Black and Hispanic (APA). Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for white males.
+The United States incarcerates more people per capita than anywhere else in the world[^SentencingProject], and a disproportionate number of those incarcerated are Black and Hispanic[^APA]. Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for white males.
 
-In addition to the drastic human costs incurred by these mass incarceration policies, the current incarceration rate is extremely costly for taxpayers. The U.S. spends roughtly \$60 to \$80 billion per year on state and federal prisons (ACLU, APA). But despite these expenditures, roughly two-thirds of individuals released from prison were re-arrested within three years (BJS).
+In addition to the drastic human costs incurred by these mass incarceration policies, the current incarceration rate is extremely costly for taxpayers. The U.S. spends roughtly \$60 to \$80 billion per year on state and federal prisons[^APA2] [^ACLU]. But despite these expenditures, roughly two-thirds of individuals released from prison were re-arrested within three years[^BJS].
 
-Halifax County, Virginia, is not immune to these national trends. Halifax County spends over \$400,000 (X PERCENT OF BUDGET) on incarceration and recidivism annually, and this figure still does not account for the many indirect costs that result from incarceration, like foster care services required when parents are removed from the home or costs related to drug addiction treatment.
+Halifax County, Virginia, is not immune to these national trends. Halifax County spends over \$400,000 
+
+_(X PERCENT OF BUDGET) _
+
+on incarceration and recidivism annually, and this figure still does not account for the many indirect costs that result from incarceration, like foster care services required when parents are removed from the home or costs related to drug addiction treatment.
 
 Halifax County has partnered with DSPG 2020 to investigate the factors associated with its incarceration and recidivism rate in the hopes of investing in proactive services through the Virginia Cooperative Extension Service, like a Family and Consumer Science Agent. Among other things, this position would help connect formerly incarcerated individuals to the community resources needed to help them effectively re-enter society.
 
@@ -33,7 +33,7 @@ We hope that identifying emerging patterns in these determinants will allow Hali
 
 ### Our Approach
 
-We are using the social-ecological model (CITE) to guide our understanding of the factors related to incarceration in Halifax County. This model frames individual behavior as the result of influences that act at multiple sociological levels, including neighborhood, community, and policy levels. For example, through the lens of this model, a re-entering indivdual's ability to maintain employment might consider the accessibility of employment opportunities, opportunities for continued vocational training, and policies surrounding employment eligibility for those with prior criminal convictions.
+We are using the social-ecological model[^CDC] to guide our understanding of the factors related to incarceration in Halifax County. This model frames individual behavior as the result of influences that act at multiple sociological levels, including neighborhood, community, and policy levels. For example, through the lens of this model, a re-entering indivdual's ability to maintain employment might consider the accessibility of employment opportunities, opportunities for continued vocational training, and policies surrounding employment eligibility for those with prior criminal convictions.
 
 Under this framework, our approach centered around an extensive literature review of prior research in the area, a comprehensive exploration and accumulation of available data sources on the most important factors impacting incarceration, and preliminary data visualization to communicate the state of these factors in Halifax County, VA.
 
@@ -41,6 +41,18 @@ While it is difficult to make definitive conclusions on a topic as nuanced and c
 
 ### References
 
-Add references in APA here? Superscripts in the text body with references on a whole other page?
+[^SentencingProject]: Sentencing Project: Sentencing Project (n.d.) Criminal justice facts. Retrieved from: 
+https://www.sentencingproject.org/criminal-justice-facts/
+
+[^APA]: APA: American Psychological Association [APA]. (2014). Incarceration nation. Monitor, 45(9), p. 56. Retrieved from: https://www.apa.org/monitor/2014/10/incarceration
+
+[^APA2]: See footnote 2.
+
+[^ACLU]: ACLU: American Civil Liberties Union [ACLU] (n.d.). Mass incarceration. Retrieved from: https://www.aclu.org/issues/smart-justice/mass-incarceration
+
+[^BJS]: BJS: Durose, M.R., Cooper, A.D. & Snyder, H.N. (2014). Recidivism of prisoners released in 30 states in 2005: Patterns from 2005 to 2010 – Update. Bureau of Justice Statistics [BJS]. Retrieved from: https://www.bjs.gov/index.cfm?ty=pbdetail&iid=4986
+
+[^CDC]: Centers for Disease Control [CDC]. (n.d.). The Social-ecological model: A framework for prevention. https://www.cdc.gov/violenceprevention/publichealthissue/social-ecologicalmodel.html
+
 
 
