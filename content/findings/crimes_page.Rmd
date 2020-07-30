@@ -39,6 +39,10 @@ va_pop_by_race <- read_csv(here("data", "original", "Crime", "full_va_crime", "c
 halifax_crime <- all_va_crime[all_va_crime$county_cap == "HALIFAX",]
 ```
 
+### Halifax county crime trends
+
+#### Overall crime trends over time
+
 ```{r halifax_crimes}
 halifax_crime %>%
   group_by(incident_year) %>%
@@ -48,10 +52,119 @@ halifax_crime %>%
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
   xlab("Year") + ylab("Number of crimes") +
-  ggtitle("Number of total crimes in Halifax county from 2010 to 2019") + 
+  ggtitle("Total number of crimes from 2010 to 2019") + 
   theme_minimal()
 ```
 
+#### Most common offense types and clearance rates
+
+```{r halifax_top_crimes}
+halifax_crime %>%
+  group_by(offense_type) %>%
+  tally %>%
+  ggplot(aes(x = reorder(offense_type, n), y = n)) +
+  geom_bar(stat = 'identity', fill = "#0072B2") +
+  coord_flip() + 
+  xlab("Crime type") + ylab("Number of crimes") + 
+  ggtitle("Total number of crimes by offense type") + 
+  theme_minimal()
+
+halifax_crime_tally <- halifax_crime %>%
+  group_by(offense_type) %>%
+  tally 
+
+halifax_crime %>%
+  mutate(clearance_stat = case_when(incident_clearance == "Cleared by Arrest" ~ 1,
+                                    incident_clearance != "Cleared by Arrest" ~ 0)
+         ) %>%
+  group_by(offense_type, clearance_stat) %>%
+  summarise(perc_clear = n()) %>%
+  group_by(offense_type) %>%
+  mutate(perc_clear = perc_clear/sum(perc_clear) * 100) %>%
+  filter(clearance_stat == 1) %>%
+  inner_join(halifax_crime_tally, by = "offense_type") %>%
+  ggplot(aes(x = reorder(offense_type, n), y = perc_clear)) +
+  geom_bar(stat = 'identity', fill = "#0072B2") +
+  coord_flip() + 
+  xlab("Crime type") + ylab("Percent of crimes cleared by arrest") + 
+  ggtitle("Percent of crimes cleared by\narrest by offense type") + 
+  theme_minimal()
+
+```
+
+#### Crime trends by race (total and per capita)
+
+```{r halifax_crime_by_race}
+halifax_crime %>%
+  filter(offender_race %in% c("Black or African American",
+                              "White")) %>%
+  group_by(incident_year, offender_race) %>%
+  tally %>%
+  ggplot(aes(x = incident_year, y = n, color = offender_race)) + 
+  geom_line(lwd = 1.1) +
+  geom_point(size = 2) + 
+  scale_x_continuous(breaks = c(seq(2010, 2019)),
+                     labels = c(seq(2010, 2019))) +
+  scale_color_manual(values = c("#0072B2", "#CC79A7"),
+                     labels = c("Black", "White")) + 
+  xlab("Year") + ylab("Number of crimes") +
+  ggtitle("Total number of crimes by race") + 
+  guides(color = guide_legend(title = "Offender\nrace")) + 
+  theme_minimal()
+
+halifax_pop <- va_pop_by_race[va_pop_by_race$county_cap == "HALIFAX",]
+
+halifax_crime %>%
+  filter(offender_race %in% c("Black or African American",
+                              "White")) %>%
+  group_by(incident_year, offender_race) %>%
+  tally %>%
+  mutate(crime_per_cap = case_when(offender_race == "Black or African American" ~ n/halifax_pop$pop_Black,
+                                   offender_race == "White" ~ n/halifax_pop$pop_White)
+         ) %>%
+  ggplot(aes(x = incident_year, y = crime_per_cap, color = offender_race)) + 
+  geom_line(lwd = 1.1) +
+  geom_point(size = 2) + 
+  scale_x_continuous(breaks = c(seq(2010, 2019)),
+                     labels = c(seq(2010, 2019))) +
+  scale_color_manual(values = c("#0072B2", "#CC79A7"),
+                     labels = c("Black", "White")) + 
+  xlab("Year") + ylab("Number of crimes per population") +
+  ggtitle("Total number of crimes by race per capita") + 
+  guides(color = guide_legend(title = "Offender\nrace")) + 
+  theme_minimal()
+
+```
+
+#### Clearance rates by race
+
+```{r}
+halifax_crime %>%
+  filter(offender_race %in% c("Black or African American",
+                              "White")) %>%
+  mutate(clearance_stat = case_when(incident_clearance == "Cleared by Arrest" ~ 1,
+                                    incident_clearance != "Cleared by Arrest" ~ 0)
+         ) %>%
+  group_by(incident_year, offender_race, clearance_stat) %>%
+  summarise(perc_clear = n()) %>%
+  group_by(incident_year) %>%
+  mutate(perc_clear = perc_clear/sum(perc_clear) * 100) %>%
+  filter(clearance_stat == 1) %>%
+  ggplot(aes(x = incident_year, y = perc_clear, color = offender_race)) + 
+  geom_line(lwd = 1.1) +
+  geom_point(size = 2) + 
+  scale_x_continuous(breaks = c(seq(2010, 2019)),
+                     labels = c(seq(2010, 2019))) +
+  scale_color_manual(values = c("#0072B2", "#CC79A7"),
+                     labels = c("Black", "White")) + 
+  xlab("Year") + ylab("Percent of crimes cleared by arrest") +
+  ggtitle("Percent of crimes cleared by arrest by race") + 
+  guides(color = guide_legend(title = "Offender\nrace")) + 
+  theme_minimal()
+  
+```
+
+### Comparison of Halifax county to other VA counties
 
 ```{r va_county_map_data}
 # get VA state map data
@@ -84,7 +197,7 @@ va_base <- ggplot(data = va_state,
   geom_polygon(color = "black", fill = "gray")
 ```
 
-### All crimes
+#### All crimes
 
 ```{r all_crimes}
 county_total <- all_va_crime %>%
@@ -136,7 +249,7 @@ plot_grid(total_crime_title, total_crime_grid, ncol = 1, rel_heights = c(0.1, 1)
 
 ```
 
-### Black crimes
+#### Black crimes
 
 ```{r black_crimes}
 county_black <- all_va_crime %>%
@@ -189,7 +302,7 @@ black_crime_title <- ggdraw() +
 plot_grid(black_crime_title, black_crime_grid, ncol = 1, rel_heights = c(0.1, 1))
 ```
 
-### White crimes
+#### White crimes
 
 ```{r white_crimes}
 county_white <- all_va_crime %>%
@@ -241,7 +354,7 @@ white_crime_title <- ggdraw() +
 plot_grid(white_crime_title, white_crime_grid, ncol = 1, rel_heights = c(0.1, 1))
 ```
 
-### All drug crimes
+#### All drug crimes
 
 ```{r all_drugs}
 all_drug <- all_va_crime %>%
@@ -295,7 +408,7 @@ plot_grid(all_drug_title, all_drug_grid, ncol = 1, rel_heights = c(0.1, 1))
 
 ```
 
-### Black drug crimes
+#### Black drug crimes
 
 ```{r black_drugs}
 black_drug <- all_va_crime %>%
@@ -352,7 +465,7 @@ plot_grid(black_drug_title, black_drug_grid, ncol = 1, rel_heights = c(0.1, 1))
 
 ```
 
-### White drug crimes
+#### White drug crimes
 
 ```{r white_drugs}
 white_drug <- all_va_crime %>%
