@@ -8,9 +8,7 @@ output: html_document
 ---
  
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
-                      fig.align = "center", out.width = "\\textwidth",
-                      fig.height = 8)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 10)
 
 options(scipen = 10000)
 ```
@@ -30,13 +28,28 @@ library(sf)
 library(cowplot)
 
 # all VA crimes between 2010 and 2019
-all_va_crime <- read_csv(here("data", "original", "Crime", "full_va_crime", "clean_all_arrest_all_years.csv"))
+all_va_crime <- vroom::vroom(here("data", "original", "Crime", "full_va_crime", "clean_all_arrest_all_years.csv"))
 
 # VA county population by race from census
 va_pop_by_race <- read_csv(here("data", "original", "Crime", "full_va_crime", "clean_county_pop_by_race.csv"))
 
 # all Halifax county crimes between 2010 and 2019
 halifax_crime <- all_va_crime[all_va_crime$county_cap == "HALIFAX",]
+
+
+theme_set(theme_minimal() +
+            theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 24),
+                  plot.subtitle = element_text(hjust = 0.5, color = "gray30", face = "italic", size = 20),
+                  axis.title = element_text(size = 20, color = "gray10"),
+                  axis.text = element_text(size = 18, color = "gray30"),
+                  strip.text = element_text(size = 22, color = "gray30"),
+                  panel.spacing = unit(4, "lines"),
+                  legend.key.size = unit(3, "line"),
+                  legend.text = element_text(size = 16, color = "gray30"),
+                  legend.title = element_text(size = 22, color = "gray10")))
+
+cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
 ```
 
 ### Halifax county crime trends
@@ -51,9 +64,9 @@ halifax_crime %>%
   geom_bar(stat = 'identity', fill = "#0072B2") + 
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
-  xlab("Year") + ylab("Number of crimes") +
-  ggtitle("Total number of crimes from 2010 to 2019") + 
-  theme_minimal()
+  labs(y = "Number of Crimes",
+       x = NULL,
+       title = "Total Number of Crimes from 2010 to 2019")
 ```
 
 #### Most common offense types and clearance rates
@@ -65,6 +78,9 @@ halifax_crime %>%
   ggplot(aes(x = reorder(offense_type, n), y = n)) +
   geom_bar(stat = 'identity', fill = "#0072B2") +
   coord_flip() + 
+  labs(x = NULL,
+       y = "Number of Crimes",
+       title = "Total Number of Crimes by Offense Type")
   xlab("Crime type") + ylab("Number of crimes") + 
   ggtitle("Total number of crimes by offense type") + 
   theme_minimal()
@@ -83,9 +99,12 @@ halifax_crime %>%
   mutate(perc_clear = perc_clear/sum(perc_clear) * 100) %>%
   filter(clearance_stat == 1) %>%
   inner_join(halifax_crime_tally, by = "offense_type") %>%
-  ggplot(aes(x = reorder(offense_type, n), y = perc_clear)) +
+  ggplot(aes(x = reorder(offense_type, perc_clear), y = perc_clear)) +
   geom_bar(stat = 'identity', fill = "#0072B2") +
   coord_flip() + 
+  labs(x = "Crime Type",
+       y = "Percent of Crimes Cleared by Arrest",
+       title = "Percent of Crimes Cleared by Offense Type")
   xlab("Crime type") + ylab("Percent of crimes cleared by arrest") + 
   ggtitle("Percent of crimes cleared by\narrest by offense type") + 
   theme_minimal()
@@ -105,12 +124,13 @@ halifax_crime %>%
   geom_point(size = 2) + 
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
-  scale_color_manual(values = c("#0072B2", "#CC79A7"),
+  scale_color_manual(values = cbbPalette,
                      labels = c("Black", "White")) + 
-  xlab("Year") + ylab("Number of crimes") +
-  ggtitle("Total number of crimes by race") + 
-  guides(color = guide_legend(title = "Offender\nrace")) + 
-  theme_minimal()
+  labs(x = NULL,
+       y = "Number of Crimes",
+       title = "Total Number of Crimes by Race",
+       color = "Offender\nRace") +
+  lims(y = c(0, 1000))
 
 halifax_pop <- va_pop_by_race[va_pop_by_race$county_cap == "HALIFAX",]
 
@@ -122,17 +142,18 @@ halifax_crime %>%
   mutate(crime_per_cap = case_when(offender_race == "Black or African American" ~ n/halifax_pop$pop_Black,
                                    offender_race == "White" ~ n/halifax_pop$pop_White)
          ) %>%
-  ggplot(aes(x = incident_year, y = crime_per_cap, color = offender_race)) + 
+  ggplot(aes(x = incident_year, y = crime_per_cap * 1000, color = offender_race)) + 
   geom_line(lwd = 1.1) +
   geom_point(size = 2) + 
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
-  scale_color_manual(values = c("#0072B2", "#CC79A7"),
+  scale_color_manual(values = cbbPalette,
                      labels = c("Black", "White")) + 
-  xlab("Year") + ylab("Number of crimes per population") +
-  ggtitle("Total number of crimes by race per capita") + 
-  guides(color = guide_legend(title = "Offender\nrace")) + 
-  theme_minimal()
+  labs(x = NULL,
+       y = "Number of Crimes per Per 1000 People",
+       title = "Total Number of Crimes by Race per 1000 People",
+       color = "Offender\nRace") +
+  lims(y = c(0, 80))
 
 ```
 
@@ -155,12 +176,13 @@ halifax_crime %>%
   geom_point(size = 2) + 
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
-  scale_color_manual(values = c("#0072B2", "#CC79A7"),
+  scale_color_manual(values = cbbPalette,
                      labels = c("Black", "White")) + 
-  xlab("Year") + ylab("Percent of crimes cleared by arrest") +
-  ggtitle("Percent of crimes cleared by arrest by race") + 
-  guides(color = guide_legend(title = "Offender\nrace")) + 
-  theme_minimal()
+  labs(x = NULL,
+       y = "Percent of Crimes Cleared by Arrest",
+       title = "Percent of Crimes Cleared by Arrest by Race",
+       color = "Offender\nRace") +
+  lims(y = c(0, 50))
   
 ```
 
