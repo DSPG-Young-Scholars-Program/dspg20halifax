@@ -1,6 +1,6 @@
 ---
-title: "Arrests"
-description: "What are the trends in arrests in Halifax?"
+title: "Crimes"
+description: "What are the trends in crimes in Halifax?"
 tags: ["R", "Visualization"]
 weight: 3
 draft: false
@@ -8,12 +8,9 @@ output: html_document
 ---
  
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-knitr::opts_chunk$set(message = FALSE)
-knitr::opts_chunk$set(warning = FALSE)
-knitr::opts_chunk$set(fig.align = "center")
-knitr::opts_chunk$set(out.width = "\\textwidth")
-knitr::opts_chunk$set(fig.height = 8)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                      fig.align = "center", out.width = "\\textwidth",
+                      fig.height = 8)
 
 options(scipen = 10000)
 ```
@@ -32,15 +29,31 @@ library(tidycensus)
 library(sf)
 library(cowplot)
 
-# all VA arrests between 2010 and 2019
-all_va_arrest <- read_csv(here("data", "original", "Crime", "full_va_crime", "clean_all_arrest_all_years.csv"))
+# all VA crimes between 2010 and 2019
+all_va_crime <- read_csv(here("data", "original", "Crime", "full_va_crime", "clean_all_arrest_all_years.csv"))
 
 # VA county population by race from census
 va_pop_by_race <- read_csv(here("data", "original", "Crime", "full_va_crime", "clean_county_pop_by_race.csv"))
+
+# all Halifax county crimes between 2010 and 2019
+halifax_crime <- all_va_crime[all_va_crime$county_cap == "HALIFAX",]
 ```
 
-```{r va_county_map_data}
+```{r halifax_crimes}
+halifax_crime %>%
+  group_by(incident_year) %>%
+  tally %>%
+  ggplot(aes(x = incident_year, y = n)) + 
+  geom_bar(stat = 'identity', fill = "#0072B2") + 
+  scale_x_continuous(breaks = c(seq(2010, 2019)),
+                     labels = c(seq(2010, 2019))) +
+  xlab("Year") + ylab("Number of crimes") +
+  ggtitle("Number of total crimes in Halifax county from 2010 to 2019") + 
+  theme_minimal()
+```
 
+
+```{r va_county_map_data}
 # get VA state map data
 states <- map_data("state")
 va_state <- subset(states, region == "virginia")
@@ -71,61 +84,62 @@ va_base <- ggplot(data = va_state,
   geom_polygon(color = "black", fill = "gray")
 ```
 
-## Total arrests
+### All crimes
 
-```{r all_arrests}
-county_total <- all_va_arrest %>%
+```{r all_crimes}
+county_total <- all_va_crime %>%
   group_by(county_cap) %>%
   tally %>%
   as.data.frame() %>%
   inner_join(va_pop_by_race, by = "county_cap") %>%
-  mutate(arrest_per_cap = n/total_pop) %>%
+  mutate(crime_per_cap = n/total_pop) %>%
   inner_join(va_county, by = "county_cap")
 
 county_total_plot <- va_base +
-  geom_polygon(data = county_total, aes(fill = arrest_per_cap), color = "white") +
+  geom_polygon(data = county_total, aes(fill = crime_per_cap), color = "white") +
   geom_polygon(color = "black", fill = NA) + 
   geom_text(data = county_total %>% filter(county_cap == "HALIFAX") %>% slice(1), 
             aes(x = long - 0.15, y = lat + 0.2, label = "H")) + 
   scale_fill_viridis_c(trans = "sqrt", alpha = .4) +
   theme_bw() +
   ditch_the_axis + 
-  guides(fill = guide_legend(title = "Arrests\nper\ncapita"))
+  guides(fill = guide_legend(title = "Crimes\nper\ncapita"))
 
-county_total_year <- all_va_arrest %>%
+county_total_year <- all_va_crime %>%
   group_by(incident_year, county_cap) %>%
   tally %>%
   as.data.frame() %>%
   inner_join(va_pop_by_race, by = "county_cap") %>%
-  mutate(arrest_per_cap = n/total_pop) %>%
+  mutate(crime_per_cap = n/total_pop) %>%
   inner_join(va_county, by = "county_cap")
 
 halifax_total_year <- county_total_year %>% filter(county_cap == "HALIFAX")
 
 county_total_year_plot <- ggplot(data = county_total_year %>% filter(county_cap != "HALIFAX"), 
-                                 aes(x = incident_year, y = arrest_per_cap, group = county_cap)) + 
+                                 aes(x = incident_year, y = crime_per_cap, group = county_cap)) + 
   geom_line(alpha = 0.1) +
   geom_line(data = halifax_total_year, 
-            aes(x = incident_year, y = arrest_per_cap),
+            aes(x = incident_year, y = crime_per_cap),
             color = "red", lwd = 1.3) + 
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
-  xlab("Year") + ylab("Arrests per capita") +
+  xlab("Year") + ylab("Crimes per capita") +
   theme_bw()
 
-total_arrest_grid <- plot_grid(county_total_plot, county_total_year_plot,
+total_crime_grid <- plot_grid(county_total_plot, county_total_year_plot,
                                nrow = 2)
 
-total_arrest_title <- ggdraw() + 
-  draw_label("Number of total arrests per capita\nin each county from 2010 to 2019", 
+total_crime_title <- ggdraw() + 
+  draw_label("Number of total crimes per capita\nin each county from 2010 to 2019", 
              fontface='bold')
-plot_grid(total_arrest_title, total_arrest_grid, ncol = 1, rel_heights = c(0.1, 1))
+plot_grid(total_crime_title, total_crime_grid, ncol = 1, rel_heights = c(0.1, 1))
 
 ```
 
+### Black crimes
 
-```{r black_arrests}
-county_black <- all_va_arrest %>%
+```{r black_crimes}
+county_black <- all_va_crime %>%
   filter(offender_race == "Black or African American") %>%
   group_by(county_cap) %>%
   tally %>%
@@ -142,42 +156,43 @@ county_black_plot <- va_base +
   scale_fill_viridis_c(trans = "sqrt", alpha = .4) +
   theme_bw() +
   ditch_the_axis + 
-  guides(fill = guide_legend(title = "Arrests\nper\ncapita"))
+  guides(fill = guide_legend(title = "Crimes\nper\ncapita"))
 
-county_black_year <- all_va_arrest %>%
+county_black_year <- all_va_crime %>%
   group_by(incident_year, county_cap) %>%
   tally %>%
   as.data.frame() %>%
   inner_join(va_pop_by_race, by = "county_cap") %>%
-  mutate(arrest_per_cap = n/pop_Black) %>%
+  mutate(crime_per_cap = n/pop_Black) %>%
   inner_join(va_county, by = "county_cap")
 
 halifax_black_year <- county_black_year %>% filter(county_cap == "HALIFAX")
 
 county_black_year_plot <- ggplot(data = county_black_year %>% filter(county_cap != "HALIFAX"), 
-                                 aes(x = incident_year, y = arrest_per_cap, group = county_cap)) + 
+                                 aes(x = incident_year, y = crime_per_cap, group = county_cap)) + 
   geom_line(alpha = 0.1) +
   geom_line(data = halifax_black_year, 
-            aes(x = incident_year, y = arrest_per_cap),
+            aes(x = incident_year, y = crime_per_cap),
             color = "red", lwd = 1.3) + 
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
   ylim(0, 10) + 
-  xlab("Year") + ylab("Arrests per capita") +
+  xlab("Year") + ylab("Crimes per capita") +
   theme_bw()
 
-black_arrest_grid <- plot_grid(county_black_plot, county_black_year_plot,
+black_crime_grid <- plot_grid(county_black_plot, county_black_year_plot,
                                nrow = 2)
 
-black_arrest_title <- ggdraw() + 
-  draw_label("Number of Black arrests per capita\nin each county from 2010 to 2019", 
+black_crime_title <- ggdraw() + 
+  draw_label("Number of Black crimes per capita\nin each county from 2010 to 2019", 
              fontface='bold')
-plot_grid(black_arrest_title, black_arrest_grid, ncol = 1, rel_heights = c(0.1, 1))
+plot_grid(black_crime_title, black_crime_grid, ncol = 1, rel_heights = c(0.1, 1))
 ```
 
+### White crimes
 
-```{r white_arrests}
-county_white <- all_va_arrest %>%
+```{r white_crimes}
+county_white <- all_va_crime %>%
   filter(offender_race == "White") %>%
   group_by(county_cap) %>%
   tally %>%
@@ -194,42 +209,42 @@ county_white_plot <- va_base +
   scale_fill_viridis_c(trans = "sqrt", alpha = .4) +
   theme_bw() +
   ditch_the_axis +
-  guides(fill = guide_legend(title = "Arrests\nper\ncapita"))
+  guides(fill = guide_legend(title = "Crimes\nper\ncapita"))
 
-county_white_year <- all_va_arrest %>%
+county_white_year <- all_va_crime %>%
   group_by(incident_year, county_cap) %>%
   tally %>%
   as.data.frame() %>%
   inner_join(va_pop_by_race, by = "county_cap") %>%
-  mutate(arrest_per_cap = n/pop_White) %>%
+  mutate(crime_per_cap = n/pop_White) %>%
   inner_join(va_county, by = "county_cap")
 
 halifax_white_year <- county_white_year %>% filter(county_cap == "HALIFAX")
 
 county_white_year_plot <- ggplot(data = county_white_year %>% filter(county_cap != "HALIFAX"), 
-                                 aes(x = incident_year, y = arrest_per_cap, group = county_cap)) + 
+                                 aes(x = incident_year, y = crime_per_cap, group = county_cap)) + 
   geom_line(alpha = 0.1) +
   geom_line(data = halifax_white_year, 
-            aes(x = incident_year, y = arrest_per_cap),
+            aes(x = incident_year, y = crime_per_cap),
             color = "red", lwd = 1.3) + 
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
-  xlab("Year") + ylab("Arrests per capita") +
+  xlab("Year") + ylab("Crimes per capita") +
   theme_bw()
 
-white_arrest_grid <- plot_grid(county_white_plot, county_white_year_plot,
+white_crime_grid <- plot_grid(county_white_plot, county_white_year_plot,
                                nrow = 2)
 
-white_arrest_title <- ggdraw() + 
-  draw_label("Number of White arrests per capita\nin each county from 2010 to 2019", 
+white_crime_title <- ggdraw() + 
+  draw_label("Number of White crimes per capita\nin each county from 2010 to 2019", 
              fontface='bold')
-plot_grid(white_arrest_title, white_arrest_grid, ncol = 1, rel_heights = c(0.1, 1))
+plot_grid(white_crime_title, white_crime_grid, ncol = 1, rel_heights = c(0.1, 1))
 ```
 
-## Drug arrests
+### All drug crimes
 
 ```{r all_drugs}
-all_drug <- all_va_arrest %>%
+all_drug <- all_va_crime %>%
   filter(offense_type == "Drug/Narcotic Violations") %>%
   group_by(county_cap) %>%
   tally %>%
@@ -246,9 +261,9 @@ all_drug_plot <- va_base +
   scale_fill_viridis_c(trans = "sqrt", alpha = .4) +
   theme_bw() +
   ditch_the_axis + 
-  guides(fill = guide_legend(title = "Arrests\nper\ncapita"))
+  guides(fill = guide_legend(title = "Crimes\nper\ncapita"))
 
-all_drug_year <- all_va_arrest %>%
+all_drug_year <- all_va_crime %>%
   filter(offense_type == "Drug/Narcotic Violations") %>%
   group_by(incident_year, county_cap) %>%
   tally %>%
@@ -267,21 +282,23 @@ all_drug_year_plot <- ggplot(data = all_drug_year %>% filter(county_cap != "HALI
             color = "red", lwd = 1.3) + 
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
-  xlab("Year") + ylab("Arrests per capita") +
+  xlab("Year") + ylab("Crimes per capita") +
   theme_bw()
 
 all_drug_grid <- plot_grid(all_drug_plot, all_drug_year_plot,
                                nrow = 2)
 
 all_drug_title <- ggdraw() + 
-  draw_label("Number of total drug arrests per capita\nin each county from 2010 to 2019", 
+  draw_label("Number of total drug crimes per capita\nin each county from 2010 to 2019", 
              fontface='bold')
 plot_grid(all_drug_title, all_drug_grid, ncol = 1, rel_heights = c(0.1, 1))
 
 ```
 
+### Black drug crimes
+
 ```{r black_drugs}
-black_drug <- all_va_arrest %>%
+black_drug <- all_va_crime %>%
   filter(offense_type == "Drug/Narcotic Violations" & 
            offender_race == "Black or African American") %>%
   group_by(county_cap) %>%
@@ -299,9 +316,9 @@ black_drug_plot <- va_base +
   scale_fill_viridis_c(trans = "sqrt", alpha = .4) +
   theme_bw() +
   ditch_the_axis + 
-  guides(fill = guide_legend(title = "Arrests\nper\ncapita"))
+  guides(fill = guide_legend(title = "Crimes\nper\ncapita"))
 
-black_drug_year <- all_va_arrest %>%
+black_drug_year <- all_va_crime %>%
   filter(offense_type == "Drug/Narcotic Violations" & 
            offender_race == "Black or African American") %>%
   group_by(incident_year, county_cap) %>%
@@ -322,21 +339,23 @@ black_drug_year_plot <- ggplot(data = black_drug_year %>% filter(county_cap != "
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
   ylim(0, 0.1) + 
-  xlab("Year") + ylab("Arrests per capita") +
+  xlab("Year") + ylab("Crimes per capita") +
   theme_bw()
 
 black_drug_grid <- plot_grid(black_drug_plot, black_drug_year_plot,
                                nrow = 2)
 
 black_drug_title <- ggdraw() + 
-  draw_label("Number of Black drug arrests per capita\nin each county from 2010 to 2019", 
+  draw_label("Number of Black drug crimes per capita\nin each county from 2010 to 2019", 
              fontface='bold')
 plot_grid(black_drug_title, black_drug_grid, ncol = 1, rel_heights = c(0.1, 1))
 
 ```
 
+### White drug crimes
+
 ```{r white_drugs}
-white_drug <- all_va_arrest %>%
+white_drug <- all_va_crime %>%
   filter(offense_type == "Drug/Narcotic Violations" & 
            offender_race == "White") %>%
   group_by(county_cap) %>%
@@ -354,9 +373,9 @@ white_drug_plot <- va_base +
   scale_fill_viridis_c(trans = "sqrt", alpha = .4) +
   theme_bw() +
   ditch_the_axis + 
-  guides(fill = guide_legend(title = "Arrests\nper\ncapita"))
+  guides(fill = guide_legend(title = "Crimes\nper\ncapita"))
 
-white_drug_year <- all_va_arrest %>%
+white_drug_year <- all_va_crime %>%
   filter(offense_type == "Drug/Narcotic Violations" & 
            offender_race == "White") %>%
   group_by(incident_year, county_cap) %>%
@@ -376,14 +395,14 @@ white_drug_year_plot <- ggplot(data = white_drug_year %>% filter(county_cap != "
             color = "red", lwd = 1.3) + 
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
-  xlab("Year") + ylab("Arrests per capita") +
+  xlab("Year") + ylab("Crimes per capita") +
   theme_bw()
 
 white_drug_grid <- plot_grid(white_drug_plot, white_drug_year_plot,
                                nrow = 2)
 
 white_drug_title <- ggdraw() + 
-  draw_label("Number of white drug arrests per capita\nin each county from 2010 to 2019", 
+  draw_label("Number of white drug crimes per capita\nin each county from 2010 to 2019", 
              fontface='bold')
 plot_grid(white_drug_title, white_drug_grid, ncol = 1, rel_heights = c(0.1, 1))
 ```
