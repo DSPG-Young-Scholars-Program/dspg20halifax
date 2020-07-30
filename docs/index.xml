@@ -29,7 +29,16 @@ Other things to visualize: admissions rates? Discharge rates? Juvenile detention
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/employment_page/</guid>
-      <description>/* this chunnk of code centers all of the headings */ h1, h2, h3 { text-align: center; } body { text-align: justify }  Examples Page If you want to add in an image on an Rmd file, use this link here. It ends up being a little tricky, but as long as you have created a folder to insert your images, you can just use some markdown code or html to insert images in the format you want.</description>
+      <description>Background A discussion of factors related to incarceration would be remiss without discussing unemployment. Empirical analyses have consistently found unemployment to be one of the factors most strongly correlated with crime. A 2005 meta-analysis of over 200 studies quantifying predictors of crime found that local unemployment rates had the second-largest effect size out of 31 predictors.1 There are several reasonable theories as to why this is true.</description>
+    </item>
+    
+    <item>
+      <title>Arrests</title>
+      <link>/findings/arrests_page/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/arrests_page/</guid>
+      <description> Total arrests  Drug arrests  </description>
     </item>
     
     <item>
@@ -38,8 +47,7 @@ Other things to visualize: admissions rates? Discharge rates? Juvenile detention
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/family_structure_page/</guid>
-      <description>[Here you will describe the data discoversy process, the data used, and the methods employed for this single page. Since you already have a Project Overview and Data &amp;amp; Methods tabs, you probably want to keep this first paragraph fairly short and use the rest of the document to walk your readers through your analyses.]
-Main Findings [Here you will describe the results and include important visualizations from your project.</description>
+      <description>There were many government data sources used for this research, most prominent of which were the Center for Disease and Prevention’s (CDC) and Department of Health and Human Services (HHS)’ many articles regarding teen births. Other sources include the County Health Rankings website, Youth.gov website, Guttmacher Institute, Child Trends website, and the National Center for Biotechnology Information (NCBI). Many of these sources had information up to 2018, which is still relevant for statistics.</description>
     </item>
     
     <item>

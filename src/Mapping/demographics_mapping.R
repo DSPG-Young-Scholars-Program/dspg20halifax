@@ -89,17 +89,17 @@ halifax_decennial_data %>%
   leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   addTiles()%>%
   addPolygons(fillColor = ~Pct_colors_housing(pct_mortgage_owned_housing),
-              fillOpacity = 0.75, group = "Mortgage Owned Housing",
+              fillOpacity = 1, group = "Mortgage Owned Housing",
               highlight = highlightOptions(color = "white", fillColor = "red", 
                                            bringToFront = TRUE),
               label = ~paste0("Mortgage Owned: ", (round(pct_mortgage_owned_housing, digits = 2)))) %>%
   addPolygons(fillColor = ~Pct_colors_housing(pct_full_owned_housing),
-              fillOpacity = 0.75, group = "Full Owned Housing",
+              fillOpacity = 1, group = "Full Owned Housing",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Full Owned Housing: ", (round(pct_full_owned_housing, digits = 2)))) %>%
   addPolygons(fillColor = ~Pct_colors_housing(pct_renters_housing),
-              fillOpacity = 0.75, group = "Renters Housing",
+              fillOpacity = 1, group = "Renters Housing",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Renters Housing: ", (round(pct_renters_housing, digits = 2)))) %>%
@@ -116,17 +116,17 @@ halifax_decennial_data %>%
   leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   addTiles()%>%
   addPolygons(fillColor = ~Pct_colors_houseRace(total_owner),
-              fillOpacity = 0.75, group = "Total Population of Owners",
+              fillOpacity = 1, group = "Total Population of Owners",
               highlight = highlightOptions(color = "white", fillColor = "red", 
                                            bringToFront = TRUE),
               label = ~paste0("Total Owners: ", (round(total_owner, digits = 2)))) %>%
   addPolygons(fillColor = ~Pct_colors_houseRace(white_owner),
-              fillOpacity = 0.75, group = "White Population of Owners",
+              fillOpacity = 1, group = "White Population of Owners",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("White Owners: ", (round(white_owner, digits = 2)))) %>%
   addPolygons(fillColor = ~Pct_colors_houseRace(black_owner),
-              fillOpacity = 0.75, group = "Black Population of Owners",
+              fillOpacity = 1, group = "Black Population of Owners",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Black Owners: ", (round(black_owner, digits = 2)))) %>%
@@ -144,17 +144,17 @@ halifax_decennial_data %>%
   leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   addTiles()%>%
   addPolygons(fillColor = ~Pct_colors_rentRace(total_renter),
-              fillOpacity = 0.75, group = "Total Population of Renters",
+              fillOpacity = 1, group = "Total Population of Renters",
               highlight = highlightOptions(color = "white", fillColor = "red", 
                                            bringToFront = TRUE),
               label = ~paste0("Total Renters: ", (round(total_renter)))) %>%
   addPolygons(fillColor = ~Pct_colors_rentRace(white_renter),
-              fillOpacity = 0.75, group = "White Population of Renters",
+              fillOpacity = 1, group = "White Population of Renters",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("White Renters: ", (round(white_renter)))) %>%
   addPolygons(fillColor = ~Pct_colors_rentRace(black_renter),
-              fillOpacity = 0.75, group = "Black Population of Renters",
+              fillOpacity = 1, group = "Black Population of Renters",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Black Renters: ", (round(black_renter)))) %>%
@@ -169,22 +169,22 @@ halifax_decennial_data %>%
   leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   addTiles()%>%
   addPolygons(fillColor = ~Pct_colors(pct_white_owner),
-              fillOpacity = 0.75, group = "White Owners",
+              fillOpacity = 1, group = "White Owners",
               highlight = highlightOptions(color = "white", fillColor = "red", 
                                            bringToFront = TRUE),
               label = ~paste0("White OWners: ", (round(pct_white_owner, digits = 2)))) %>%
   addPolygons(fillColor = ~Pct_colors(pct_black_owner),
-              fillOpacity = 0.75, group = "Black OWners",
+              fillOpacity = 1, group = "Black OWners",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Black Owners: ", (round(pct_black_owner, digits = 2)))) %>%
   addPolygons(fillColor = ~Pct_colors(pct_white_renter),
-              fillOpacity = 0.75, group = "White Renters",
+              fillOpacity = 1, group = "White Renters",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("White Renters: ", (round(pct_white_renter, digits = 2)))) %>%
   addPolygons(fillColor = ~Pct_colors(pct_black_renter),
-              fillOpacity = 0.75, group = "Black Renters",
+              fillOpacity = 1, group = "Black Renters",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Black Renters: ", (round(pct_black_renter, digits = 2)))) %>%
@@ -202,12 +202,12 @@ halifax_decennial_data %>%
   leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   addTiles()%>%
   addPolygons(fillColor = ~Pct_colors_gender(pct_male_pop),
-              fillOpacity = 0.75, group = "Male Population",
+              fillOpacity = 1, group = "Male Population",
               highlight = highlightOptions(color = "white", fillColor = "red", 
                                            bringToFront = TRUE),
               label = ~paste0("Proportion of Male Population: ", (round(pct_male_pop, digits = 2)))) %>%
   addPolygons(fillColor = ~Pct_colors_gender(pct_female_pop),
-              fillOpacity = 0.75, group = "Female Population",
+              fillOpacity = 1, group = "Female Population",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Proportion of Female Population: ", (round(pct_female_pop, digits = 2)))) %>%
@@ -224,12 +224,12 @@ halifax_decennial_data %>%
   leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   addTiles()%>%
   addPolygons(fillColor = ~Pct_colors_age(pct_under18),
-              fillOpacity = 0.75, group = "Minor Population",
+              fillOpacity = 1, group = "Minor Population",
               highlight = highlightOptions(color = "white", fillColor = "red", 
                                            bringToFront = TRUE),
               label = ~paste0("Proportion of Minor Population: ", (round(pct_under18, digits = 2)))) %>%
   addPolygons(fillColor = ~Pct_colors_age(pct_adult),
-              fillOpacity = 0.75, group = "Adult Population",
+              fillOpacity = 1, group = "Adult Population",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Proportion of Adult Population: ", (round(pct_adult, digits = 2)))) %>%
@@ -246,17 +246,17 @@ halifax_decennial_data %>%
   leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   addTiles()%>%
   addPolygons(fillColor = ~Pct_colors_structure(pct_husband_wife_household),
-              fillOpacity = 0.75, group = "Husband and Wife Household",
+              fillOpacity = 1, group = "Husband and Wife Household",
               highlight = highlightOptions(color = "white", fillColor = "red", 
                                            bringToFront = TRUE),
               label = ~paste0("Proportion: ", (round(pct_husband_wife_household, digits = 2)))) %>%
   addPolygons(fillColor = ~Pct_colors_structure(pct_single_parent),
-              fillOpacity = 0.75, group = "Household of Single Parents",
+              fillOpacity = 1, group = "Household of Single Parents",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Proportion: ", (round(pct_single_parent, digits = 2)))) %>%
   addPolygons(fillColor = ~Pct_colors_structure(pct_lives_alone_household),
-             fillOpacity = 0.75, group = "Households that live alove",
+             fillOpacity = 1, group = "Households that live alove",
              highlight = highlightOptions(color = "white", fillColor = "red",
                                           bringToFront = TRUE),
              label = ~paste0("Proportion: ", (round(pct_lives_alone_household, digits = 2)))) %>%
@@ -274,17 +274,17 @@ halifax_decennial_data %>%
   leaflet(options = leafletOptions(dragging = FALSE, minZoom = 9, maxZoom = 12)) %>%
   addTiles()%>%
   addPolygons(fillColor = ~Pct_colors_med_age(total_median_age),
-              fillOpacity = 0.75, group = "Total Median Age",
+              fillOpacity = 1, group = "Total Median Age",
               highlight = highlightOptions(color = "white", fillColor = "red", 
                                            bringToFront = TRUE),
               label = ~paste0("Age: ", (total_median_age))) %>%
   addPolygons(fillColor = ~Pct_colors_med_age(white_median_age),
-              fillOpacity = 0.75, group = "White Median Age",
+              fillOpacity = 1, group = "White Median Age",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Age: ", (white_median_age))) %>%
   addPolygons(fillColor = ~Pct_colors_med_age(black_median_age),
-              fillOpacity = 0.75, group = "Black Median Age",
+              fillOpacity = 1, group = "Black Median Age",
               highlight = highlightOptions(color = "white", fillColor = "red",
                                            bringToFront = TRUE),
               label = ~paste0("Age: ", (black_median_age))) %>%
