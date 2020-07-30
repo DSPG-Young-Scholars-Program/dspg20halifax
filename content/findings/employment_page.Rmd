@@ -134,11 +134,11 @@ m
 
 ### Conclusion and Policy Implications
 
-TODO
+Halifax doesn't stand out on financial features, but that doesn't mean improvements can't be made. Given the strong correlation between unemployment and incarceration and crime, it is likely that working to increase employment would be helpful to reduce incarceration and recidivism, while also providing numerous other economic beneifts. However, in order to fully understand how this might happen in Halifax, more data is needed. The following is a discussion of datasets that would prove useful in this regard.
 
 #### Additional Data Sources
 
-In order to properly understand the complicated relationship between incarceration, recidivism, and employment in Halifax, more data is required. Ideally, we would have an understanding of employment rates for those who are formerly incarcerated, as well as information on the wages of these jobs to understand if the jobs the formerly incarcerated are able to get pay enough to survive. 
+One core piece of data we are missing is the employment rates for those who are formerly incarcerated, as well as information on the wages of these jobs to understand if the jobs the formerly incarcerated are able to get pay enough to survive. 
 
 More detailed data on how unemployment varies within Halifax would also be extremly helpful. Due to its small population, census estimates for different regions within Halifax county are extremely uncertain, making it difficult to understand how unemployment connects with features such as housing.
 
