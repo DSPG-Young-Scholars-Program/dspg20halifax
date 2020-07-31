@@ -22,7 +22,9 @@ We therefore sought to visualize the spatial distribution of employment opportun
 Each map below displays the areas within 10, 20, and 30 minutes of a selected subsidized housing property in Halifax County. Also displayed are the locations of the top employers in the county, schools, and substance abuse treatment/support centers.
 
 ### Main Findings
-<br><br><br>
+
+<br>
+
 #### Accessibility by Car
 
 ```{r}
@@ -30,6 +32,7 @@ drive_map <- readRDS(here::here("data", "working", "isochrones", "drive_map.RDS"
 drive_map
 ```
 <br><br><br>
+
 #### Accessibility by Bike
 
 ```{r}
@@ -37,6 +40,7 @@ bike_map <- readRDS(here::here("data", "working", "isochrones", "bike_map.RDS"))
 bike_map
 ```
 <br><br><br>
+
 #### Accessibility on Foot
 
 ```{r}

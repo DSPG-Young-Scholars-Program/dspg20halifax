@@ -197,14 +197,13 @@ va_housing_vera %>%
   geom_segment(aes(x = reorder(county_name,diff), xend = reorder(county_name,diff), yend = 1, y = diff, alpha = isHalifax, color = capacity_color), size = 1) +
   geom_point(aes(x = reorder(county_name,-diff), y = diff, alpha = isHalifax, color = capacity_color), size = 3) +
   #geom_point(aes(x = reorder(fips,-people_total), y = people_total, alpha = isHalifax, color = capacity), size = 0.75) +
-  scale_alpha_manual(values = c(0.2, 1)) +
+  scale_alpha_manual(values = c(0.3, 1)) +
   scale_color_manual(values = c("#FC4444","#6b6385")) +
   scale_y_continuous(breaks = c(1, 5, 10, 25, 50), labels = c("1", "5", "10", "25", "50 \ntimes larger")) +
   coord_flip() +
   labs(y = "", x=  "", title = "Size of Jail Discharge Population \nRelative to Subsidized Housing Capacity", subtitle = "Rural Virginia Localities") +
   theme(legend.position = "none",
         panel.grid.minor = element_blank(),
-        panel.grid.major.y = element_blank(),
         plot.margin = margin(0.5, 2, 0, 0.5, "cm"))
 ```
 

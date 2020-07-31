@@ -44,7 +44,7 @@ laus_unemployment_county <- read.csv(here::here("data", "original","Unemployment
   left_join(county_info, by = "GEOID") %>%
   mutate(year_month_frac = Year + 1/12 * (as.numeric(substr(Period, 2, 3)) - 1))
 
-options(mapbox.accessToken = Sys.getenv("MAPBOX_API_KEY"))
+options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 ```
 
 
@@ -82,7 +82,7 @@ plot
 
 Below we present the 5 year ACS unemployment estimates for counties in Virginia broken down by race. Counties with excessivly large margins of errors have been colored grey. This map displays how both within Halifax and across Virginia more broadly, African Americans are less likely to be employed than their white peers due to the effects of systemic racism, further increasing their vulnerability. 
 
-```{r}
+```{r, fig.height = 4}
 
 check_unstable <- function(variable_name) {
   ifelse((acs_unemployment_county_sp[[glue("{variable_name}_estimate")]]) < 2 * acs_unemployment_county_sp[[glue("{variable_name}_moe")]],
