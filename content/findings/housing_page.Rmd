@@ -1,7 +1,7 @@
 ---
 description: "What kinds of affordable housing options exist?"
 tags: ["R", "Visualization"]
-weight: 3
+weight: 4
 draft: false
 output: html_document
 ---

@@ -1,8 +1,7 @@
 ---
-title: "Crimes"
 description: "What are the trends in crimes in Halifax?"
 tags: ["R", "Visualization"]
-weight: 3
+weight: 2
 draft: false
 output: html_document
 ---
@@ -104,7 +103,7 @@ halifax_crime %>%
   coord_flip() + 
   labs(x = "Crime Type",
        y = "Percent of Crimes Cleared by Arrest",
-       title = "Percent of Crimes Cleared by Offense Type")
+       title = "Percent of Crimes Cleared by Offense Type") +
   xlab("Crime type") + ylab("Percent of crimes cleared by arrest") + 
   ggtitle("Percent of crimes cleared by\narrest by offense type") + 
   theme_minimal()

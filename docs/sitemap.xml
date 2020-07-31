@@ -7,15 +7,11 @@
   </url>
   
   <url>
+    <loc>/findings/crimes_page/</loc>
+  </url>
+  
+  <url>
     <loc>/findings/employment_page/</loc>
-  </url>
-  
-  <url>
-    <loc>/findings/arrests_page/</loc>
-  </url>
-  
-  <url>
-    <loc>/findings/family_structure_page/</loc>
   </url>
   
   <url>
@@ -27,7 +23,15 @@
   </url>
   
   <url>
+    <loc>/findings/family_structure_page/</loc>
+  </url>
+  
+  <url>
     <loc>/findings/isochrone_page/</loc>
+  </url>
+  
+  <url>
+    <loc>/methods/</loc>
   </url>
   
   <url>
@@ -42,10 +46,6 @@
   
   <url>
     <loc>/categories/</loc>
-  </url>
-  
-  <url>
-    <loc>/methods/</loc>
   </url>
   
   <url>
