@@ -14,12 +14,13 @@ library(tigris)
 library(tidyr)
 library(here)
 library(sf)
+library(glue)
 
 token <- Sys.getenv("MAPBOX_TOKEN")
 options(mapbox.accessToken = token)
 ```
 
-```{r}
+```{r, results = "hide"}
 create_map <- function(.data, # spatial dataset to use
                        variables, # character vector of names to be used, does not include _estimate or _moe at end. Example: estimate_percent_below_poverty_level_population_for_whom_poverty_status_is_determined
                        group_names, # The names to appear on the radio button widget, determing which variable to display
@@ -39,15 +40,15 @@ create_map <- function(.data, # spatial dataset to use
   
   add_poly_layer <- function(map, variable, group_name, color_scale) {
     addPolygons(map, color = "#444444", weight = 0.5, smoothFactor = 0.5,
-                opacity = 1.0, fillOpacity = 0.8,
+                opacity = 1.0, fillOpacity = 0.7,
                 fillColor = color_scale(check_unstable(variable)),
                 group = group_name,
-                label = ~purrr::map(glue("{NAME.x} County<br/>
-                                  {label_name}: {.data[[paste0(variable, \"_estimate\")]]}<br/>
-                                  MOE: {.data[[paste0(variable, \"_moe\")]]}"), htmltools::HTML))
+                label = ~purrr::map(glue("<strong>{NAME.x} County<br/></strong>
+                                  <strong>{label_name}</strong>: {.data[[paste0(variable, \"_estimate\")]]}<br/>
+                                  <strong>MOE</strong>: {.data[[paste0(variable, \"_moe\")]]}"), htmltools::HTML))
   }
   
-  map <- leaflet(.data) %>%
+  map <- leaflet(.data, width = "100%") %>%
     addMapboxGL(style = "mapbox://styles/mapbox/light-v9")
   
   for (i in 1:length(variables)) {
@@ -84,24 +85,18 @@ body {
 }
 ```
 
+```{r, results = "hide"}
+age_sex_race_county <- st_read(here::here("data", "original", "ACS", "acs_age_sex_race_county.geojson"))
+acs_median_income_county <- st_read(here::here("data", "original", "ACS", "acs_median_income_county.geojson"))
+halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
+```
 ## Background
 
-Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 people in the past decade. (CITE CENSUS).
+Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 people in the past decade. (CITE CENSUS?). In terms of racial breakdown, Black individuals constitute approximately 34% of the county's population and whites 60%. Because these two racial groups constitute the vast majority of the county's population, we focus on these two groups when comparing across race throughout this website.
 
-```{r}
-
-age_sex_race_county <- st_read(here::here("data", "original", "ACS", "acs_age_sex_race_county.geojson"))
-
-BAMMtools::getJenksBreaks(age_sex_race_county$percent_estimate_race_total_population_one_race_black_or_african_american_estimate, 6)
+```{r, fig.height = 5}
+#BAMMtools::getJenksBreaks(age_sex_race_county$percent_estimate_race_total_population_one_race_black_or_african_american_estimate, 6)
 pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 10, 22, 35, 50, 75))
-
-leaflet(width = "100%") %>%
-  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
-  addPolygons(data = age_sex_race_county,
-              fillColor = ~pal(percent_estimate_race_total_population_one_race_black_or_african_american_estimate),
-              fillOpacity = 0.8,
-              color = "#444444",
-              weight = 1)
 
 create_map(age_sex_race_county, c("percent_estimate_race_total_population_one_race_black_or_african_american", "percent_estimate_race_total_population_one_race_white"),
            group_names = c("Black" ,"White"),
@@ -110,28 +105,29 @@ create_map(age_sex_race_county, c("percent_estimate_race_total_population_one_ra
            scale_domain = c(0, 1),
            scale_breaks = c(0, 10, 25, 40, 60, 75, 90, 100),
            unstable_threshold = 1.5)
-
-
 ```
 
-```{r}
-BAMMtools::getJenksBreaks(age_sex_race_county$estimate_sex_and_age_total_population_median_age_.years._estimate, 7)
+In keeping with the typical pattern of much of Southside Virginia, Halifax county's population is slightly older than the state as a whole, with a median age of 46.1 years.
+
+```{r, fig.height = 5}
+#BAMMtools::getJenksBreaks(age_sex_race_county$estimate_sex_and_age_total_population_median_age_.years._estimate, 7)
 pal <- colorBin("BuPu", domain = c(0, 1), bins = c(20, 28, 36, 41, 45, 50, 60))
 
 leaflet(width = "100%") %>%
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
   addPolygons(data = age_sex_race_county,
               fillColor = ~pal(estimate_sex_and_age_total_population_median_age_.years._estimate),
-              fillOpacity = 0.8,
+              fillOpacity = 0.7,
               color = "#444444",
-              weight = 1)
+              weight = 1,
+              label = ~purrr::map(glue("<strong>{NAME.x} County<br/></strong> <strong>Age</strong>: {age_sex_race_county$estimate_sex_and_age_total_population_median_age_.years._estimate} years<br/><strong>MOE</strong>: {age_sex_race_county$estimate_sex_and_age_total_population_median_age_.years._moe}"), htmltools::HTML)) %>%
+  addLegend("bottomleft", title = "Median Age", pal = pal, values = c(20, 60))
 ```
 
-```{r}
+Some gaps between Blacks and whites in Halifax county begin to reveal themselves when we explore median income. Across Virginia, Black individuals make consistently less than their white counterparts on aggregate. In Halifax county, the same pattern appears to play out, with the white median income roughtly \$48,000 compared to the Black median income of approximately \$30,400. Importantly, the disparities in some neighboring counties appear slightly less pronounced. As we consider incarceration trends in the county, these patterns will serve as important context.
 
-acs_median_income_county <- st_read(here::here("data", "original", "ACS", "acs_median_income_county.geojson"))
-
-BAMMtools::getJenksBreaks(acs_median_income_county$estimate_median_income_.dollars._household_income_by_race_and_hispanic_or_latino_origin_of_householder_households_one_race.._black_or_african_american_estimate, 6)
+```{r, fig.height = 5}
+#BAMMtools::getJenksBreaks(acs_median_income_county$estimate_median_income_.dollars._household_income_by_race_and_hispanic_or_latino_origin_of_householder_households_one_race.._black_or_african_american_estimate, 6)
 pal <- colorBin("BuPu", domain = c(0, 1), bins = c(10000, 35000, 50000, 65000, 100000, 150000))
 
 create_map(acs_median_income_county,
@@ -144,10 +140,12 @@ create_map(acs_median_income_county,
            unstable_threshold = 1.5)
 ```
 
-```{r}
-halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
+It is difficult to discern demographic patterns within Halifax county itself because of the small sample sizes within each census tract and block group. In many cases, this makes the resulting estimates from the census bureau highly uncertain, and reduces our confidence in the precise values for the variables of interest. For this reason, to get a rough sense of tract-level demographic variation, we returned to he 2010 decennial census, which collects more data than the more regular American Community Survey (ACS).
 
-BAMMtools::getJenksBreaks(halifax_decennial_data$pct_black_race, 4)
+The following maps highlight the distribution of race and age across the county, revealing that census tracts west of South Boston are composed of larger Black communities, and that median ages increase in the more southern rural parts of the county.
+
+```{r, fig.height = 5}
+#BAMMtools::getJenksBreaks(halifax_decennial_data$pct_black_race, 4)
 pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0.15, 0.25, 0.4, 0.5, 1))
 
 halifax_decennial_data %>%
@@ -157,7 +155,7 @@ leaflet(width = "100%") %>%
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
   #added layers of chloropleth maps depicting each race
   addPolygons(fillColor = ~pal(pct_black_race),
-              fillOpacity = 0.8,
+              fillOpacity = 0.7,
               color = "#444444",
               weight = 0.5) %>%
   addLegend(position = "bottomright", pal = pal, values = c(0,1), 
@@ -165,8 +163,8 @@ leaflet(width = "100%") %>%
 
 ```
 
-```{r}
-BAMMtools::getJenksBreaks(halifax_decennial_data$total_median_age, 4)
+```{r, fig.height = 5}
+#BAMMtools::getJenksBreaks(halifax_decennial_data$total_median_age, 4)
 pal <- colorBin("BuPu", domain = c(0, 1), bins = c(38, 42, 46, 50))
 
 halifax_decennial_data %>%
@@ -176,70 +174,12 @@ leaflet(width = "100%") %>%
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
   #added layers of chloropleth maps depicting each race
   addPolygons(fillColor = ~pal(total_median_age),
-              fillOpacity = 0.8,
+              fillOpacity = 0.7,
               color = "#444444",
               weight = 0.5,
               label = ~total_median_age) %>%
   addLegend(position = "bottomright", pal = pal, values = c(0,1), 
-            title = "Proportion Black")
-```
-
-```{r}
-BAMMtools::getJenksBreaks(halifax_decennial_data$pct_female_no_husband_household, 4)
-pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 0.1, 0.15, 0.25, 1))
-
-halifax_decennial_data %>%
-  #limited dragging and set minimum and maximum zoom settings
-leaflet(width = "100%") %>%
-  #added base tiles
-  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
-  #added layers of chloropleth maps depicting each race
-  addPolygons(fillColor = ~pal(pct_female_no_husband_household),
-              fillOpacity = 0.8,
-              color = "#444444",
-              weight = 0.5) %>%
-  addLegend(position = "bottomright", pal = pal, values = c(0,1), 
-            title = "Proportion Single Women Households")
-```
-
-```{r}
-housing_data <- halifax_decennial_data %>%
-  mutate(pct_white_owner = white_owner/ (total_owner + total_renter)) %>%
-  mutate(pct_black_owner = black_owner/(total_owner + total_renter)) %>%
-  mutate(pct_white_renter = white_renter/(total_owner + total_renter)) %>%
-  mutate(pct_black_renter = black_renter/(total_owner + total_renter))
-
-BAMMtools::getJenksBreaks(halifax_decennial_data$pct_white_renter, 4)
-pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 0.15, 0.3, 0.45, 0.6, 1))
-
-  #limited dragging and set minimum and maximum zoom settings
-leaflet(housing_data, width = "100%") %>%
-  #added base tiles
-  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
-  #added layers of chloropleth maps depicting each race
-  addPolygons(fillColor = ~pal(pct_black_renter),
-              fillOpacity = 0.8,
-              color = "#444444",
-              weight = 0.5,
-              group = "Black Renters") %>%
-    addPolygons(fillColor = ~pal(pct_white_renter),
-              fillOpacity = 0.8,
-              color = "#444444",
-              weight = 0.5,
-              group = "White Renters") %>%
-    addPolygons(fillColor = ~pal(pct_black_owner),
-              fillOpacity = 0.8,
-              color = "#444444",
-              weight = 0.5,
-              group = "Black Owners") %>%
-    addPolygons(fillColor = ~pal(pct_white_owner),
-              fillOpacity = 0.8,
-              color = "#444444",
-              weight = 0.5,
-              group = "White Owners") %>%
-  addLayersControl(baseGroups = c("Black Renters", "White Renters", "Black Owners", "White Owners")) %>%
-  addLegend(position = "bottomright", pal = pal, values = c(0,1), 
-            title = "Proportion Black")
+            title = "Median Age")
 ```
 
 ## Data Sources
@@ -265,12 +205,14 @@ knitr::kable(sources, "html", caption = "Final Summary of Data Sources") %>%
 ## Challenges
 
 In addition to the data access issues mentioned above, we encountered other difficulties as we assembled a collection of sources for our specific social factors as well.
+<br>
 
-#### Lack of relevance to formerly incarcerated population.
+#### Lack of relevance to formerly incarcerated population
 
 Many of the most comprehensive data sources on these issues do not specifically address incarcerated or formerly incarcerated individuals, and it is questionable whether the patterns observed in these sources generalize to this population. For instance, Housing and Urban Development's Picture of Subsidized Households dataset provides information on characteristics of individuals in subsidized housing, but no data is recorded on the use of these services by formerly-incarcerated individuals themselves. 
+<br>
 
-#### Spatial resolution
+#### Improper spatial resolution
 
 Many potential datasets measured variables that may have been valuable to include, but only measured them at the national or state level (this was particularly true for substance abuse). While these sources may have been helpful for context, their applicability to Halifax specifically was suspect.
 
@@ -358,7 +300,11 @@ Crime is not typically considered an optimal way to explore incarceration becaus
 
 ## Summary
 
-_Need some way to wrap this page up_
+Overall, the course of this project revealed many of the difficulties inherent in exploring the topic of incarceration and recidivism. The latter in particular requires nuanced data that either are collected only very intermittently at the national level (for instance, the Bureau of Justice Statistics' recidivism analysis tool) (CITE) or simply do not exist.
+
+Given the sensitive nature of the topic, substituting proxies for these missing data can easily risk simply capturing the biases that already exist in the criminal justice system.
+
+Ultimately, a more thorough investigation of this topic would require more targeted data collection on a variety of topics. Especially in a rural area like Halifax County, much of this data collection may need to be organized by local leaders within the county for an accurate picture of incarceration and recidivism to emerge. As we discuss various social determinants of incarceration throughout this website, we attempt to highlight the most glaring gaps in data collection that could help provide a more thorough view of these issues were they to be filled.
 
 
 

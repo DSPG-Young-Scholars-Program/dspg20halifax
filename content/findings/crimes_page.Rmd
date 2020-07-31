@@ -80,7 +80,7 @@ halifax_crime %>%
   coord_flip() + 
   labs(x = NULL,
        y = "Number of Crimes",
-       title = "Total Number of Crimes by Offense Type")
+       title = "Total Number of Crimes by Offense Type") +
   xlab("Crime type") + ylab("Number of crimes") + 
   ggtitle("Total number of crimes by offense type") + 
   theme_minimal()
