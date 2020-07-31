@@ -2,7 +2,7 @@
 title: "Substance Abuse"
 description: "How does Halifax compare to surrounding areas on opioid and alcohol use?"
 tags: ["R", "networks"]
-weight: 4
+weight: 5
 draft: false
 output: html_document
 ---
@@ -36,8 +36,6 @@ library(tidycensus)
 library(stringr)
 library(dplyr)
 library(here)
-#library(censusapi)
-#library(hablar)
 library(BAMMtools)
 library(tidyr)
 #set the theme 
@@ -77,8 +75,6 @@ library(tidycensus)
 library(stringr)
 library(dplyr)
 library(here)
-library(censusapi)
-library(hablar)
 library(BAMMtools)
 library(tidyr)
 readRenviron("~/.Renviron")

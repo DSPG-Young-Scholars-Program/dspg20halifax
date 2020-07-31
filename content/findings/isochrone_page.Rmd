@@ -2,7 +2,7 @@
 title: "Accessibility"
 description: "How are resources distributed in the community?"
 tags: ["R", "Geospatial", "Isochrone"]
-weight: 5
+weight: 7
 draft: false
 output: html_document
 ---
@@ -57,8 +57,4 @@ Similarly, zoning information from the county could be incorporated to provide a
 Also valuable would be the inclusion of public transit travel times and distances, as public transit may be relied upon extensively by those re-entering society.
 
 Finally, incorporating more information about which employers are known to provide opportunities to those with past convictions would provide a more nuanced look at work accessibility. Given the difficulties finding work after being released from incarceration, it is unlikely that each of the top employers in the area is equally open to hiring those with past convictions.
-
-### References 
-
-??
 
