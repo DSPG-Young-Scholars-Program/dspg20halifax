@@ -1,4 +1,5 @@
 ---
+title: "Family Structure"
 description: "How stable are family units in Halifax?"
 tags: ["R", "Visualization"]
 weight: 6

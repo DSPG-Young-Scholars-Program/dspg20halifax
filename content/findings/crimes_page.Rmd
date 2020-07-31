@@ -1,4 +1,5 @@
 ---
+title: "Crime + Arrests"
 description: "What are the trends in crimes in Halifax?"
 tags: ["R", "Visualization"]
 weight: 2
