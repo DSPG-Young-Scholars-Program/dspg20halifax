@@ -28,6 +28,10 @@ library(leaflet)
 library(leaflet.mapboxgl)
 library(purrr)
 library(glue)
+library(tidyr)
+library(gghighlight)
+library(plotly)
+library(stringr)
 
 # all VA crimes between 2010 and 2019
 all_va_crime <- vroom::vroom(here("data", "original", "Crime", "full_va_crime", "clean_all_arrest_all_years.csv"))
@@ -66,6 +70,83 @@ Research has mostly focused on men incarcerated in prisons in urban areas, but r
 
 Given that crime, arrests, and incarceration represent different parts of the criminal justice system, we provide an overview of each in Halifax County. Specifically, we investigate trends in crime over time, common offense types, crime rates by race, and the percent of crimes cleared by arrest. Then, we investigate the incarceration rate with a focus on male and female incarceration rates as well as jails and prisons incarceration rate over time.       
 
+#### Incarceration
+
+```{r}
+vera_data <- data.table::fread(here::here("data", "original", "Incarceration", "vera_incarceration_trends.csv")) %>% as.data.frame()
+
+va_data <- vera_data %>% filter(state == "VA")
+va_rural_data <- va_data %>% filter(urbanicity == "rural")
+
+
+scale_max <- max(c(va_data$male_prison_pop_rate, va_data$female_prison_pop_rate), na.rm = TRUE)
+
+rates_by_gender_system <- va_data %>% 
+  filter(!county_name %in% c("Hopewell city", "Charles City County", "Colonial Heights city")) %>%
+  select(year, county_name, male_jail_pop_rate, female_jail_pop_rate, male_prison_pop_rate, female_prison_pop_rate) %>%
+  #rename(Male = male_prison_pop_rate, Female = female_prison_pop_rate) %>%
+  pivot_longer(names_to = "jail_gender_combo", cols = c("male_jail_pop_rate", "female_jail_pop_rate", "male_prison_pop_rate", "female_prison_pop_rate")) %>%
+  mutate(system = ifelse(str_detect(jail_gender_combo, "jail"), "Jail", "Prison"),
+         gender = ifelse(str_detect(jail_gender_combo, "female"), "Female", "Male"),
+         gender = factor(gender, levels = c("Male", "Female")))
+
+rates_by_gender_system %>%
+  filter(system == "Jail") %>%
+  ggplot(aes(x = year, y = value, group = county_name, color = gender)) +
+  geom_line(lwd = 1.1) +
+  scale_color_manual(values = cbbPalette) +
+  gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE, unhighlighted_params = list(alpha = 0.2)) +
+  scale_y_continuous(limits = c(0, scale_max)) +
+  labs(color = "Gender", title = "", subtitle = "", y = "Incarcerated Individuals per 100,000\n", x = "\nYear")  +
+  facet_wrap(gender~.)
+
+```
+<br>
+```{r}
+rates_by_gender_system %>%
+  filter(system == "Prison") %>%
+  ggplot(aes(x = year, y = value, group = county_name, color = gender)) +
+  geom_line(lwd = 1.1) +
+  scale_color_manual(values = cbbPalette) +
+  gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE, unhighlighted_params = list(alpha = 0.2)) +
+  scale_y_continuous(limits = c(0, scale_max)) +
+  labs(color = "Gender", title = "Incarceration Rate in Halifax County", subtitle = "Relative to other Virginia Counties", y = "Incarcerated Individuals per 100,000\n", x = "\nYear")  +
+  facet_wrap(gender~.)
+
+```
+
+```{r}
+races <- c("black", "white")
+
+race_cols <- c(paste(races, "jail_pop_rate", sep = "_"), paste(races, "prison_pop_rate", sep = "_"))
+
+## Filter out counties/cities with seemingly duplicate data and convert to long format
+va_data_filt <- va_data %>% 
+  filter(!county_name %in% c("Hopewell city", "Charles City County", "Colonial Heights city")) %>%
+  select(year, county_name, all_of(race_cols)) %>%
+  pivot_longer(names_to = "race", cols = race_cols) %>%
+  mutate(incarceration_type = case_when(str_detect(race, "jail") ~ "Jail",
+                                        str_detect(race, "prison") ~ "Prison"),
+         race = case_when(str_detect(race, "white") ~ "White",
+                          str_detect(race, "black") ~ "Black"))
+# str_detect(race, "aapi") ~ "Asian American/Pacific Islander",
+# str_detect(race, "latinx") ~ "Latinx",
+# str_detect(race, "native") ~ "Native American"))
+
+plot_data <- va_data_filt %>% 
+  group_by(year, race, incarceration_type) %>% 
+  mutate(med = median(value, na.rm = TRUE))
+
+## Subset to post-1990 (no data before) and Halifax
+## Plot of jail and prison population rate over time in Halifax against VA median grouped by race
+plot_data %>% filter(year >= 1990, county_name == "Halifax County") %>% 
+  ggplot() + 
+  geom_line(aes(x = year, y = value, group = interaction(incarceration_type, race), color = incarceration_type), alpha = 1, size = 0.7) +
+  geom_line(aes(x = year, y = med, group = interaction(incarceration_type, race), color = incarceration_type), linetype = "dashed", alpha = 0.5, size = 0.7) +
+  scale_color_manual(values = cbbPalette) +
+  labs(y = "Incarceration rate per 100,000", x = "Year", color = "System", title = "Incarceration Rates in Halifax Co.", subtitle = "Dashed lines represent Virginia median rate") +
+  facet_grid(~race)
+```
 #### Overall crime trends over time
 
 ```{r halifax_crimes}
@@ -224,7 +305,7 @@ ggplot(filter(clearance_data, county_cap == "HALIFAX"),
 
 #### All Crimes Map
 
-```{r all_crime_map}
+```{r all_crime_map, fig.height = 4}
 counties_sp <- read_sf(here("data", "working", "va_counties.geojson"),
                        quiet = TRUE) %>% 
   st_transform(crs = 4326) %>% 
@@ -259,19 +340,19 @@ mapping_data %>%
   leaflet(width = "100%") %>% 
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_per_1000),
               group = "Yearly Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000: {round(year_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
     addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_white_per_1000),
               group = "Yearly White Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000: {round(year_crime_white_per_1000, 1)}"), htmltools::HTML)) %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_black_per_1000),
               group = "Yearly Black Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
@@ -290,26 +371,26 @@ mapping_data %>%
 
 #### Drug Crimes Map
 
-```{r drug_crime_map}
+```{r drug_crime_map, fig.height = 4}
 leaflet_scale <- colorBin("BuPu" , c(0, 120), c(0, 5, 10, 30, 120))
 
 mapping_data %>% 
   leaflet(width = "100%") %>% 
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_per_1000),
               group = "Yearly Drug Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000: {round(year_drug_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
     addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_white_per_1000),
               group = "Yearly White Drug Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000: {round(year_drug_crime_white_per_1000, 1)}"), htmltools::HTML)) %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_black_per_1000),
               group = "Yearly Black Drug Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
