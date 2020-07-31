@@ -1,5 +1,4 @@
 ---
-title: "Housing"
 description: "What kinds of affordable housing options exist?"
 tags: ["R", "Visualization"]
 weight: 3
@@ -10,8 +9,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 10)
 
-options(knitr.duplicate.label = "allow")
-
+options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 ```
 
 ```{r}
@@ -22,6 +20,7 @@ library(ggplot2)
 library(gghighlight)
 library(tidyr)
 library(leaflet)
+library(leaflet.mapboxgl)
 library(sf)
 
 theme_set(theme_minimal() +
@@ -62,45 +61,45 @@ va_housing_vera <- vera_data %>%
 ### Background
 
 ```{r}
-halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
-
-housing_data <- halifax_decennial_data %>%
-  mutate(pct_white_owner = white_owner/ (total_owner + total_renter)) %>%
-  mutate(pct_black_owner = black_owner/(total_owner + total_renter)) %>%
-  mutate(pct_white_renter = white_renter/(total_owner + total_renter)) %>%
-  mutate(pct_black_renter = black_renter/(total_owner + total_renter))
-
-BAMMtools::getJenksBreaks(halifax_decennial_data$pct_white_renter, 4)
-pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 0.15, 0.3, 0.45, 0.6, 1))
-
-  #limited dragging and set minimum and maximum zoom settings
-leaflet(housing_data, width = "100%") %>%
-  #added base tiles
-  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
-  #added layers of chloropleth maps depicting each race
-  addPolygons(fillColor = ~pal(pct_black_renter),
-              fillOpacity = 0.8,
-              color = "#444444",
-              weight = 0.5,
-              group = "Black Renters") %>%
-    addPolygons(fillColor = ~pal(pct_white_renter),
-              fillOpacity = 0.8,
-              color = "#444444",
-              weight = 0.5,
-              group = "White Renters") %>%
-    addPolygons(fillColor = ~pal(pct_black_owner),
-              fillOpacity = 0.8,
-              color = "#444444",
-              weight = 0.5,
-              group = "Black Owners") %>%
-    addPolygons(fillColor = ~pal(pct_white_owner),
-              fillOpacity = 0.8,
-              color = "#444444",
-              weight = 0.5,
-              group = "White Owners") %>%
-  addLayersControl(baseGroups = c("Black Renters", "White Renters", "Black Owners", "White Owners"), collapsed = FALSE) %>%
-  addLegend(position = "bottomright", pal = pal, values = c(0,1), 
-            title = "Proportion of Selected Ownership Status")
+# halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
+# 
+# housing_data <- halifax_decennial_data %>%
+#   mutate(pct_white_owner = white_owner/ (total_owner + total_renter)) %>%
+#   mutate(pct_black_owner = black_owner/(total_owner + total_renter)) %>%
+#   mutate(pct_white_renter = white_renter/(total_owner + total_renter)) %>%
+#   mutate(pct_black_renter = black_renter/(total_owner + total_renter))
+# 
+# BAMMtools::getJenksBreaks(halifax_decennial_data$pct_white_renter, 4)
+# pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 0.15, 0.3, 0.45, 0.6, 1))
+# 
+#   #limited dragging and set minimum and maximum zoom settings
+# leaflet(housing_data, width = "100%") %>%
+#   #added base tiles
+#   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+#   #added layers of chloropleth maps depicting each race
+#   addPolygons(fillColor = ~pal(pct_black_renter),
+#               fillOpacity = 0.8,
+#               color = "#444444",
+#               weight = 0.5,
+#               group = "Black Renters") %>%
+#     addPolygons(fillColor = ~pal(pct_white_renter),
+#               fillOpacity = 0.8,
+#               color = "#444444",
+#               weight = 0.5,
+#               group = "White Renters") %>%
+#     addPolygons(fillColor = ~pal(pct_black_owner),
+#               fillOpacity = 0.8,
+#               color = "#444444",
+#               weight = 0.5,
+#               group = "Black Owners") %>%
+#     addPolygons(fillColor = ~pal(pct_white_owner),
+#               fillOpacity = 0.8,
+#               color = "#444444",
+#               weight = 0.5,
+#               group = "White Owners") %>%
+#   addLayersControl(baseGroups = c("Black Renters", "White Renters", "Black Owners", "White Owners"), options = list(collapsed = FALSE)) %>%
+#   addLegend(position = "bottomright", pal = pal, values = c(0,1), 
+#             title = "Proportion of Selected Ownership Status")
 ```
 Despite being previously overshadowed in the literature, housing affordability has recently begun to situate itself at the center of efforts to transition incarcerated people back into the community after release. Many now see access to affordable housing as one of the primary limiting factors for reentering individuals; an unstable living situation can severely impact employment opportunities, predispose individuals to returning to criminal activity, and hinder efforts to reestablish family relationships and friendships[^1].
 
@@ -134,7 +133,7 @@ halifax_pub_housing %>%
 However, while the general income distribution is typical, Halifax does stand out when it comes to the demographic makeup of its subsidized housing population. In particular, the population is composed almost exclusively non-hispanic black, and contains a disproportionate number of single adults with children. In addition, many of these family units are headed by someone (often the mother) younger than 24. These patterns are summarized in the following scatter plot:
 
 
-```{r}
+```{r, fig.height = 15, fig.width = 25}
 ## Pct of households headed by a single parent (most are females in Halifax - can show)
 va_data <- pub_housing_summary %>%
   filter(year == 2019, program_label %in% c("Housing Choice Vouchers", "Project Based Section 8")) %>%
@@ -157,11 +156,21 @@ plot <- ggplot() +
   scale_size_continuous(range = c(0, 20), labels = c("0%", "10%", "20%", "30%", "40%")) +
   scale_color_manual(labels = c("U.S.", "Virginia", "Halifax County"), values = c("#e4e0cd", "#6b6385", "#FC4444"), na.translate=FALSE) +
   labs(y = "\nPercent Single Adults with Children", x = "Percent Black (Non-Hispanic)\n", 
-       title = "Characteristics of Subsidized Housing Population", 
+       title = "Characteristics of Subsidized Housing Population\n", 
        size = "Household heads less \nthan 24 years old") +
   guides(alpha = FALSE, color = guide_legend(title = "Locale", override.aes = list(size=10)), size = guide_legend(override.aes = list(shape = 21, alpha = 0.8))) +
   scale_alpha_manual(values = c(0.3, 0.8)) +
-  facet_wrap(~program_label, ncol = 2)
+  facet_wrap(~program_label, ncol = 2) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 30),
+        plot.subtitle = element_text(hjust = 0.5, color = "gray30", face = "italic", size = 26),
+        axis.title = element_text(size = 26, color = "gray10"),
+        axis.text = element_text(size = 24, color = "gray30"),
+        strip.text = element_text(size = 28, color = "gray30"),
+        panel.spacing = unit(4, "lines"),
+        legend.key.size = unit(3, "line"),
+        legend.text = element_text(size = 22, color = "gray30"),
+        legend.title = element_text(size = 28, color = "gray10"))
 
 plot
 ```
@@ -178,7 +187,7 @@ The subsidized housing system obviously serves a broad population beyond those w
 
 Below, we display the size of the annual number of jail discharges relative to the overall subsidized housing capacity, with Halifax County highlighted. Very few Virginia counties have a general subsidized housing supply on par with the annual discharge rate, and while Halifax is by no means an outlier, it still discharges roughly three times the number of individuals from jail as people in its subsidized housing system. While many of these individuals will find housing elsewhere, this finding speaks to the limitations of considering the federally subsidized housing as a sole option to help re-integrate these individuals affordably and effectively.
 
-```{r}
+```{r, fig.height = 12}
 ## Relative plot
 va_housing_vera %>%
   filter(year == 2017, !is.na(people_total), !is.na(total_jail_dis)) %>%
@@ -186,31 +195,31 @@ va_housing_vera %>%
          #capacity = 1 / (people_total / ((100 - pct_occupied) / 100)),
          capacity_color = ifelse(total_jail_dis > people_total, "above", "below"), 
          diff = total_jail_dis / people_total) %>%
+  filter(urbanicity == "rural") %>%
   ggplot() +
-  geom_segment(aes(x = reorder(fips,diff), xend = reorder(fips,diff), yend = 1, y = diff, alpha = isHalifax, color = capacity_color), size = 2) +
-  geom_point(aes(x = reorder(fips,-diff), y = diff, alpha = isHalifax, color = capacity_color), size = 2) +
+  geom_segment(aes(x = reorder(county_name,diff), xend = reorder(county_name,diff), yend = 1, y = diff, alpha = isHalifax, color = capacity_color), size = 1) +
+  geom_point(aes(x = reorder(county_name,-diff), y = diff, alpha = isHalifax, color = capacity_color), size = 3) +
   #geom_point(aes(x = reorder(fips,-people_total), y = people_total, alpha = isHalifax, color = capacity), size = 0.75) +
   scale_alpha_manual(values = c(0.2, 1)) +
   scale_color_manual(values = c("#FC4444","#6b6385")) +
-  scale_y_continuous(breaks = c(1, 5, 10, 25, 50)) +
-  labs(x = "County", y = "Size of Jail Discharge Population \nRelative to Subsidized Housing Capacity", title = "Capacity of Subsidized Housing System") +
+  scale_y_continuous(breaks = c(1, 5, 10, 25, 50), labels = c("1", "5", "10", "25", "50 \ntimes larger")) +
+  coord_flip() +
+  labs(y = "", x=  "", title = "Size of Jail Discharge Population \nRelative to Subsidized Housing Capacity", subtitle = "Rural Virginia Localities") +
   theme(legend.position = "none",
         panel.grid.minor = element_blank(),
-        panel.grid.major.x = element_blank(),
-        axis.text.x = element_blank())
+        panel.grid.major.y = element_blank(),
+        plot.margin = margin(0.5, 2, 0, 0.5, "cm"))
 ```
 
 Identifying and connecting individuals with other affordable housing options may therefore be a valuable role for a potential Family and Consumer Science Agent in the county. Similarly, motivating the community to consider alternative options for developing a robust affordable housing stock may be warranted, and bringing private landlords into the discussion may be an important component of a successful strategy.
 
-#### Additional Data Sources
+### Additional Data Sources
 
 To effectively understand the relationships between housing affordability patterns in Halifax and recidivism, we would need more comprehensive data on the frequency that subsidized housing options are used by those re-entering society, as well as outcomes (forced removals, criminal activity, length of stay in housing, etc.) for these individuals. Unfortunately, while HUD's Picture of Subsidized Households dataset does not explicitly record any information about individuals with prior convictions and their outcomes in subsidized housing. Historically, prior convictions would have rendered someone ineligible for many of these housing options[^6] on the grounds that these individuals constituted a high risk to the community. Evaluating the validity of these concerns would be valuable to inform the conversation about potentially increasing access to these affordable housing options for formerly incarcerated persons in Halifax.
 
 Similarly, data on private landlord attitudes surrounding renting to those with prior convictions would be extremely helpful to determine how accessible non-subsidized housing options are for those re-entering society. Reluctance on the part of landlords to rent to those with prior convictions may effectively close off an entire subset of housing to these individuals, potentially concentrating them into lower-income and more vulnerable areas.
 
 Data on these issues would allow for the evaluation the quantity and quality of housing options available to those re-entering Halifax County after serving a sentence and would likely help a potential FCSA advise these individuals on the most appropriate housing options after release.
-
-### References 
 
 [^1]: Fontaine, J. (2013). Examining housing as a pathway to successful reentry: A demonstration design process. Washington, DC: Urban Institute.
 
