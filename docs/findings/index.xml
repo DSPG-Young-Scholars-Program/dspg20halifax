@@ -29,7 +29,7 @@ Also include anything interesting from crime data?
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/crimes_page/</guid>
-      <description> Halifax county crime trends Overall crime trends over time  Most common offense types and clearance rates  Crime trends by race (total and per capita)  Clearance rates by race   Comparison of Halifax county to other VA counties All crimes  Black crimes  White crimes  All drug crimes  Black drug crimes  White drug crimes   </description>
+      <description>Background Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. The below figure from the Prison Fellowship highlights how the process from arrest to incarceration makes it difficult to compare the rates of crime, arrests, and incarceration directly.</description>
     </item>
     
     <item>
@@ -47,7 +47,8 @@ Also include anything interesting from crime data?
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/housing_page/</guid>
-      <description>Background Despite being previously overshadowed in the literature, housing affordability has recently begun to situate itself at the center of efforts to transition incarcerated people back into the community after release. Many now see access to affordable housing as one of the primary limiting factors for reentering individuals; an unstable living situation can severely impact employment opportunities, predispose individuals to returning to criminal activity, and hinder efforts to reestablish family relationships and friendships1.</description>
+      <description>Background Many now see access to affordable housing as one of the primary factors limiting successful re-entry for individuals leaving jails or prisons; an unstable living situation can severely impact employment opportunities, predispose individuals to return to criminal activity, and hinder efforts to reestablish family relationships and friendships1.
+Using the ecological model as a framework, we can see how housing impacts an individuals re-entry. At the policy level, eligibility for low-income housing opportunities may be limited by prior convictions (despite HUD recommendations to the contrary)2.</description>
     </item>
     
     <item>
