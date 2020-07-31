@@ -8,10 +8,69 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width 
 
 library(dplyr)
 library(leaflet)
+library(leaflet.mapboxgl)
 library(tidycensus)
 library(tigris)
 library(tidyr)
 library(here)
+library(sf)
+
+token <- Sys.getenv("MAPBOX_TOKEN")
+options(mapbox.accessToken = token)
+```
+
+```{r}
+create_map <- function(.data, # spatial dataset to use
+                       variables, # character vector of names to be used, does not include _estimate or _moe at end. Example: estimate_percent_below_poverty_level_population_for_whom_poverty_status_is_determined
+                       group_names, # The names to appear on the radio button widget, determing which variable to display
+                       legend_name, # name of the legend
+                       label_name, # What precedes the variable value on the hoverover label
+                       scale_domain, # over what values is the scale defined? Values outside will be color NA
+                       scale_breaks, # what divides the colors of the scale? For a 4 color scale, and example would be c(0, 25, 50, 75, 100) Note endpoints are included
+                       unstable_threshold # How many times larger does the estimate have to be than the margin of error to be considered non-null?
+) {
+  color_scale <- colorBin("BuPu", scale_domain, scale_breaks)
+  
+  check_unstable <- function(variable) {
+    ifelse((.data[[glue("{variable}_estimate")]]) < unstable_threshold * .data[[glue("{variable}_moe")]],
+           NA,
+           .data[[glue("{variable}_estimate")]])
+  }
+  
+  add_poly_layer <- function(map, variable, group_name, color_scale) {
+    addPolygons(map, color = "#444444", weight = 0.5, smoothFactor = 0.5,
+                opacity = 1.0, fillOpacity = 0.8,
+                fillColor = color_scale(check_unstable(variable)),
+                group = group_name,
+                label = ~purrr::map(glue("{NAME.x} County<br/>
+                                  {label_name}: {.data[[paste0(variable, \"_estimate\")]]}<br/>
+                                  MOE: {.data[[paste0(variable, \"_moe\")]]}"), htmltools::HTML))
+  }
+  
+  map <- leaflet(.data) %>%
+    addMapboxGL(style = "mapbox://styles/mapbox/light-v9")
+  
+  for (i in 1:length(variables)) {
+    map <- map %>%
+      add_poly_layer(variable = variables[i], group_name = group_names[i], color_scale = color_scale)
+  }
+  
+  map <- map %>%
+    addLegend("bottomright", pal = color_scale, values = .data[[glue("{variables[1]}_estimate")]],
+              title = legend_name,
+              opacity = .9
+    )
+  
+  if(!is.null(group_names)) {
+    map <- map %>%
+      addLayersControl(
+        baseGroups = group_names,
+        options = layersControlOptions(collapsed = FALSE)
+      )
+  }
+  
+  map
+}
 ```
 
 ```{css, echo=FALSE}
@@ -27,7 +86,161 @@ body {
 
 ## Background
 
-_This is where we will include demographics maps of Halifax?_
+Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 people in the past decade. (CITE CENSUS).
+
+```{r}
+
+age_sex_race_county <- st_read(here::here("data", "original", "ACS", "acs_age_sex_race_county.geojson"))
+
+BAMMtools::getJenksBreaks(age_sex_race_county$percent_estimate_race_total_population_one_race_black_or_african_american_estimate, 6)
+pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 10, 22, 35, 50, 75))
+
+leaflet(width = "100%") %>%
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  addPolygons(data = age_sex_race_county,
+              fillColor = ~pal(percent_estimate_race_total_population_one_race_black_or_african_american_estimate),
+              fillOpacity = 0.8,
+              color = "#444444",
+              weight = 1)
+
+create_map(age_sex_race_county, c("percent_estimate_race_total_population_one_race_black_or_african_american", "percent_estimate_race_total_population_one_race_white"),
+           group_names = c("Black" ,"White"),
+           legend_name = "Percentage Selected Race",
+           label_name = "Percentage",
+           scale_domain = c(0, 1),
+           scale_breaks = c(0, 10, 25, 40, 60, 75, 90, 100),
+           unstable_threshold = 1.5)
+
+
+```
+
+```{r}
+BAMMtools::getJenksBreaks(age_sex_race_county$estimate_sex_and_age_total_population_median_age_.years._estimate, 7)
+pal <- colorBin("BuPu", domain = c(0, 1), bins = c(20, 28, 36, 41, 45, 50, 60))
+
+leaflet(width = "100%") %>%
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  addPolygons(data = age_sex_race_county,
+              fillColor = ~pal(estimate_sex_and_age_total_population_median_age_.years._estimate),
+              fillOpacity = 0.8,
+              color = "#444444",
+              weight = 1)
+```
+
+```{r}
+
+acs_median_income_county <- st_read(here::here("data", "original", "ACS", "acs_median_income_county.geojson"))
+
+BAMMtools::getJenksBreaks(acs_median_income_county$estimate_median_income_.dollars._household_income_by_race_and_hispanic_or_latino_origin_of_householder_households_one_race.._black_or_african_american_estimate, 6)
+pal <- colorBin("BuPu", domain = c(0, 1), bins = c(10000, 35000, 50000, 65000, 100000, 150000))
+
+create_map(acs_median_income_county,
+           c("estimate_median_income_.dollars._household_income_by_race_and_hispanic_or_latino_origin_of_householder_households_one_race.._black_or_african_american","estimate_median_income_.dollars._household_income_by_race_and_hispanic_or_latino_origin_of_householder_households_one_race.._white"),
+           group_names = c("Black Median Income", "White Median Income"),
+           legend_name = "Median Income",
+           label_name = "Median income",
+           scale_domain = c(10000, 150000),
+           scale_breaks = c(10000, 35000, 50000, 65000, 100000, 150000),
+           unstable_threshold = 1.5)
+```
+
+```{r}
+halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
+
+BAMMtools::getJenksBreaks(halifax_decennial_data$pct_black_race, 4)
+pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0.15, 0.25, 0.4, 0.5, 1))
+
+halifax_decennial_data %>%
+  #limited dragging and set minimum and maximum zoom settings
+leaflet(width = "100%") %>%
+  #added base tiles
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  #added layers of chloropleth maps depicting each race
+  addPolygons(fillColor = ~pal(pct_black_race),
+              fillOpacity = 0.8,
+              color = "#444444",
+              weight = 0.5) %>%
+  addLegend(position = "bottomright", pal = pal, values = c(0,1), 
+            title = "Proportion Black")
+
+```
+
+```{r}
+BAMMtools::getJenksBreaks(halifax_decennial_data$total_median_age, 4)
+pal <- colorBin("BuPu", domain = c(0, 1), bins = c(38, 42, 46, 50))
+
+halifax_decennial_data %>%
+  #limited dragging and set minimum and maximum zoom settings
+leaflet(width = "100%") %>%
+  #added base tiles
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  #added layers of chloropleth maps depicting each race
+  addPolygons(fillColor = ~pal(total_median_age),
+              fillOpacity = 0.8,
+              color = "#444444",
+              weight = 0.5,
+              label = ~total_median_age) %>%
+  addLegend(position = "bottomright", pal = pal, values = c(0,1), 
+            title = "Proportion Black")
+```
+
+```{r}
+BAMMtools::getJenksBreaks(halifax_decennial_data$pct_female_no_husband_household, 4)
+pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 0.1, 0.15, 0.25, 1))
+
+halifax_decennial_data %>%
+  #limited dragging and set minimum and maximum zoom settings
+leaflet(width = "100%") %>%
+  #added base tiles
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  #added layers of chloropleth maps depicting each race
+  addPolygons(fillColor = ~pal(pct_female_no_husband_household),
+              fillOpacity = 0.8,
+              color = "#444444",
+              weight = 0.5) %>%
+  addLegend(position = "bottomright", pal = pal, values = c(0,1), 
+            title = "Proportion Single Women Households")
+```
+
+```{r}
+housing_data <- halifax_decennial_data %>%
+  mutate(pct_white_owner = white_owner/ (total_owner + total_renter)) %>%
+  mutate(pct_black_owner = black_owner/(total_owner + total_renter)) %>%
+  mutate(pct_white_renter = white_renter/(total_owner + total_renter)) %>%
+  mutate(pct_black_renter = black_renter/(total_owner + total_renter))
+
+BAMMtools::getJenksBreaks(halifax_decennial_data$pct_white_renter, 4)
+pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 0.15, 0.3, 0.45, 0.6, 1))
+
+  #limited dragging and set minimum and maximum zoom settings
+leaflet(housing_data, width = "100%") %>%
+  #added base tiles
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  #added layers of chloropleth maps depicting each race
+  addPolygons(fillColor = ~pal(pct_black_renter),
+              fillOpacity = 0.8,
+              color = "#444444",
+              weight = 0.5,
+              group = "Black Renters") %>%
+    addPolygons(fillColor = ~pal(pct_white_renter),
+              fillOpacity = 0.8,
+              color = "#444444",
+              weight = 0.5,
+              group = "White Renters") %>%
+    addPolygons(fillColor = ~pal(pct_black_owner),
+              fillOpacity = 0.8,
+              color = "#444444",
+              weight = 0.5,
+              group = "Black Owners") %>%
+    addPolygons(fillColor = ~pal(pct_white_owner),
+              fillOpacity = 0.8,
+              color = "#444444",
+              weight = 0.5,
+              group = "White Owners") %>%
+  addLayersControl(baseGroups = c("Black Renters", "White Renters", "Black Owners", "White Owners")) %>%
+  addLegend(position = "bottomright", pal = pal, values = c(0,1), 
+            title = "Proportion Black")
+```
 
 ## Data Sources
 
@@ -65,7 +278,7 @@ Furthermore, the data that did exist at the sub-county level suffered from low s
 
 As an example, consider the following map, which was constructed by using American Community Survey data for     geographic mobility at the census tract level in Halifax. Each layer of the map represents a different sampled value based on the variability of the estimates reported by the ACS. It's easy to see that many tracts have significantly different reported mobility values depending on the random sample taken. This serves to highlight the potential issues relying on ACS estimates at the tract level for rural counties like Halifax. 
 
-```{r results = "hide",}
+```{r results = "hide"}
 source(here("src", "Mapping", "map_template.R"))
 
 ## Variable names for ACS
