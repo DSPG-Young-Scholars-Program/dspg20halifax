@@ -16,7 +16,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/crimes_page/</guid>
-      <description>Background Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. The below figure from the Prison Fellowship highlights how the process from arrest to incarceration makes it difficult to compare the rates of crime, arrests, and incarceration directly.</description>
+      <description>Background Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed in the court system, or an individual may be found not guilty at trial.</description>
     </item>
     
     <item>
@@ -72,7 +72,7 @@ A key component of each factor is resource accessibliity: employment opportuniti
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/methods/</guid>
-      <description>/* this chunk of code centers all of the headings */ h1, h2, h3 { text-align: center; } body { text-align: justify }  Background Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade1.</description>
+      <description>h1, h2, h3 { text-align: center; } body { text-align: justify }  Background Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade1.</description>
     </item>
     
     <item>
@@ -91,7 +91,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit.</description>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/overview/</guid>
-      <description>2020 Halifax County Summer Project The United States incarcerates more people per capita than anywhere else in the world1, and a disproportionate number of those incarcerated are Black and Hispanic2. Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for White males.
+      <description>h3 { text-align:center }  2020 Halifax County Summer Project The United States incarcerates more people per capita than anywhere else in the world,1 and a disproportionate number of those incarcerated are Black and Hispanic.2 Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for White males.
 In addition to the drastic human costs incurred by these mass incarceration policies, the current incarceration rate is extremely costly for taxpayers.</description>
     </item>
     
