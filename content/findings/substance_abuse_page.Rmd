@@ -38,6 +38,8 @@ library(dplyr)
 library(here)
 library(BAMMtools)
 library(tidyr)
+library(leaflet.mapboxgl)
+
 #set the theme 
 theme_set(theme_minimal() +
             theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 24),
@@ -50,42 +52,39 @@ theme_set(theme_minimal() +
                   legend.text = element_text(size = 16, color = "gray30"),
                   legend.title = element_text(size = 22, color = "gray10")))
 
+options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
+
+cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+```
+
+
+```{r}
 #read CSV
 datasource <- readr::read_csv(here::here("data",
                                          "original", "Substance_Abuse",
-                                         "CDC Opioid Prescription Data - Halifax (1).csv"))
-total <- datasource$`US Total`
+                                         "CDC Opioid Prescription Data - Halifax (1).csv")) %>%
+  pivot_longer(cols = c(Halifax, `US Total`))
+
+# total <- datasource$`US Total`
 
 #plot the data
-ggplot(data = datasource, aes(x= Year)) +
+ggplot(data = datasource, aes(x = Year, y = value, color = name)) +
   #plot of Halifax and VA state over time
-  geom_line(aes(y = Halifax, colour = "red")) + geom_line(aes(y = total, colour = "green")) +
+  geom_line(lwd = 1.1) +
+  geom_point(size = 2) +
   labs(y = 'Opioid Prescription Rates per 100 People') +
   #relabel the scale appropriately
-  scale_color_discrete(name = "Location", labels = c("Halifax, VA", "US")) +
-  geom_point(aes(y = Halifax)) + geom_point(aes(y = total))
+  scale_color_manual(name = "Location", labels = c("Halifax, VA", "US"), values = cbbPalette) +
+  scale_x_continuous(labels = seq(2006, 2018), breaks = seq(2006, 2018)) +
+  theme(panel.grid.minor = element_blank())
 ```
-
 ```{r, results = "hide"}
-library(rvest)
-library(sf)
-library(tigris)
-library(leaflet)
-library(tidycensus)
-library(stringr)
-library(dplyr)
-library(here)
-library(BAMMtools)
-library(tidyr)
-readRenviron("~/.Renviron")
-Sys.getenv("CENSUS_API_KEY")
-
 #load VA border geographical data
 va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 ```
 
-``` {r}
+```{r, fig.height = 4}
 #get data from 2017 and 2018 separately bc it has a different format
 data_2018_and_2017 <-readr::read_csv(here::here("data",
                                                 "original", "Substance_Abuse",
@@ -140,115 +139,111 @@ all_rates <- na.omit(all_rates)
 #use Jenks breaks to see ideal disribution of Opioid Prescription Rates for map scale
 generic_bins <-getJenksBreaks(all_rates, k = 6)
 generic_bins <- sapply(generic_bins, round)
-generic_palette <-colorBin("Reds", domain = all_rates, bins = generic_bins)
+generic_palette <-colorBin("BuPu", domain = all_rates, bins = c(0, 60, 120, 200, 360, 580))
 
 #label function for each respective year and map
 generate.label <- function(year_mapping) {
-  my_label <- paste("County: ", year_mapping$NAME,"<br/>", "Rate: ", year_mapping$Rate, "<br/>",
+  my_label <- paste("<strong>", year_mapping$NAME,"<br/></strong>", "Rate: ", year_mapping$Rate, "<br/>",
                     sep="") %>%
     lapply(htmltools::HTML)
 }
 
 #create the leaflet
-leaflet() %>%
-    addProviderTiles("CartoDB.Positron") %>%
+leaflet(width = "100%") %>%
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
   #add polygon for each year with respective template, label, and data
-    addPolygons(data = mapping_2016, fillColor = ~generic_palette(mapping_2016$Rate),
-                weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2016',
-                label = generate.label(mapping_2016),
-                labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+  addPolygons(data = mapping_2016, fillColor = ~generic_palette(mapping_2016$Rate),
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2016',
+              label = generate.label(mapping_2016),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2015, fillColor = ~generic_palette(mapping_2015$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2015',
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2015',
               label = generate.label(mapping_2015),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2014, fillColor = ~generic_palette(mapping_2014$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2014',
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2014',
               label = generate.label(mapping_2014),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2013, fillColor = ~generic_palette(mapping_2013$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2013',
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2013',
               label = generate.label(mapping_2013),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2012, fillColor = ~generic_palette(mapping_2012$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2012',
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2012',
               label = generate.label(mapping_2012),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2011, fillColor = ~generic_palette(mapping_2011$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2011',
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2011',
               label = generate.label(mapping_2011),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2010, fillColor = ~generic_palette(mapping_2010$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2010',
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2010',
               label = generate.label(mapping_2010),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2009, fillColor = ~generic_palette(mapping_2009$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2009',
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2009',
               label = generate.label(mapping_2009),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2008, fillColor = ~generic_palette(mapping_2008$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2008',
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2008',
               label = generate.label(mapping_2008),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2007, fillColor = ~generic_palette(mapping_2007$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2007',
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2007',
               label = generate.label(mapping_2007),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2006, fillColor = ~generic_palette(mapping_2006$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2006',
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2006',
               label = generate.label(mapping_2006),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2017, fillColor = ~generic_palette(mapping_2017$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2017',
+              weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2017',
               label = generate.label(mapping_2017),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addPolygons(data = mapping_2018, fillColor = ~generic_palette(mapping_2018$Rate),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8, group = '2018',
+              weight = 1, color = "#444444", fillOpacity = 0.7, group = '2018',
               label = generate.label(mapping_2018),
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
-    addLegend(pal = generic_palette, values = generic_bins,
-              title = paste("Opiod Prescription Rate per 100 People"), position = "bottomright") %>%
-   #layer for each year
-   addLayersControl(baseGroups = c("2006", "2007", "2008", "2009", "2010",
-      "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"))
+  addLegend(pal = generic_palette, values = generic_bins,
+            title = paste("Opiod Prescription Rate per 100 People"), position = "bottomright") %>%
+  #layer for each year
+  addLayersControl(baseGroups = c("2006", "2007", "2008", "2009", "2010",
+                                  "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"),
+                   options = list(collapsed = FALSE))
 ```
+<br>
 The Virginia Department of Health Office of Epidemiology provides further insight into substance abuse into Halifax county. Data from unintentional drug overdose in Halifax illustrates that the majority of overdoses are due to opioids, followed by other drugs and with a small portion being heroin related. 
-
+<br>
 ```{r}
-library(ggplot2)
-library(dplyr)
-library(plotly)
-library(viridis)
-#library(hrbrthemes)
-library(readr)
-
 #read in data source
 datasource <- readr::read_csv(here::here("data",
                                          "original", "Substance_Abuse",
                                          "Ed Data VDH - Copy of Halifax.csv"))
 # ggplot for the data
 ggplot(datasource, aes(x =Year, y =Count, fill=Drug))+
-  geom_area() + theme_classic() + labs(x = "Year", y = "ED Overdose Visits") +
-  ggtitle("Emergency Department Overdose Visits in Halifax, VA")
+  geom_area(alpha = 0.7) + 
+  scale_fill_manual(values = cbbPalette) +
+  labs(x = "Year", y = "ED Overdose Visits") +
+  ggtitle("Emergency Department Overdose Visits in Halifax, VA") +
+  theme(legend.title = element_blank())
 ```
-
+<br>
 Another important aspect of substance abuse, especially as it relates to incarceration and recidivism, is looking at alcohol related abuse and overdose. Data provided by County Health Rankings illustrates that the percentage of adults reporting heavy or binge drinking has increased steadily since 2011. This trend parallels that of Virginia as a whole, which has a consistently higher rate than Halifax. The corresponding map of this data illustrates how the majority of counties in Virginia, Halifax included, become redder over time as rates steadily increase. 
-
+<br>
 ```{r}
-library(ggplot2)
-
 #load the data source from the CSV
 datasource <- readr::read_csv(here::here("data", "original", "Substance_Abuse",
                                          "Excessive Drinking and Alcohol-Impaired Driving Deaths - Halifax (1).csv"))
@@ -259,34 +254,20 @@ list <- c(14, 14, 14, 13, 13, 10 ,10, 11, 8, 8)
 va <- c(17, 17, 17, 17, 17, 16, 16, 16, 16, 16)
 ggplot(data = datasource, aes(x = X1)) +
   #add geom_lines for each location
-   geom_line(aes(y = list, colour = "#CC6666")) +
-  geom_line(aes(y = va, colour = "#9999CC")) +
-  labs(x = 'Year', y = '% Excessive Drinking') + scale_x_continuous(breaks = seq(2011, 2020, 2), lim = c(2011, 2020)) +
+  geom_line(aes(y = list, colour = "#CC6666"), lwd = 1.1) +
+  geom_line(aes(y = va, colour = "#9999CC"), lwd = 1.1) +
+  labs(x = 'Year', y = '% Excessive Drinking', title = "Excessive Drinking Rates") + scale_x_continuous(breaks = seq(2011, 2020, 2), lim = c(2011, 2020)) +
   #add relevant scaling for y axis
   scale_y_continuous(breaks = seq(5, 20, 5), lim = c(5, 20))  +
   #relabel the scale appropriately
-  scale_color_manual(labels = c("VA", "Halifax, VA"), values = c("#CC6666",  "#9999CC")) +
-  guides(color=guide_legend("Location"))
+  scale_color_manual(labels = c("VA", "Halifax, VA"), values = c(cbbPalette[2], cbbPalette[1])) +
+  guides(color=guide_legend("Location")) +
+  theme(legend.title = element_blank())
 ```
+<br>
 Lastly, it is important to understand substance abuse and its relationship with incarceration through the policy level of the ecological model. Data from the American Civil Liberties Union (ACLU) shows the racial disparities in marijuana arrests between Black and White people (per 100k people). In Virginia, Black people are 3.4x times more likely to be arrested for marijuana possession than white people, a rate that has steadily increased from 2010 to 2018. In some counties, the rates are as high as above 88 times. Halifax contains a more moderate rate of 2.9x; however, these numbers still illustrate racial disparities for substance abuse as it relates to  criminal justice and law enforcement systems. 
-
-```{r}
-library(rvest)
-library(sf)
-library(tigris)
-library(leaflet)
-library(tidycensus)
-library(stringr)
-library(dplyr)
-library(here)
-#library(censusapi)
-#library(hablar)
-library(BAMMtools)
-
-census_api_key("1288a5a1e23422dbd03d06071f74b4cd50af12be", install = TRUE, overwrite = TRUE)
-readRenviron("~/.Renviron")
-Sys.getenv("CENSUS_API_KEY")
-
+<br>
+```{r, fig.height = 6}
 datasource <- readr::read_csv(here::here("data",
                                          "original", "Substance_Abuse",
                                          "Racial Disparities in Marijuana Arrests by VA County - 2018 (1).csv"))
@@ -299,22 +280,24 @@ unstable <- filter(datasource, `Meets Population & Reporting Thresholds` == "No"
 general_bins <- getJenksBreaks(datasource$`Times more likely Black person arrested in 2018`, k = 6)
 general_bins <- sapply(general_bins, round)
 
-general_palette <- colorBin("Reds", domain = datasource$`Times more likely Black person arrested in 2018`, bins = general_bins)
+general_palette <- colorBin("BuPu", domain = datasource$`Times more likely Black person arrested in 2018`, bins = general_bins)
 label <- paste("County: ", datasource$County,"<br/>", "Rate: ",
                paste(datasource$`Times more likely Black person arrested in 2018`, 'x',
-                                                                       sep = ""), "<br/>",
-              sep="") %>%
+                     sep = ""), "<br/>",
+               sep="") %>%
   lapply(htmltools::HTML)
-
-leaflet() %>%
-  addProviderTiles("CartoDB.Positron") %>%
-  addPolygons(data = datasource, fillColor = ~general_palette(datasource$`Times more likely Black person arrested in 2018`),
-              weight = 1, color = "#fafafa", fillOpacity = 0.8,
+```
+```{r}
+leaflet(width = "100%") %>%
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  addPolygons(data = datasource, 
+              fillColor = ~general_palette(datasource$`Times more likely Black person arrested in 2018`),
+              weight = 1, color = "#444444", fillOpacity = 0.7,
               label = label,
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addLegend(pal = general_palette, values = general_bins,
-            title = "Rates of Black vs White arrests for marijuana possession (100k people)", position = "bottomright")
+            title = "Rates of Black vs White arrests <br>for marijuana possession (100k people)", position = "bottomright")
 ```
 
 ### Conclusion and Policy Implications 

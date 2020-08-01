@@ -75,7 +75,7 @@ pal <- colorBin("BuPu", range(map_data$Birth_Rate, na.rm = TRUE), bins = c(0, 1,
 
 ## Map
 leaflet(width = "100%") %>%
-  addProviderTiles("CartoDB.PositronNoLabels") %>%
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
   addPolygons(data =  map_data[[1]],
               weight = 1,
               color = "#444444",
