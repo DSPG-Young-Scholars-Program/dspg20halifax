@@ -149,7 +149,10 @@ rates_by_gender_system %>%
 #   labs(y = "Incarceration rate per 100,000", x = "Year", color = "System", title = "Incarceration Rates in Halifax Co.", subtitle = "Dashed lines represent Virginia median rate") +
 #   facet_grid(~race)
 ```
+
 #### Overall crime trends over time
+
+The average number of crimes in Halifax County that came to the attention of law enforcement within the 10 year period between 2010 and 2019 was 2081 crimes a year. Across the years, the number of crimes was relatively stable, with slightly higher levels of observed crime before 2013 and slightly lower levels after 2013. 
 
 ```{r halifax_crimes}
 halifax_crime %>%
@@ -165,6 +168,8 @@ halifax_crime %>%
 ```
 
 #### Most common offense types and clearance rates
+
+The following figure displays the types of crimes that came to the attention of law enforcement in Halifax County from most common to least common on the left and their corresponding clearance by arrest rate on the right. Drug violations, simple assault, larceny, and destruction of property make up the bulk of the crimes; however, this does not necessarily correspond to higher arrest rates. While drug violations and simple assaults result in arrests nearly $50\%$ of the time, larceny and destruction of property result in arrests much less frequently. This disparity highlights the complex process that proceeds a crime coming to the attention of law enforcement and precedes an arrest - namely that there exist many latent factors, including difficulty of "solving" the crime and effort put forth by law enforcement, that impact whether an arrest is made. 
 
 ```{r halifax_top_crimes}
 
@@ -224,6 +229,8 @@ total_crime_plot + per_clear_plot +
 
 #### Crime trends by race (per 1000 of that race)
 
+The figure below highlights the disparity between the number of crimes by Black and White people that came to attention of law enforcement across Virginia counties. Overall, the number of crimes by White people that law enforcement are alerted to is below 50 per 100,000 White people for nearly all counties in Virginia. In contrast, there are many counties with over 50 crimes per 100,000 Black people, including several at or above 200 crimes per 100,000 Black people. In Halifax County specifically (denoted by the lines in color), the number of crimes by Black people that law enforcement are alerted to is nearly twice that of those by White people. This disparity again highlights the complex process by which crimes are given law enforcement attention - namely that any historical policies or varying levels of law enforcement presence in neighorhoods will impact said attention.
+
 ```{r halifax_crime_by_race}
 va_crime_per_cap <- all_va_crime %>%
   filter(offender_race %in% c("Black or African American",
@@ -264,6 +271,8 @@ ggplot(filter(va_crime_per_cap, county_cap == "HALIFAX"), aes(x = incident_year,
 ```
 
 #### Clearance rates by race
+
+The figure below displays the clearance by arrest rates of all Virginia county crimes by race. Interestingly, the average clearance rate for crimes by White people is higher than that of crimes by Black people, which potentially underlies differences in the types of crimes. In Halifax County specifically (denoted by the lines in color), the clearance rate for crimes by Black people is above average compared to all Virginia counties, whereas it is below average for crimes by White people compared to other Virginia counties.
 
 ```{r}
 clearance_data <- all_va_crime %>%
