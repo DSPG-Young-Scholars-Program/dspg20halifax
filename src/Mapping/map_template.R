@@ -130,7 +130,7 @@ map_samples <- function(data, ## sf object containing the variable and se_variab
   base_map <- leaflet(samp_data, options = leafletOptions(minZoom = 9, maxZoom = 9), width = "100%") %>%
     addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
     addPolygons(fillColor = ~pal(samp_data[[var]]),
-                fillOpacity = 0.8,
+                fillOpacity = 0.7,
                 opacity = 0.4,
                 smoothFactor = 0.5,
                 weight = 0.5,

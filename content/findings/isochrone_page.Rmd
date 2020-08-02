@@ -2,7 +2,7 @@
 title: "Accessibility"
 description: "How are resources distributed in the community?"
 tags: ["R", "Geospatial", "Isochrone"]
-weight: 5
+weight: 7
 draft: false
 output: html_document
 ---
@@ -22,7 +22,9 @@ We therefore sought to visualize the spatial distribution of employment opportun
 Each map below displays the areas within 10, 20, and 30 minutes of a selected subsidized housing property in Halifax County. Also displayed are the locations of the top employers in the county, schools, and substance abuse treatment/support centers.
 
 ### Main Findings
-<br><br><br>
+
+<br>
+
 #### Accessibility by Car
 
 ```{r}
@@ -30,6 +32,7 @@ drive_map <- readRDS(here::here("data", "working", "isochrones", "drive_map.RDS"
 drive_map
 ```
 <br><br><br>
+
 #### Accessibility by Bike
 
 ```{r}
@@ -37,6 +40,7 @@ bike_map <- readRDS(here::here("data", "working", "isochrones", "bike_map.RDS"))
 bike_map
 ```
 <br><br><br>
+
 #### Accessibility on Foot
 
 ```{r}
@@ -57,8 +61,4 @@ Similarly, zoning information from the county could be incorporated to provide a
 Also valuable would be the inclusion of public transit travel times and distances, as public transit may be relied upon extensively by those re-entering society.
 
 Finally, incorporating more information about which employers are known to provide opportunities to those with past convictions would provide a more nuanced look at work accessibility. Given the difficulties finding work after being released from incarceration, it is unlikely that each of the top employers in the area is equally open to hiring those with past convictions.
-
-### References 
-
-??
 

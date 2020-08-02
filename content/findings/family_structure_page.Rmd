@@ -2,7 +2,7 @@
 title: "Family Structure"
 description: "How stable are family units in Halifax?"
 tags: ["R", "Visualization"]
-weight: 3
+weight: 6
 draft: false
 output: html_document
 ---
@@ -18,6 +18,9 @@ library(tidyr)
 library(leaflet)
 library(sf)
 library(leaflet.extras)
+library(leaflet.mapboxgl)
+
+options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 
 theme_set(theme_minimal() + 
             theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 22), 
@@ -34,6 +37,32 @@ theme_set(theme_minimal() +
 Teen_Births_VA <- st_read(here::here("src", "Data_Ingestion", "Teen_Births_VA.geojson"))
 ```
 
+<<<<<<< HEAD
+=======
+```{r}
+halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
+
+BAMMtools::getJenksBreaks(halifax_decennial_data$pct_female_no_husband_household, 4)
+pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 0.1, 0.15, 0.25, 1))
+
+halifax_decennial_data %>%
+  #limited dragging and set minimum and maximum zoom settings
+leaflet(width = "100%") %>%
+  #added base tiles
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  #added layers of chloropleth maps depicting each race
+  addPolygons(fillColor = ~pal(pct_female_no_husband_household),
+              fillOpacity = 0.8,
+              color = "#444444",
+              weight = 0.5) %>%
+  addLegend(position = "bottomright", pal = pal, values = c(0,1), 
+            title = "Proportion Single Women Households")
+
+```
+
+There were many government data sources used for this research, most prominent of which were the Center for Disease and Prevention’s (CDC) and Department of Health and Human Services (HHS)’ many articles regarding teen births. Other sources include the County Health Rankings website, Youth.gov website, Guttmacher Institute, Child Trends website, and the National Center for Biotechnology Information (NCBI). Many of these sources had information up to 2018, which is still relevant for statistics. However, social and economic consequences of teen pregnancy varied by source which made it difficult to compile an accurate list of consequences. Further research should be done regarding the economic costs of teen pregnancy. 
+
+>>>>>>> 4b9607bf64fc2b9a2f54913164249c9ea985b8b1
 ### Background
 
 Decades of research has found that family structure has the power to impact a child’s development. For example, children growing up in two parent homes tend to have better health and social outcomes than those who grow up in single parent homes (The Impact of Family Structure on the Health of Children: Effects of Divorce, 2020). Teen pregnancy is generally defined as pregnancy between the ages of 15 and 19 years old. Teen pregnancies are estimated to cost U.S. taxpayers between $9 and $11 billion dollars per year and Virginia is estimated to spend $183 million dollars on factors related to teen pregnancy (Teen Childbearing Is Costly to Taxpayers, 2020).

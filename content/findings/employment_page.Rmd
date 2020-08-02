@@ -2,7 +2,7 @@
 title: "Employment"
 description: "What is the state of employment opportunities?"
 tags: ["R", "Visualization"]
-weight: 2
+weight: 3
 draft: false
 output: html_document
 ---
@@ -44,7 +44,7 @@ laus_unemployment_county <- read.csv(here::here("data", "original","Unemployment
   left_join(county_info, by = "GEOID") %>%
   mutate(year_month_frac = Year + 1/12 * (as.numeric(substr(Period, 2, 3)) - 1))
 
-options(mapbox.accessToken = Sys.getenv("MAPBOX_API_KEY"))
+options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 ```
 
 
@@ -82,7 +82,7 @@ plot
 
 Below we present the 5 year ACS unemployment estimates for counties in Virginia broken down by race. Counties with excessivly large margins of errors have been colored grey. This map displays how both within Halifax and across Virginia more broadly, African Americans are less likely to be employed than their white peers due to the effects of systemic racism, further increasing their vulnerability. 
 
-```{r}
+```{r, fig.height = 4}
 
 check_unstable <- function(variable_name) {
   ifelse((acs_unemployment_county_sp[[glue("{variable_name}_estimate")]]) < 2 * acs_unemployment_county_sp[[glue("{variable_name}_moe")]],
@@ -93,7 +93,7 @@ check_unstable <- function(variable_name) {
 
 # quick map of unemployment by white and black. Note that unemployments above 30% are assumed unstable
 unemployment_scale <- colorBin("BuPu", c(0,100), c(0, 3, 5, 7.5, 10, 30))
-m <- leaflet(acs_unemployment_county_sp) %>%
+m <- leaflet(acs_unemployment_county_sp, width = "100%") %>%
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%  
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.8,
@@ -134,11 +134,11 @@ m
 
 ### Conclusion and Policy Implications
 
-TODO
+Halifax doesn't stand out on financial features, but that doesn't mean improvements can't be made. Given the strong correlation between unemployment and incarceration and crime, it is likely that working to increase employment would be helpful to reduce incarceration and recidivism, while also providing numerous other economic beneifts. However, in order to fully understand how this might happen in Halifax, more data is needed. The following is a discussion of datasets that would prove useful in this regard.
 
 #### Additional Data Sources
 
-In order to properly understand the complicated relationship between incarceration, recidivism, and employment in Halifax, more data is required. Ideally, we would have an understanding of employment rates for those who are formerly incarcerated, as well as information on the wages of these jobs to understand if the jobs the formerly incarcerated are able to get pay enough to survive. 
+One core piece of data we are missing is the employment rates for those who are formerly incarcerated, as well as information on the wages of these jobs to understand if the jobs the formerly incarcerated are able to get pay enough to survive. 
 
 More detailed data on how unemployment varies within Halifax would also be extremly helpful. Due to its small population, census estimates for different regions within Halifax county are extremely uncertain, making it difficult to understand how unemployment connects with features such as housing.
 

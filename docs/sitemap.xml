@@ -3,15 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/findings/incarceration_page/</loc>
+    <loc>/findings/crimes_page/</loc>
   </url>
   
   <url>
     <loc>/findings/employment_page/</loc>
-  </url>
-  
-  <url>
-    <loc>/findings/family_structure_page/</loc>
   </url>
   
   <url>
@@ -23,12 +19,24 @@
   </url>
   
   <url>
+    <loc>/findings/family_structure_page/</loc>
+  </url>
+  
+  <url>
     <loc>/findings/isochrone_page/</loc>
+  </url>
+  
+  <url>
+    <loc>/methods/</loc>
   </url>
   
   <url>
     <loc>/methods_old/</loc>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/overview/</loc>
   </url>
   
   <url>
@@ -38,10 +46,6 @@
   
   <url>
     <loc>/categories/</loc>
-  </url>
-  
-  <url>
-    <loc>/methods/</loc>
   </url>
   
   <url>
@@ -58,10 +62,6 @@
   
   <url>
     <loc>/tags/networks/</loc>
-  </url>
-  
-  <url>
-    <loc>/overview/</loc>
   </url>
   
   <url>

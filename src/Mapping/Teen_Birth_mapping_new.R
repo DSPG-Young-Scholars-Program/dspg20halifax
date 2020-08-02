@@ -20,7 +20,7 @@ library(leaflet.extras)
 
 #Teen_Births_VA <- st_as_sf(Teen_Births_VA)
 
-st_read(here::here("src", "Data_Ingestion", "Teen_Births_VA.geojson"))
+Teen_Births_VA <- st_read(here::here("src", "Data_Ingestion", "Teen_Births_VA.geojson"))
 
 Teen_B_colors <- colorBin("YlGnBu", domain = c(0, 100), 
                               bins = c(0, 15, 30, 45, 60, 75, 90, 100))

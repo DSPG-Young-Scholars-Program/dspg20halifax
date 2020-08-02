@@ -15,6 +15,11 @@ library(plotly)
 library(tigris)
 library(acs)
 
+#creating a ACS API key
+#use this website to obtain a Census Key https://api.census.gov/data/key_signup.html
+#census_api_key("YOUR API KEY HERE", install = TRUE) #to install Key 
+#Sys.getenv("CENSUS_API_KEY") #to call the key anytime
+
 #Loading ACS variables and ACS/Decennial Surveys
 ACS5_variables_detailed <- load_variables(year = "2018", dataset = "acs5", cache = TRUE)
 ACS5_variables_subject <- load_variables(year = "2018", dataset = "acs5/subject", cache = TRUE)
