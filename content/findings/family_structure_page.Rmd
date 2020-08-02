@@ -40,7 +40,6 @@ theme_set(theme_minimal() +
 # Teen_Births_VA <- st_read(here::here("src", "Data_Ingestion", "Teen_Births_VA.geojson"))
 ```
 
-
 ```{r, results = "hide"}
 ## Read birth rate data
 birth_rates <- readr::read_csv(here::here("data", "original", "Teen_Pregnancy", "NCHS_-_Teen_Birth_Rates_for_Age_Group_15-19_in_the_United_States_by_County.csv"))
@@ -68,6 +67,21 @@ for (year in unique(va_birth_rates_sp$Year)) {
   i <- i + 1
 }
 ```
+
+### Background
+
+Decades of research has found that family structure has the power to impact a child’s development. For example, children growing up in two parent homes tend to have better health and social outcomes than those who grow up in single parent homes [^The Impact of Family Structure on the Health of Children: Effects of Divorce, 2020]. Teen pregnancy (defined as pregnancy between the ages of 15 and 19 years old), costs U.S. taxpayers between \$9 and \$11 billion dollars per year and Virginia is estimated to spend $183 million dollars on factors related to teen pregnancy.[^Teen Childbearing Is Costly to Taxpayers, 2020]
+
+One reason teen births are concerning when considered in the context of incarceration trends is that low levels of family supervision are related to higher rates of juvenile delinquency in adolescents.[^Lynskey, D. P., Winfree Jr, L. T., Esbensen, F. A., & Clason, D. L. (2000). Linking gender, minority group status and family matters to self‐control theory: A multivariate analysis of key self‐control concepts in a youth‐gang context. Juvenile and Family Court Journal, 51(3), 1-19.] The children of young, single parents, particularly those also experiencing financial strain, are thus at heightened risk of delinquent behavior, putting them at increased risk of encounters with law enforcement. Over time, these encounters may predispose these individuals to heightened risk of entering the criminal justice system. When these individuals are thus absent from family life themselves, the potential exists for the cycle to repeat itself, as children of incarcerated parents are more likely to be involved with the criminal justice system themselves.[^Tasca, M., Rodriguez, N., & Zatz, M. S. (2011). Family and residential instability in the context of paternal and maternal incarceration. Criminal Justice and Behavior, 38(3), 231-247]
+
+### Main Findings 
+
+_THESE NUMBERS DO NOT MATCH THE MAPS_
+
+In 2017, the rate of teen pregnancy (per 1,000 women) was 18.8 in the United States. In the same time period, the rate of teen pregnancy (per 1,000 women) in Virginia was 15 and in Halifax county the rate was estimated at 30.8. This put Halifax at the 24th highest rate of teen births out of 134 counties in Virginia. While the number of teen births has been declining since 2003, the high rate led us to investigate factors that could be related to the high rate of teen births in Halifax.  
+
+We found several factors in Halifax that have been linked to higher rates of teen births. For example, Halifax is a rural county with a high rate of poverty, which has been linked to higher teen birth rates (Products - Data Briefs - Number 264 - November 2016, 2016). Additionally, Halifax county only has one publicly funded clinic and zero federally qualified health centers to aid in female contraception usage. By the age of 18, a woman is more than 3 times likely to have a teen birth if they do not use a proper method of contraception. Thus, the small number of clinics may be contributing to the high rate of teen births in Halifax.
+
 
 ```{r, fig.height = 4}
 #BAMMtools::getJenksBreaks(va_birth_rates_sp$Birth_Rate, 6)
@@ -130,16 +144,79 @@ halifax_decennial_data %>%
 
 ```
 
-### Background
-
-Decades of research has found that family structure has the power to impact a child’s development. For example, children growing up in two parent homes tend to have better health and social outcomes than those who grow up in single parent homes (The Impact of Family Structure on the Health of Children: Effects of Divorce, 2020). Teen pregnancy is generally defined as pregnancy between the ages of 15 and 19 years old. Teen pregnancies are estimated to cost U.S. taxpayers between $9 and $11 billion dollars per year and Virginia is estimated to spend $183 million dollars on factors related to teen pregnancy (Teen Childbearing Is Costly to Taxpayers, 2020).
 
 
-### Main Findings 
 
-In 2017, the rate of teen pregnancy (per 1,000 women) was 18.8 in the United States. In the same time period, the rate of teen pregnancy (per 1,000 women) in Virginia was 15 and in Halifax county the rate was estimated at 30.8. This put Halifax at the 24th highest rate of teen births out of 134 counties in Virginia. While the number of teen births has been declining since 2003, the high rate led us to investigate factors that could be related to the high rate of teen births in Halifax.  
 
-We found several factors in Halifax that have been linked to higher rates of teen births. For example, Halifax is a rural county with a high rate of poverty, which has been linked to higher teen birth rates (Products - Data Briefs - Number 264 - November 2016, 2016). Additionally, Halifax county only has one publicly funded clinic and zero federally qualified health centers to aid in female contraception usage. By the age of 18, a woman is more than 3 times likely to have a teen birth if they do not use a proper method of contraception. Thus, the small number of clinics may be contributing to the high rate of teen births in Halifax.
+
+However, while the general income distribution is typical, Halifax does stand out when it comes to the demographic makeup of its subsidized housing population. In particular, the population is composed almost exclusively non-hispanic black, and contains a disproportionate number of single adults with children. In addition, many of these family units are headed by someone (often the mother) younger than 24. These patterns are summarized in the following scatter plot:
+
+```{r, fig.height = 15, fig.width = 25}
+## Pct of households headed by a single parent (most are females in Halifax - can show)
+va_data <- pub_housing_summary %>%
+  filter(year == 2019, program_label %in% c("Housing Choice Vouchers", "Project Based Section 8")) %>%
+  mutate(isVA = ifelse(state == "VA", TRUE, FALSE),
+         isHalifax = ifelse(state == "VA" & name == "Halifax County", TRUE, FALSE),
+         pct_lt24_head = ifelse(is.na(pct_lt24_head), 100 - pct_age25_50 - pct_age51_61 - pct_age62plus, pct_lt24_head)) %>%
+  filter(isVA == TRUE)
+
+us_data <- pub_housing_summary %>%
+  filter(year == 2019, program_label %in% c("Housing Choice Vouchers", "Project Based Section 8")) %>%
+  mutate(isVA = ifelse(state == "VA", TRUE, FALSE),
+         isHalifax = ifelse(state == "VA" & name == "Halifax County", TRUE, FALSE),
+         pct_lt24_head = ifelse(is.na(pct_lt24_head), 100 - pct_age25_50 - pct_age51_61 - pct_age62plus, pct_lt24_head)) %>%
+  filter(isVA == FALSE)
+
+plot <- ggplot() +
+  geom_point(data = us_data, aes(x = pct_black_nonhsp, y = pct_1adult, color = interaction(isVA, isHalifax), size = pct_lt24_head, alpha = isVA), stroke = 1.25) +
+  geom_point(data = va_data, aes(x = pct_black_nonhsp, y = pct_1adult, color = interaction(isVA, isHalifax), size = pct_lt24_head, alpha = isVA), stroke = 1.25) +
+  coord_flip() +
+  scale_size_continuous(range = c(0, 20), labels = c("0%", "10%", "20%", "30%", "40%")) +
+  scale_color_manual(labels = c("U.S.", "Virginia", "Halifax County"), values = c("#e4e0cd", "#6b6385", "#FC4444"), na.translate=FALSE) +
+  labs(y = "\nPercent Single Adults with Children", x = "Percent Black (Non-Hispanic)\n", 
+       title = "Characteristics of Subsidized Housing Population\n", 
+       size = "Household heads less \nthan 24 years old") +
+  guides(alpha = FALSE, color = guide_legend(title = "Locale", override.aes = list(size=10)), size = guide_legend(override.aes = list(shape = 21, alpha = 0.8))) +
+  scale_alpha_manual(values = c(0.3, 0.8)) +
+  facet_wrap(~program_label, ncol = 2) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 30),
+        plot.subtitle = element_text(hjust = 0.5, color = "gray30", face = "italic", size = 26),
+        axis.title = element_text(size = 26, color = "gray10"),
+        axis.text = element_text(size = 24, color = "gray30"),
+        strip.text = element_text(size = 28, color = "gray30"),
+        panel.spacing = unit(4, "lines"),
+        legend.key.size = unit(3, "line"),
+        legend.text = element_text(size = 22, color = "gray30"),
+        legend.title = element_text(size = 28, color = "gray10"))
+
+plot
+```
+
+These characteristics are notable when considered in the context of incarceration because they highlight a distinctly vulnerable population in Halifax County. 
+
+This plot highlights the difference in the ages of heads-of-households across the two common subsidized housing types in the county. Families headed by younger adults are more likely to live in project-based housing. While this does not indicate that project based housing is linked to incarceration, it does highlight a population that could benefit from community programs tailored to its particular needs.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Conclusion and Policy Implications 
 
