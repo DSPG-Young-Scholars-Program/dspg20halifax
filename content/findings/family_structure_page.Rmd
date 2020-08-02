@@ -60,9 +60,6 @@ leaflet(width = "100%") %>%
 
 ```
 
-There were many government data sources used for this research, most prominent of which were the Center for Disease and Prevention’s (CDC) and Department of Health and Human Services (HHS)’ many articles regarding teen births. Other sources include the County Health Rankings website, Youth.gov website, Guttmacher Institute, Child Trends website, and the National Center for Biotechnology Information (NCBI). Many of these sources had information up to 2018, which is still relevant for statistics. However, social and economic consequences of teen pregnancy varied by source which made it difficult to compile an accurate list of consequences. Further research should be done regarding the economic costs of teen pregnancy. 
-
->>>>>>> 4b9607bf64fc2b9a2f54913164249c9ea985b8b1
 ### Background
 
 Decades of research has found that family structure has the power to impact a child’s development. For example, children growing up in two parent homes tend to have better health and social outcomes than those who grow up in single parent homes (The Impact of Family Structure on the Health of Children: Effects of Divorce, 2020). Teen pregnancy is generally defined as pregnancy between the ages of 15 and 19 years old. Teen pregnancies are estimated to cost U.S. taxpayers between $9 and $11 billion dollars per year and Virginia is estimated to spend $183 million dollars on factors related to teen pregnancy (Teen Childbearing Is Costly to Taxpayers, 2020).
