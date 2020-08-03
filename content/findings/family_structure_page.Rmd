@@ -37,8 +37,6 @@ theme_set(theme_minimal() +
 Teen_Births_VA <- st_read(here::here("src", "Data_Ingestion", "Teen_Births_VA.geojson"))
 ```
 
-<<<<<<< HEAD
-=======
 ```{r}
 halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
 
@@ -66,9 +64,9 @@ Decades of research has found that family structure has the power to impact a ch
 
 ### Main Findings 
 
-In 2017, the rate of teen pregnancy (per 1,000 women) was 18.8 in the United States. In the same time period, the rate of teen pregnancy (per 1,000 women) in Virginia was 15 and in Halifax county the rate was estimated at 30.8. This put Halifax at the 24th highest rate of teen births out of 134 counties in Virginia. While the number of teen births has been declining since 2003, the high rate led us to investigate factors that could be related to the high rate of teen births in Halifax.  
+In 2017, the rate of teen pregnancy (per 1,000 women aged 15 - 19) was 18.8 in the United States. In the same time period, the rate of teen pregnancy (per 1,000 women aged 15 - 19) in Virginia was 15 and in Halifax county the rate was estimated at 30.8. This put Halifax at the 24th highest rate of teen births out of 134 counties in Virginia. While the number of teen births has been declining since 2003, the high rate led us to investigate factors that could be related to the high rate of teen births in Halifax.  
 
-We found several factors in Halifax that have been linked to higher rates of teen births. For example, Halifax is a rural county with a high rate of poverty, which has been linked to higher teen birth rates (Products - Data Briefs - Number 264 - November 2016, 2016). Additionally, Halifax county only has one publicly funded clinic and zero federally qualified health centers to aid in female contraception usage. By the age of 18, a woman is more than 3 times likely to have a teen birth if they do not use a proper method of contraception. Thus, the small number of clinics may be contributing to the high rate of teen births in Halifax.
+We found several factors in Halifax that have been linked to higher rates of teen births. For example, Halifax is a rural county with a high rate of poverty, which has been linked to higher teen birth rates (Products - Data Briefs - Number 264 - November 2016, 2016). Additionally, Halifax county only has one publicly funded clinic and zero federally qualified health centers to aid in female contraception usage. By the age of 18, a woman is more than 3 times likely to have a teen birth if they do not use a proper method of contraception (Products - Data Briefs - Number 209 - July 2015, 2015). Thus, the small number of clinics may be contributing to the high rate of teen births in Halifax.
 
 
 ```{r}
@@ -114,7 +112,7 @@ Teen_Births_VA %>%
 
 ### Conclusion and Policy Implications 
 
-Teen pregnancy can have drastic effects on the individual, interpersonal, and the school/work environments of both the mother and their child, as well as costly effects on society. As a result of their pregnancy, teen mothers are at elevated risk for low academic achievement, dropping out of high school, being unemployed, using public assistance, and being in poverty than non-pregnant women of the same age (About Teen Pregnancy | CDC, n.d.). Children of teen mothers are also at elevated risk for low academic achievement, low health and behavioral outcomes, high unemployment, and delinquency compared to children of non-teen mothers. Children of teenage mothers are also more likely to become teen parents. Thus, it is will be important to continue to investigate how to mitigate teen births.  
+Teen pregnancy can have drastic effects on the individual, interpersonal, and the school/work environments of both the mother and their child, as well as costly effects on society. As a result of their pregnancy, teen mothers are at elevated risk for low academic achievement, dropping out of high school, being unemployed, using public assistance, and being in poverty than non-pregnant women of the same age (About Teen Pregnancy | CDC, n.d.). Children of teen mothers are also at elevated risk for low academic achievement, low health and behavioral outcomes, high unemployment, and delinquency compared to children of non-teen mothers (About Teen Pregnancy | CDC, n.d.). Children of teenage mothers are also more likely to become teen parents (Pregnancy Prevention | Youth.gov, n.d.). Thus, it is will be important to continue to investigate how to mitigate teen births.  
 
 ### References 
 
