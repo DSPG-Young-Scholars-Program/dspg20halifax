@@ -196,6 +196,8 @@ walk_map <- readRDS(here::here("data", "working", "isochrones", "walk_map.RDS"))
 walk_map
 ```
 
+<br>
+
 These maps suggest that many of the necessary resources may be within a reasonable travel distance of affordable housing options, at least when traveling by car. However, transportation access is a commonly cited concern amongst those re-entering society after being incarcerated.[^6] Some may be able to rely on familial support in the short term, but this is less likely to be a sustainable long-term transportation strategy. The second and third map reveal the extent of the reduction in resources accessibility for those without access to a car.
 
 ### Future Directions + Additional Data Sources
