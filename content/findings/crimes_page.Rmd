@@ -28,6 +28,10 @@ library(leaflet)
 library(leaflet.mapboxgl)
 library(purrr)
 library(glue)
+library(tidyr)
+library(gghighlight)
+library(plotly)
+library(stringr)
 
 # all VA crimes between 2010 and 2019
 all_va_crime <- vroom::vroom(here("data", "original", "Crime", "full_va_crime", "clean_all_arrest_all_years.csv"))
@@ -38,6 +42,23 @@ va_pop_by_race <- read_csv(here("data", "original", "Crime", "full_va_crime", "c
 # all Halifax county crimes between 2010 and 2019
 halifax_crime <- all_va_crime %>% 
   filter(county_cap == "HALIFAX")
+
+vera_data <- data.table::fread(here::here("data", "original", "Incarceration", "vera_incarceration_trends.csv")) %>% as.data.frame()
+
+va_data <- vera_data %>% filter(state == "VA")
+va_rural_data <- va_data %>% filter(urbanicity == "rural")
+
+rates_by_gender_system <- va_data %>% 
+  filter(!county_name %in% c("Hopewell city", "Charles City County", "Colonial Heights city")) %>%
+  select(year, county_name, male_jail_pop_rate, female_jail_pop_rate, male_prison_pop_rate, female_prison_pop_rate) %>%
+  #rename(Male = male_prison_pop_rate, Female = female_prison_pop_rate) %>%
+  pivot_longer(names_to = "jail_gender_combo", cols = c("male_jail_pop_rate", "female_jail_pop_rate", "male_prison_pop_rate", "female_prison_pop_rate")) %>%
+  mutate(system = ifelse(str_detect(jail_gender_combo, "jail"), "Jail", "Prison"),
+         gender = ifelse(str_detect(jail_gender_combo, "female"), "Female", "Male"),
+         gender = factor(gender, levels = c("Male", "Female")))
+
+scale_max <- max(c(va_data$male_prison_pop_rate, va_data$female_prison_pop_rate), na.rm = TRUE)
+
 
 
 theme_set(theme_minimal() +
@@ -58,7 +79,7 @@ options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 
 ### Background
 
-Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. The below figure from the Prison Fellowship highlights how the process from arrest to incarceration makes it difficult to compare the rates of crime, arrests, and incarceration directly.   
+Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed in the court system, or an individual may be found not guilty at trial. Furthermore, even after being found guilty, a variety of punishments exist that do not involve incarceration, including fines and community service.
 
 Individuals who are incarcerated may be placed in a jail or prison. Jails hold individuals who are awaiting trial or who have been sentenced to less than year of incarceration. Prisons hold individuals who have been convicted and sentenced to more than year of incarceration. Although there are some differences across states, jails are generally locally operated, and prisons are operated by state or federal governments [^BJS]. 
 
@@ -66,7 +87,74 @@ Research has mostly focused on men incarcerated in prisons in urban areas, but r
 
 Given that crime, arrests, and incarceration represent different parts of the criminal justice system, we provide an overview of each in Halifax County. Specifically, we investigate trends in crime over time, common offense types, crime rates by race, and the percent of crimes cleared by arrest. Then, we investigate the incarceration rate with a focus on male and female incarceration rates as well as jails and prisons incarceration rate over time.       
 
+#### Incarceration
+
+The figures below display the prison and jail incarceration rates in Virginia counties, with Halifax County denoted by the lines in color, from 1983 to 2013 and 1970 to 2017, respectively. It is clear that prison incarceration rates, particularly among males, have consistently and dramatically increased over the past three to four decades. Comparatively, jail incarceration rates are not quite as high; however, they have drastically increased since the mid-1990's. Incarceration rates for females are significantly lower than those of males but have also increased noticably since 1990. 
+
+```{r}
+rates_by_gender_system %>%
+  filter(system == "Prison") %>%
+  ggplot(aes(x = year, y = value, group = county_name, color = gender)) +
+  geom_line(lwd = 1.1) +
+  scale_color_manual(values = cbbPalette) +
+  gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE, unhighlighted_params = list(alpha = 0.2)) +
+  scale_y_continuous(limits = c(0, scale_max)) +
+  labs(color = "Gender", title = "Prison Incarceration Rate", y = "Incarcerated Individuals per 100,000\n", x = "\nYear")  +
+  facet_wrap(gender~.) + theme(legend.position = "none")
+
+```
+<br>
+```{r}
+rates_by_gender_system %>%
+  filter(system == "Jail") %>%
+  ggplot(aes(x = year, y = value, group = county_name, color = gender)) +
+  geom_line(lwd = 1.1) +
+  scale_color_manual(values = cbbPalette) +
+  gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE, unhighlighted_params = list(alpha = 0.2)) +
+  scale_y_continuous(limits = c(0, scale_max)) +
+  labs(color = "Gender", title = "Jail Incarceration Rate", subtitle = "", y = "Incarcerated Individuals per 100,000\n", x = "\nYear")  +
+  facet_wrap(gender~.) +
+  theme(legend.position = "none")
+
+```
+<br>
+
+```{r}
+# races <- c("black", "white")
+# 
+# race_cols <- c(paste(races, "jail_pop_rate", sep = "_"), paste(races, "prison_pop_rate", sep = "_"))
+# 
+# ## Filter out counties/cities with seemingly duplicate data and convert to long format
+# va_data_filt <- va_data %>% 
+#   filter(!county_name %in% c("Hopewell city", "Charles City County", "Colonial Heights city")) %>%
+#   select(year, county_name, all_of(race_cols)) %>%
+#   pivot_longer(names_to = "race", cols = all_of(race_cols)) %>%
+#   mutate(incarceration_type = case_when(str_detect(race, "jail") ~ "Jail",
+#                                         str_detect(race, "prison") ~ "Prison"),
+#          race = case_when(str_detect(race, "white") ~ "White",
+#                           str_detect(race, "black") ~ "Black"))
+# # str_detect(race, "aapi") ~ "Asian American/Pacific Islander",
+# # str_detect(race, "latinx") ~ "Latinx",
+# # str_detect(race, "native") ~ "Native American"))
+# 
+# plot_data <- va_data_filt %>% 
+#   group_by(year, race, incarceration_type) %>% 
+#   mutate(med = median(value, na.rm = TRUE))
+# 
+# ## Subset to post-1990 (no data before) and Halifax
+# ## Plot of jail and prison population rate over time in Halifax against VA median grouped by race
+# plot_data %>% filter(year >= 1990, county_name == "Halifax County") %>% 
+#   ggplot() + 
+#   geom_line(aes(x = year, y = value, group = interaction(incarceration_type, race), color = incarceration_type), alpha = 1, size = 0.7) +
+#   geom_line(aes(x = year, y = med, group = interaction(incarceration_type, race), color = incarceration_type), linetype = "dashed", alpha = 0.5, size = 0.7) +
+#   scale_color_manual(values = cbbPalette) +
+#   labs(y = "Incarceration rate per 100,000", x = "Year", color = "System", title = "Incarceration Rates in Halifax Co.", subtitle = "Dashed lines represent Virginia median rate") +
+#   facet_grid(~race)
+```
+
 #### Overall crime trends over time
+
+The average number of crimes in Halifax County that came to the attention of law enforcement within the 10 year period between 2010 and 2019 was 2081 crimes a year. Across the years, the number of crimes was relatively stable, with slightly higher levels of observed crime before 2013 and slightly lower levels after 2013. 
 
 ```{r halifax_crimes}
 halifax_crime %>%
@@ -82,6 +170,8 @@ halifax_crime %>%
 ```
 
 #### Most common offense types and clearance rates
+
+The following figure displays the types of crimes that came to the attention of law enforcement in Halifax County from most common to least common on the left and their corresponding clearance by arrest rate on the right. Drug violations, simple assault, larceny, and destruction of property make up the bulk of the crimes; however, this does not necessarily correspond to higher arrest rates. While drug violations and simple assaults result in arrests nearly $50\%$ of the time, larceny and destruction of property result in arrests much less frequently. This disparity highlights the complex process that proceeds a crime coming to the attention of law enforcement and precedes an arrest - namely that there exist many latent factors, including difficulty of "solving" the crime and effort put forth by law enforcement, that impact whether an arrest is made. 
 
 ```{r halifax_top_crimes}
 
@@ -141,6 +231,8 @@ total_crime_plot + per_clear_plot +
 
 #### Crime trends by race (per 1000 of that race)
 
+The figure below highlights the disparity between the number of crimes by Black and White people that came to attention of law enforcement across Virginia counties. Overall, the number of crimes by White people that law enforcement are alerted to is below 50 per 100,000 White people for nearly all counties in Virginia. In contrast, there are many counties with over 50 crimes per 100,000 Black people, including several at or above 200 crimes per 100,000 Black people. In Halifax County specifically (denoted by the lines in color), the number of crimes by Black people that law enforcement are alerted to is nearly twice that of those by White people. This disparity again highlights the complex process by which crimes are given law enforcement attention - namely that any historical policies or varying levels of law enforcement presence in neighorhoods will impact said attention.
+
 ```{r halifax_crime_by_race}
 va_crime_per_cap <- all_va_crime %>%
   filter(offender_race %in% c("Black or African American",
@@ -181,6 +273,8 @@ ggplot(filter(va_crime_per_cap, county_cap == "HALIFAX"), aes(x = incident_year,
 ```
 
 #### Clearance rates by race
+
+The figure below displays the clearance by arrest rates of all Virginia county crimes by race. Interestingly, the average clearance rate for crimes by White people is higher than that of crimes by Black people, which potentially underlies differences in the types of crimes. In Halifax County specifically (denoted by the lines in color), the clearance rate for crimes by Black people is above average compared to all Virginia counties, whereas it is below average for crimes by White people compared to other Virginia counties.
 
 ```{r}
 clearance_data <- all_va_crime %>%
@@ -224,7 +318,7 @@ ggplot(filter(clearance_data, county_cap == "HALIFAX"),
 
 #### All Crimes Map
 
-```{r all_crime_map}
+```{r all_crime_map, fig.height = 4}
 counties_sp <- read_sf(here("data", "working", "va_counties.geojson"),
                        quiet = TRUE) %>% 
   st_transform(crs = 4326) %>% 
@@ -259,19 +353,19 @@ mapping_data %>%
   leaflet(width = "100%") %>% 
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_per_1000),
               group = "Yearly Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000: {round(year_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
     addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_white_per_1000),
               group = "Yearly White Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000: {round(year_crime_white_per_1000, 1)}"), htmltools::HTML)) %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_black_per_1000),
               group = "Yearly Black Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
@@ -290,26 +384,26 @@ mapping_data %>%
 
 #### Drug Crimes Map
 
-```{r drug_crime_map}
+```{r drug_crime_map, fig.height = 4}
 leaflet_scale <- colorBin("BuPu" , c(0, 120), c(0, 5, 10, 30, 120))
 
 mapping_data %>% 
   leaflet(width = "100%") %>% 
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_per_1000),
               group = "Yearly Drug Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000: {round(year_drug_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
     addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_white_per_1000),
               group = "Yearly White Drug Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000: {round(year_drug_crime_white_per_1000, 1)}"), htmltools::HTML)) %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
-              opacity = 1.0, fillOpacity = 0.8,
+              opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_black_per_1000),
               group = "Yearly Black Drug Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>

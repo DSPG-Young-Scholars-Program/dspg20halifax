@@ -3,10 +3,6 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>/findings/incarceration_page/</loc>
-  </url>
-  
-  <url>
     <loc>/findings/crimes_page/</loc>
   </url>
   
@@ -27,16 +23,7 @@
   </url>
   
   <url>
-    <loc>/findings/isochrone_page/</loc>
-  </url>
-  
-  <url>
     <loc>/methods/</loc>
-  </url>
-  
-  <url>
-    <loc>/methods_old/</loc>
-    <priority>0</priority>
   </url>
   
   <url>
@@ -44,8 +31,7 @@
   </url>
   
   <url>
-    <loc>/overview_old/</loc>
-    <priority>0</priority>
+    <loc>/team/</loc>
   </url>
   
   <url>
@@ -54,14 +40,6 @@
   
   <url>
     <loc>/findings/</loc>
-  </url>
-  
-  <url>
-    <loc>/tags/geospatial/</loc>
-  </url>
-  
-  <url>
-    <loc>/tags/isochrone/</loc>
   </url>
   
   <url>
@@ -74,10 +52,6 @@
   
   <url>
     <loc>/tags/</loc>
-  </url>
-  
-  <url>
-    <loc>/team/</loc>
   </url>
   
   <url>

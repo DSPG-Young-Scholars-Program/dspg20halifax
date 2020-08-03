@@ -44,7 +44,7 @@ laus_unemployment_county <- read.csv(here::here("data", "original","Unemployment
   left_join(county_info, by = "GEOID") %>%
   mutate(year_month_frac = Year + 1/12 * (as.numeric(substr(Period, 2, 3)) - 1))
 
-options(mapbox.accessToken = Sys.getenv("MAPBOX_API_KEY"))
+options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 ```
 
 
@@ -94,7 +94,7 @@ Below we present the 5 year ACS unemployment estimates for counties in Virginia 
 Halifax county displays similar patterns as the rest of Virginia when considering the disparity in employment between Black and white Americans. This pattern may both contribute to and be a result of similar disparities in incarceration across racial lines.
 
 
-```{r}
+```{r, fig.height = 4}
 
 check_unstable <- function(variable_name) {
   ifelse((acs_unemployment_county_sp[[glue("{variable_name}_estimate")]]) < 2 * acs_unemployment_county_sp[[glue("{variable_name}_moe")]],

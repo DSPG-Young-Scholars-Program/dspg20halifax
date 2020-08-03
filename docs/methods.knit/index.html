@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title></title>
+        <link rel="canonical" href="../methods.knit/">
+        <style>
+
+    html body {
+        font-family: 'Oxygen', sans-serif;
+        background-color: #FFFFFF;
+    }
+
+    :root {
+        --accent: #232D4B;
+        --border-width:  0 ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ascetic.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="../css/main.css">
+
+
+
+
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/bash.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+
+
+<script>
+$(document).ready(function(){
+    
+  var input = $('#night-mode-toggle');
+  var container = $('#bigbody');
+  var stat = $('#button-status');
+  
+  container.toggleClass(localStorage.toggled);
+  stat.bootstrapToggle(localStorage.button).change();
+  
+  input.on('click', function() {
+      if (localStorage.toggled != "-nightmode" ) {
+          container.toggleClass("-nightmode", true );
+          localStorage.toggled = "-nightmode";
+          localStorage.button = "on";
+       } else {
+          container.toggleClass("-nightmode", false );
+          localStorage.toggled = "";
+          localStorage.button = "off"
+       }
+  })
+});
+</script>
+ <meta name="generator" content="Hugo 0.74.2" />
+        <link href="" rel="alternate" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        <link href="" rel="feed" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+    <link rel="manifest" href="../site.webmanifest">
+    <link rel="mask-icon" href="../img/favicon/safari-pinned-tab.svg" color="#000000">
+    <link rel="shortcut icon" href="../img/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    
+    
+    
+    <meta property="og:title" content="">
+    <meta property="og:type" content="article">
+      
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:image" content="/favicon/uva-dspg-logo.jpg" >
+      
+    <meta property="description" content="">
+    <meta property="og:description" content="">
+    
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:site" content="">
+    
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <body id = "bigbody">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#"></a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="../">Home</a></li>
+                            
+                                <li><a href="../overview/">Overview</a></li>
+                            
+                                <li><a href="../methods/">Data &amp; Methods</a></li>
+                            
+                                <li><a href="../findings/">Findings</a></li>
+                            
+                                <li><a href="../team/">Team</a></li>
+                            
+                        </ul>
+                    
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="https://biocomplexity.virginia.edu/social-decision-analytics/dspg-program"><i class="fas fa-globe-americas"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/DSPG-Young-Scholars-Program"><i class="fab fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/UVA_BI"><i class="fab fa-twitter"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="mailto:kb7hp@virginia.edu"><i class="far fa-envelope"></i></a></li>
+                            
+                            
+                        </ul>
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div class="item">
+
+    
+    
+    
+
+    
+    
+      
+    
+
+    <h4><a href="../methods.knit/"></a></h4>
+    
+    <h5></h5>
+
+    
+    
+
+</div>
+
+
+    <br> <div class="text-justify"><!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h2 id="background">Background</h2>
+<p>Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>. Black individuals constitute approximately 34% of the county&rsquo;s population and whites 60%. Because these two racial groups constitute the vast majority of the county&rsquo;s population, we restrict our focus to them when comparing across race throughout this website. This makeup is more balanced than in many other Virginia counties.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>The following maps highlight the distribution of race and age across the county, revealing that census tracts west of South Boston are composed of larger Black communities, and that median ages increase in the more southern rural parts of the county.
+<!-- raw HTML omitted --><!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>While we were limited in our ability get reliable up-to-date demographic information at the sub-county level, these general patterns provide helpful context as we further consider patterns in incarceration in the county.</p>
+<h2 id="data-sources">Data Sources</h2>
+<p>As this was a new project, we devoted significant time to the data discovery process.</p>
+<p>The first source of data we considered was the Virginia Department of Corrections, which maintains data on inmates in Virginia jails and prisons. Unfortunately, we were unable to get access to this data within the summer timeframe due to the time associated with receiving approval to work with sensitive data on a vulnerable population. The focus of criminal justice institutions on reacting to the COVID-19 pandemic may have played a role in our inability to obtain these data within the summer timeframe for this project as well.</p>
+<p>We also considered court records data from the state of Virginia. However, while these data are publicly-available, they are only accessible via a user-facing search tool, whereas a more comprehensive analysis would require access to the underlying database. We initiated a request for these data, and while this has seen recent progress, it also became apparent that this source would be outside the scope for the summer portion of this project.</p>
+<p>Given these struggles, we decided to shift our approach to instead focus more directly on the social determinants of incarceration, to aid the proposed Family and Consumer Science Agent in Halifax County. Guided by the ecological model and an extensive literature review, we identified four primary social factors to explore: unemployment, substance abuse, affordable housing, and family structure/foster care.</p>
+<p>We encountered similar challenges as we considered various data sources on each of these topics, but ultimately arrived at a subset that could be incorporated into our exploration of these factors in Halifax. A summary of the final data sources used for each factor (as well as other relevant topics) are below</p>
+<!-- raw HTML omitted -->
+<h2 id="challenges">Challenges</h2>
+<p>In addition to the data access issues mentioned above, we encountered other difficulties as we assembled a collection of sources for our specific social factors as well.</p>
+<!-- raw HTML omitted -->
+<h4 id="lack-of-relevance-to-formerly-incarcerated-population">Lack of relevance to formerly incarcerated population</h4>
+<p>Many of the most comprehensive data sources on these issues do not specifically address incarcerated or formerly incarcerated individuals, and it is questionable whether the patterns observed in these sources generalize to this population. For instance, Housing and Urban Development&rsquo;s Picture of Subsidized Households dataset provides information on characteristics of individuals in subsidized housing, but no data is recorded on the use of these services by formerly incarcerated individuals themselves.</p>
+<!-- raw HTML omitted -->
+<h4 id="improper-spatial-resolution">Improper spatial resolution</h4>
+<p>Many potential datasets measured variables that may have been valuable to include, but only measured them at the national or state level (this was particularly true for substance abuse). While these sources may have been helpful for context, their applicability to Halifax specifically was suspect.</p>
+<p>Furthermore, as mentioned above, the data that did exist at the sub-county level suffered from low sample sizes and associated high uncertainty, making it difficult to draw definitive conclusions for particular regions in Halifax.</p>
+<p>As an example, consider the following map, which was constructed by using ACS data for geographic mobility at the census tract level in Halifax. Each layer of the map represents a different sampled value based on the variability of the estimates reported by the ACS. It&rsquo;s easy to see that many tracts have significantly different reported mobility values depending on the random sample taken. This serves to highlight the potential issues relying on ACS estimates at the tract level for rural counties like Halifax.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h4 id="incarceration-or-crime">Incarceration, or Crime?</h4>
+<p>After exhausting the data sources most relevant to incarceration and recidivism specifically, we were left with large-scale trends from the Vera Institute for Justice and crime records reported by the Virginia State Police. However, we hestitated to rely too heavily on the Virginia crime records for multiple reasons.</p>
+<p>First, crime is not necessarily an optimal way to explore incarceration because crime records tend to strongly reflect systemic biases that exist both in the criminal justice system and in policing practices, and make no indication of whether an individual ends up actually being convicted and sentenced or not. Because of the strong underlying biases, we wanted to be sure not to over-interpret the data we did have. Incorporating the recently-obtained court records data may help to resolve some of these concerns, as we would be able to develop a better sense of the actual court outcomes for individuals in Halifax County.</p>
+<h2 id="summary">Summary</h2>
+<p>Overall, the course of this project revealed many of the difficulties inherent in exploring the topics of incarceration and recidivism. The latter in particular requires nuanced data that either are collected only very intermittently at the national level (for instance, the Bureau of Justice Statistics&rsquo; recidivism analysis tool)<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup> or simply do not exist. Given the sensitive nature of the topic, substituting proxies for these missing data can easily risk simply capturing the biases that already exist in the criminal justice system.</p>
+<p>Ultimately, a more thorough investigation of this topic would require more targeted data collection on a variety of topics. Especially in a rural area like Halifax County, much of this data collection may need to be organized by local leaders within the county for an accurate picture of incarceration and recidivism to emerge. As we discuss various social determinants of incarceration throughout this website, we attempt to highlight the most glaring gaps in data collection that could help provide a more thorough view of these issues were they to be filled.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>U.S. Census Bureau (2020). Annual Estimates of the Resident Population for Counties in Virginia: April 1, 2010 to July 1, 2019 (CO-EST2019-ANNRES-51). Retrieved from <a href="https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-total.html">https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-total.html</a>. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>Snyder, Howard N., Durose, Matthew R., Cooper, Alexia, &amp; Mulako-Wangota, Joseph. Bureau of Justice Statistics. Retrieved from <a href="http://www.bjs.gov/recidivism_2005_arrest/">http://www.bjs.gov/recidivism_2005_arrest/</a> <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+</div>
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+</main>
+
+        <footer id = "bigfooter">
+            <div style = "padding:15px;">
+                <p>Powered by <a href="https://gohugo.io">Hugo</a>. Themed by <a href="https://github.com/nathancday/min_night">min_night_dspg</a>. <a href="https://biocomplexity.virginia.edu/social-decision-analytics">Website by University of Virginia Biocomplexity Institute.</a>
+                </p>
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"
+                title="Creative Commons Attribution 4.0 International license">
+                <i class="fab fa-creative-commons" aria-hidden="true"></i> Attribution 4.0 International license
+                </a>
+            </div>
+        </footer>
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+          gtag('config', '');
+        </script>
+       
+    </body>
+
+</html>
+
