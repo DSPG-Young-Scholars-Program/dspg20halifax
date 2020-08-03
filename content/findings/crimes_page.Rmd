@@ -170,7 +170,7 @@ halifax_crime %>%
 
 #### Most common offense types and clearance rates
 
-The following figure displays the types of crimes that came to the attention of law enforcement in Halifax County from most common to least common on the left and their corresponding clearance by arrest rate on the right. Drug violations, simple assault, larceny, and destruction of property make up the bulk of the crimes; however, this does not necessarily correspond to higher arrest rates. While drug violations and simple assaults result in arrests nearly $50\%$ of the time, larceny and destruction of property result in arrests much less frequently. This disparity highlights the complex process that proceeds a crime coming to the attention of law enforcement and precedes an arrest - namely that there exist many latent factors, including difficulty of "solving" the crime and effort put forth by law enforcement, that impact whether an arrest is made. 
+The following figure displays the types of crimes that came to the attention of law enforcement in Halifax County from most common to least common on the left and their corresponding clearance by arrest rate on the right. Drug violations, simple assault, larceny, and destruction of property made up the bulk of the crimes; however, this did not necessarily correspond to higher arrest rates. While drug violations and simple assaults resulted in arrests nearly $50\%$ of the time, larceny and destruction of property resulted in arrests much less frequently. This disparity highlights the complex process that proceeds a crime coming to the attention of law enforcement and precedes an arrest - namely that there exist many latent factors, including difficulty of "solving" the crime and effort put forth by law enforcement, that impact whether an arrest is made. 
 
 ```{r halifax_top_crimes}
 
@@ -230,7 +230,7 @@ total_crime_plot + per_clear_plot +
 
 #### Crime trends by race (per 1000 of that race)
 
-The figure below highlights the disparity between the number of crimes by Black and White people that came to attention of law enforcement across Virginia counties. Overall, the number of crimes by White people that law enforcement are alerted to is below 50 per 100,000 White people for nearly all counties in Virginia. In contrast, there are many counties with over 50 crimes per 100,000 Black people, including several at or above 200 crimes per 100,000 Black people. In Halifax County specifically (denoted by the lines in color), the number of crimes by Black people that law enforcement are alerted to is nearly twice that of those by White people. This disparity again highlights the complex process by which crimes are given law enforcement attention - namely that any historical policies or varying levels of law enforcement presence in neighorhoods will impact said attention.
+The figure below highlights the disparity between the number of crimes by Black and White people that came to attention of law enforcement across Virginia counties. Overall, the number of crimes by White people that law enforcement were alerted to was below 50 per 100,000 White people for nearly all counties in Virginia. In contrast, there were many counties with over 50 crimes per 100,000 Black people, including several at or above 200 crimes per 100,000 Black people. In Halifax County specifically (denoted by the lines in color), the number of crimes by Black people that law enforcement were alerted to is nearly twice that of those by White people. This disparity again highlights the complex process by which crimes are given law enforcement attention - namely that any historical policies or varying levels of law enforcement presence in neighorhoods will impact said attention.
 
 ```{r halifax_crime_by_race}
 va_crime_per_cap <- all_va_crime %>%
@@ -273,7 +273,7 @@ ggplot(filter(va_crime_per_cap, county_cap == "HALIFAX"), aes(x = incident_year,
 
 #### Clearance rates by race
 
-The figure below displays the clearance by arrest rates of all Virginia county crimes by race. Interestingly, the average clearance rate for crimes by White people is higher than that of crimes by Black people, which potentially underlies differences in the types of crimes. In Halifax County specifically (denoted by the lines in color), the clearance rate for crimes by Black people is above average compared to all Virginia counties, whereas it is below average for crimes by White people compared to other Virginia counties.
+The figure below displays the clearance by arrest rates of all Virginia county crimes by race. Interestingly, the average clearance rate for crimes by White people was higher than that of crimes by Black people, which potentially underlies differences in the types of crimes. In Halifax County specifically (denoted by the lines in color), the clearance rate for crimes by Black people was above average compared to all Virginia counties, whereas it was below average for crimes by White people compared to other Virginia counties.
 
 ```{r}
 clearance_data <- all_va_crime %>%
@@ -315,7 +315,11 @@ ggplot(filter(clearance_data, county_cap == "HALIFAX"),
 
 ### Comparison of Halifax county to other VA counties
 
-#### All Crimes Map
+The following figures compare the average number of crimes per 1000 people law enforcement was alerted to across all Virginia counties from 2010 to 2019. The darker colors indicate more crimes per 1000 people whereas the lighter colors indicate less crimes per 1000 people.  
+
+#### All crimes map
+
+Halifax County, compared to other Virginia counties, was around the median across all of Virginia in total crimes per 1000 that law enforcement were alerted to. The same conclusion holds when examining the average number of crimes per 1000 people by race. 
 
 ```{r all_crime_map, fig.height = 4}
 counties_sp <- read_sf(here("data", "working", "va_counties.geojson"),
@@ -381,7 +385,9 @@ mapping_data %>%
 ```
 
 
-#### Drug Crimes Map
+#### Drug crimes map
+
+Comparing just drug related crimes across Virginia counties, Halifax County was again close to the median levels of drug crimes per 1000 that law enforcement are alerted to across all of Virginia. The same conclusion holds when examining the average number of drug related crimes by race. 
 
 ```{r drug_crime_map, fig.height = 4}
 leaflet_scale <- colorBin("BuPu" , c(0, 120), c(0, 5, 10, 30, 120))
