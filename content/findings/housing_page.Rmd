@@ -8,8 +8,8 @@ output: html_document
 ---
 
 ```{css, echo = FALSE}
-h4 {
-  text-align:center
+.navbar-default .navbar-nav li a {
+    color: white;
 }
 ```
 
@@ -29,6 +29,8 @@ library(tidyr)
 library(leaflet)
 library(leaflet.mapboxgl)
 library(sf)
+
+source(here("src", "Mapping", "isochrone_map.R"))
 
 theme_set(theme_minimal() +
             theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 24),
@@ -176,7 +178,7 @@ To better understand how the location of affordable housing options may influenc
 #### Accessibility by Car
 
 ```{r, fig.height = 8}
-drive_map <- readRDS(here::here("data", "working", "isochrones", "drive_map.RDS"))
+drive_map <- create_map(drive_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 10)
 drive_map
 ```
 <br><br>
@@ -184,16 +186,14 @@ drive_map
 #### Accessibility by Bike
 
 ```{r, fig.height = 8}
-bike_map <- readRDS(here::here("data", "working", "isochrones", "bike_map.RDS"))
-bike_map
+bike_map <- create_map(bike_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 11)
 ```
 <br><br>
 
 #### Accessibility on Foot
 
 ```{r, fig.height = 8}
-walk_map <- readRDS(here::here("data", "working", "isochrones", "walk_map.RDS"))
-walk_map
+walk_map <- create_map(walk_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 12)
 ```
 
 <br>
