@@ -1,5 +1,4 @@
 ---
-title: "Team"
 output: html_document
 ---
 
@@ -34,7 +33,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 <div class="row">
 <div class="column">
-![Finn Roberts](/findings/head_shots/UVA.fellow.Finn_Roberts.jpg "Finn Roberts"){style="width:60%; display: block; margin-left: auto; margin-right: auto;"} 
+![](/findings/head_shots/UVA.fellow.Finn_Roberts.jpg){style="width:60%; display: block; margin-left: auto; margin-right: auto;"} 
 
 [Finn Roberts](https://github.com/robe2037), Fellow  
 
@@ -44,29 +43,32 @@ Biostatistics, Geographic Information Systems
 </div>
 
 <div class="column">
-![Riya Berry](/findings/head_shots/UVA.Intern.Riya.Berry.jpg "Riya Berry"){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
+![](/findings/head_shots/UVA.Intern.Riya.Berry.jpg){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
 
 [Riya Berry](https://github.com/18rberry), Intern  
 
-UC Berkley
+California - Berkley    
+
 Data Science, Interdisciplinary Studies
 </div>
 
 <div class="column">
-![Ellen Graham](/findings/head_shots/UVA.intern.Ellen_Graham.jpg "Ellen Graham"){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
+![](/findings/head_shots/UVA.intern.Ellen_Graham.jpg){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
 
 [Ellen Graham](https://github.com/grahamammal), Intern  
 
 Macalester College  
+
 Applied Mathematics and Statistics, Computer Science
 </div>
 
 <div class="column">
-![Mychala Walker](/findings/head_shots/UVA.intern.Mychala.Walker.jpg "Mychala Walker"){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
+![](/findings/head_shots/UVA.intern.Mychala.Walker.jpg){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
 
 [Mychala Walker](https://github.com/mew4kc), Intern  
 
 Virginia State University
+
 Political Science
 </div>
 
