@@ -7,19 +7,14 @@ h3 {
   text-align:center
 }
 ```
-### 2020 Halifax County Summer Project
+
+### 2020 DSPG Halifax County Summer Project
 
 The United States incarcerates more people per capita than anywhere else in the world,[^SentencingProject] and a disproportionate number of those incarcerated are Black and Hispanic.[^APA] Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for White males.
 
 In addition to the drastic human costs incurred by these mass incarceration policies, the current incarceration rate is extremely costly for taxpayers. The U.S. spends roughtly \$60 to \$80 billion per year on state and federal prisons.[^APA2]$^,$[^ACLU] But despite these expenditures, roughly two-thirds of individuals released from prison were re-arrested within three years.[^BJS]
 
-Halifax County, Virginia, is not immune to these national trends. Halifax County spends over \$400,000 
-
-_(X PERCENT OF BUDGET) _
-
-_Finn asks: Where are these values coming from? This is not consistent with what's in the budget from Nat_
-
-on incarceration and recidivism annually, and this figure still does not account for the many indirect costs that result from incarceration, like foster care services required when parents are removed from the home or costs related to drug addiction treatment.
+Halifax County, Virginia, is not immune to these national trends. At more than \$3 million, the corrections line item constituted more than 3% of Halifax County's overall budget in 2019, and this figure still does not incorporate additional expenses incurred in the court system or the other indirect costs resulting from incarceration, like foster care services required when parents are removed from the home or costs related to drug addiction treatment.
 
 Halifax County has partnered with DSPG 2020 to investigate the factors associated with its incarceration and recidivism rate in the hopes of investing in proactive services through the Virginia Cooperative Extension Service, like a Family and Consumer Science Agent. Among other things, this position would help connect formerly incarcerated individuals to the community resources needed to help them effectively re-enter society.
 
@@ -30,6 +25,18 @@ Our primary goals for the summer have been to synthesize a variety of research t
 We hope that identifying emerging patterns in these determinants will allow Halifax to more specifically target those factors that are most relevant to the state of incarceration and recidivism in the county.
 
 ### Our Approach
+
+We are using the social-ecological model[^CDC] to understand the factors related to incarceration in Halifax County. This model allows us to examine how factors at the individual, neighborhood and community, and policy levels shape behavior. It considers behavior as a result of inputs from a series of nested sociological levels:
+
+<br>
+
+![](/SEM-graphc.jpg)
+
+<br>
+
+With this framework as context, we sought to identify the levels at which various social determinants may influence patterns of incarceration and recidivism. Single factors may enter at numerous levels, emphasizing the nuances involved in exploring these issues.
+
+For instance, access to housing for formerly incarcerated individuals is a complex result of policies that render them ineligible for certain housing opportunities, community atitudes surrounding willingness to live in areas near affordable housing projects, and family relationships that may provide a temporary housing option post-release.
 
 Under this framework, our approach centered around an extensive literature review of research in the area, a comprehensive exploration and accumulation of available data sources on key factors impacting arrest and incarceration, and data visualizations to communicate the state of these factors in Halifax County, VA.
 

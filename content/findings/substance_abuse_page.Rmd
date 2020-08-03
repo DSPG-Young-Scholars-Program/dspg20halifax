@@ -1,7 +1,6 @@
 ---
 title: "Substance Abuse"
-description: "How does Halifax compare to surrounding areas on opioid and alcohol use?"
-tags: ["R", "networks"]
+description: "Comparing Halifax to its neighbors on opioid and alcohol use"
 weight: 5
 draft: false
 output: html_document

@@ -1,7 +1,6 @@
 ---
-title: "Crime + Arrests"
-description: "What are the trends in crimes in Halifax?"
-tags: ["R", "Visualization"]
+title: "Incarceration, Crime, & Arrests"
+description: "Trends in indicators over time"
 weight: 2
 draft: false
 output: html_document

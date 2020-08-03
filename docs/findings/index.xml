@@ -11,7 +11,16 @@
     
     
     <item>
-      <title>Crime &#43; Arrests</title>
+      <title>Background</title>
+      <link>/findings/background_page/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/background_page/</guid>
+      <description>Background Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade[^CENSUS]. Black individuals constitute approximately 34% of the county&#39;s population and whites 60%.</description>
+    </item>
+    
+    <item>
+      <title>Incarceration, Crime, &amp; Arrests</title>
       <link>/findings/crimes_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       

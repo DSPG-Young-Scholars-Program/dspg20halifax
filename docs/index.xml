@@ -11,7 +11,16 @@
     
     
     <item>
-      <title>Crime &#43; Arrests</title>
+      <title>Background</title>
+      <link>/findings/background_page/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/background_page/</guid>
+      <description>Background Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade[^CENSUS]. Black individuals constitute approximately 34% of the county&#39;s population and whites 60%.</description>
+    </item>
+    
+    <item>
+      <title>Incarceration, Crime, &amp; Arrests</title>
       <link>/findings/crimes_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -61,7 +70,8 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/methods/</guid>
-      <description>h1, h2, h3 { text-align: center; } body { text-align: justify }  Background Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade1.</description>
+      <description>h1, h2, h3 { text-align: center; } body { text-align: justify }  Data Sources As this was a new project, we devoted significant time to the data discovery process.
+The first source of data we considered was the Virginia Department of Corrections, which maintains data on inmates in Virginia jails and prisons. Unfortunately, we were unable to get access to this data within the summer timeframe due to the time associated with receiving approval to work with sensitive data on a vulnerable population.</description>
     </item>
     
     <item>
@@ -70,8 +80,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/overview/</guid>
-      <description>h3 { text-align:center }  2020 Halifax County Summer Project The United States incarcerates more people per capita than anywhere else in the world,1 and a disproportionate number of those incarcerated are Black and Hispanic.2 Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for White males.
-In addition to the drastic human costs incurred by these mass incarceration policies, the current incarceration rate is extremely costly for taxpayers.</description>
+      <description>h3 { text-align:center }  2020 DSPG Halifax County Summer Project The United States incarcerates more people per capita than anywhere else in the world,1 and a disproportionate number of those incarcerated are Black and Hispanic.2 Estimates from the ACLU suggest that one of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen for White males.</description>
     </item>
     
     <item>
@@ -80,7 +89,7 @@ In addition to the drastic human costs incurred by these mass incarceration poli
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/team/</guid>
-      <description>{ box-sizing: border-box; } .column { float: left; width: 25%; } .row:after { content: &#34;&#34;; display: table; clear: both; }  UVA Data Science for the Public Good Program The Data Science for the Public Good (DSPG) Young Scholars program is a summer immersive program held at the Biocomplexity Institute’s Social and Decision Analytics division (SDAD). In its seventh year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today.</description>
+      <description>{ box-sizing: border-box; } .column { float: left; width: 25%; } .row:after { content: &#34;&#34;; display: table; clear: both; } .justify { text-align: justify }  UVA Data Science for the Public Good Program The Data Science for the Public Good (DSPG) Young Scholars program is a summer immersive program held at the Biocomplexity Institute’s Social and Decision Analytics division (SDAD). In its seventh year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today.</description>
     </item>
     
   </channel>

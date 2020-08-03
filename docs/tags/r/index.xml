@@ -11,48 +11,12 @@
     
     
     <item>
-      <title>Crime &#43; Arrests</title>
-      <link>/findings/crimes_page/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/findings/crimes_page/</guid>
-      <description>Background Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed in the court system, or an individual may be found not guilty at trial.</description>
-    </item>
-    
-    <item>
-      <title>Employment</title>
-      <link>/findings/employment_page/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/findings/employment_page/</guid>
-      <description>Background A discussion of factors related to incarceration would be remiss without discussing unemployment. Empirical analyses have consistently found unemployment to be one of the factors most strongly correlated with crime. A 2005 meta-analysis of over 200 studies quantifying predictors of crime found that local unemployment rates had the second-largest effect size out of 31 predictors.1 There are several reasonable theories as to why this is true.</description>
-    </item>
-    
-    <item>
       <title>Housing</title>
       <link>/findings/housing_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/housing_page/</guid>
       <description>.navbar-default .navbar-nav li a { color: white; }  Background Many now see access to affordable housing as one of the primary factors limiting successful re-entry for individuals leaving jails or prisons; an unstable living situation can severely impact employment opportunities, predispose individuals to return to criminal activity, and hinder efforts to reestablish family relationships and friendships1.</description>
-    </item>
-    
-    <item>
-      <title>Substance Abuse</title>
-      <link>/findings/substance_abuse_page/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/findings/substance_abuse_page/</guid>
-      <description>Background Approximately three out of four state prisoners and four out of five federal prisoners are detained for alcohol and or drug related offenses1. Additionally, 58% of state prisoners and 63% of sentenced jail inmates meet the criteria for substance abuse disorders (SUDs), compared to 5% of the general adult population2. Not considered in these figures is the high rate of drug-related crime; for example, 17% of state prisoners and 18% of federal inmates committed their offense to obtain money to purchase drugs3.</description>
-    </item>
-    
-    <item>
-      <title>Family Structure</title>
-      <link>/findings/family_structure_page/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/findings/family_structure_page/</guid>
-      <description>Background Decades of research has found that family structure has the power to impact a child’s development. For example, children growing up in two parent homes tend to have better health and social outcomes than those who grow up in single parent homes 1. Teen pregnancy (defined as pregnancy between the ages of 15 and 19 years old), costs U.S. taxpayers between $9 and $11 billion dollars per year and Virginia is estimated to spend $183 million dollars on factors related to teen pregnancy2.</description>
     </item>
     
   </channel>
