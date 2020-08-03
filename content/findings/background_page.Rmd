@@ -88,7 +88,6 @@ halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_d
 
 Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade[^CENSUS]. Black individuals constitute approximately 34% of the county's population and whites 60%. Because these two racial groups constitute the vast majority of the county's population, we restrict our focus to them when comparing across race throughout this website. This makeup is more balanced than in many other Virginia counties.
 
-
 ```{r, fig.height = 4}
 #BAMMtools::getJenksBreaks(age_sex_race_county$percent_estimate_race_total_population_one_race_black_or_african_american_estimate, 6)
 pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 10, 22, 35, 50, 75))

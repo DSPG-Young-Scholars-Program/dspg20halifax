@@ -45,7 +45,9 @@ We encountered similar challenges as we considered various data sources on each 
 
 ```{r}
 sources <- readr::read_csv(here::here("data", "working", "data_sources_final.csv")) %>%
-  dplyr::select(-X4)
+  select(-X4) %>%
+  filter(Topic != "Schooling") %>%
+  select(Source, Topic, Description)
 
 knitr::kable(sources, "html", caption = "Final Summary of Data Sources") %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "bordered"), full_width = FALSE)
