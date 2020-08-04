@@ -27,7 +27,9 @@ In the United States, substance use and abuse has been thoroughly entangled with
 
 ### Main Findings 
 
-The prevailing opioid epidemic has been felt strongly in rural America, and data from the Centers for Disease Control provides mixed messages about the state of the epidemic in Halifax County. While it is encouraging to see prescription rates on a rapid decline, this trend likely tells only part of the story. Given the increased visiblity of the epidemic in recent years, this decline is likely driven more by changes in prescribing practices rather than reduced dependence on the part of those using opioids. In fact, as prescription rates decline, many may turn to heroin or fentanyl, which may be more dangerous to obtain and use, and may also be treated more strictly by the criminal justice system.
+The prevailing opioid epidemic has been felt strongly in rural America, and data from the Centers for Disease Control provides mixed messages about the state of the epidemic in Halifax County. Halifax began with lower opioid prescription rates than Virginia and the U.S. from 2006 to 2011, yet went on to continuously surpass both from 2011 until 2018. While Halifax rates peaked in 2015 and have been sharply decreasing since, Halifax continues to be behind the United States and the state of Virginia. In fact, the state of Virginia, despite being rumored to be one of the states most devastated by the opioid epidemic, consistently fares better than overall US rates. These data illustrate how strongly the county of Halifax has been affected by the opioid epidemic, with opioid prescription rates for 100 people still not lowering beyond 50.  
+
+Though it is encouraging to see prescription rates on a rapid decline overall, this trend likely tells only part of the story. Given the increased visibility of the epidemic in recent years, this decline is likely driven more by changes in prescribing practices rather than reduced dependence on the part of those using opioids. In fact, as prescription rates decline, many may turn to heroin or fentanyl, which may be more dangerous to obtain and use, and may also be treated more strictly by the criminal justice system.
 
 ```{r}
 library(ggplot2)
@@ -64,10 +66,8 @@ cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00"
 #read CSV
 datasource <- readr::read_csv(here::here("data",
                                          "original", "Substance_Abuse",
-                                         "CDC Opioid Prescription Data - Halifax (1).csv")) %>%
-  pivot_longer(cols = c(Halifax, `US Total`))
-
-# total <- datasource$`US Total`
+                                         "CDC Opioid Prescription Data - Halifax.csv")) %>%
+  pivot_longer(cols = c(Halifax, `US Total`, VA))
 
 #plot the data
 ggplot(data = datasource, aes(x = Year, y = value, color = name)) +
@@ -76,7 +76,7 @@ ggplot(data = datasource, aes(x = Year, y = value, color = name)) +
   geom_point(size = 2) +
   labs(y = 'Opioid Prescription Rates per 100 People') +
   #relabel the scale appropriately
-  scale_color_manual(name = "Location", labels = c("Halifax, VA", "US"), values = cbbPalette) +
+  scale_color_manual(name = "Location", labels = c("Halifax", "US", "VA"), values = cbbPalette) +
   scale_x_continuous(labels = seq(2006, 2018), breaks = seq(2006, 2018)) +
   theme(panel.grid.minor = element_blank(),
         legend.title = element_blank(),
@@ -255,7 +255,9 @@ ggplot(datasource, aes(x =Year, y =Count, fill=Drug))+
 ```
 <br>
 
-Another important aspect of substance abuse is alcohol related abuse and overdose. According to data from the National Center for Health Statistics[^9], the percentage of adults reporting heavy or binge drinking has increased steadily since 2011. This trend parallels that of Virginia as a whole, which consistently has a higher excessive drinking rate than Halifax.
+Another important aspect of substance abuse is alcohol related abuse and overdose. According to data from the National Center for Health Statistics[^9], the percentage of adults reporting heavy or binge drinking has increased steadily since 2011. This trend parallels that of Virginia as a whole, which consistently has a higher excessive drinking rate than Halifax. 
+
+The corresponding map of this data illustrates how the majority of counties in Virginia – Halifax included –  drift towards the most extreme rates for binge drinking as time elapses. 
 
 <br>
 
@@ -282,6 +284,102 @@ ggplot(data = datasource, aes(x = X1)) +
 ```
 <br>
 
+<br>
+```{r}
+datasource <- readr::read_csv(here::here("data",
+                                         "original", "Substance_Abuse",
+                                         "Excessive Drinking and Alcohol-Impaired Driving Deaths - Excessive Drinking.csv"))
+
+#create map for each year (respectively) by filtering by year and merging with va_borders data
+create.map <- function(year) {
+  datasource <- filter(datasource, Year == year)
+  new_tbl <- merge(va_borders, datasource, by.x = "GEOID", by.y = "FIPS")
+}
+
+#create relevant map for each year
+mapping_2011 <- create.map('2011')
+mapping_2012 <- create.map('2012')
+mapping_2013 <- create.map('2013')
+mapping_2014 <- create.map('2014')
+mapping_2015 <- create.map('2015')
+mapping_2016 <- create.map('2016')
+mapping_2017 <- create.map('2017')
+mapping_2018 <- create.map('2018')
+mapping_2019 <- create.map('2019')
+mapping_2020 <- create.map('2020')
+
+#generate label on map for each respective year
+generate.label <- function(year_mapping) {
+  my_label <- paste("County: ", year_mapping$County,"<br/>", "Rate: ", paste(year_mapping$'% Excessive Drinking', '%',
+                                                                           sep = ""), "<br/>",
+                    sep="") %>%
+    lapply(htmltools::HTML)
+}
+
+#generate bins using Jenks Breaks and palette for all the maps
+general_bins <- getJenksBreaks(datasource$`% Excessive Drinking`, k = 6)
+general_palette <- colorBin("BuPu", domain = datasource$'`% Excessive Drinking`', bins = general_bins)
+
+#leaflet code to plot all the mpas data
+leaflet() %>%
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  addPolygons(data = mapping_2020, fillColor = ~general_palette(mapping_2020$'% Excessive Drinking'),
+              weight = 1, color = "#444444", fillOpacity = 0.7, group = "2020",
+              label = generate.label(mapping_2020),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+    addPolygons(data = mapping_2019, fillColor = ~general_palette(mapping_2019$'% Excessive Drinking'),
+                weight = 1, color = "#444444", fillOpacity = 0.7, group = "2019",
+                label = generate.label(mapping_2019),
+                labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                            textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2018, fillColor = ~general_palette(mapping_2018$'% Excessive Drinking'),
+              weight = 1, color = "#444444", fillOpacity = 0.7, group = "2018",
+              label = generate.label(mapping_2018),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2017, fillColor = ~general_palette(mapping_2017$'% Excessive Drinking'),
+              weight = 1, color = "#444444", fillOpacity = 0.7, group = "2017",
+              label = generate.label(mapping_2017),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2016, fillColor = ~general_palette(mapping_2016$'% Excessive Drinking'),
+              weight = 1, color = "#444444", fillOpacity = 0.7, group = "2016",
+              label = generate.label(mapping_2016),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2015, fillColor = ~general_palette(mapping_2015$'% Excessive Drinking'),
+              weight = 1, color = "#444444", fillOpacity = 0.7, group = "2015",
+              label = generate.label(mapping_2015),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2014, fillColor = ~general_palette(mapping_2014$'% Excessive Drinking'),
+              weight = 1, color = "#444444", fillOpacity = 0.7, group = "2014",
+              label = generate.label(mapping_2014),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2013, fillColor = ~general_palette(mapping_2013$'% Excessive Drinking'),
+              weight = 1, color = "#444444", fillOpacity = 0.7, group = "2013",
+              label = generate.label(mapping_2013),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2012, fillColor = ~general_palette(mapping_2012$'% Excessive Drinking'),
+              weight = 1, color = "#444444", fillOpacity = 0.7, group = "2012",
+              label = generate.label(mapping_2012),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+  addPolygons(data = mapping_2011, fillColor = ~general_palette(mapping_2011$'% Excessive Drinking'),
+              weight = 1, color = "#444444", fillOpacity = 0.7, group = "2011",
+              label = generate.label(mapping_2011),
+              labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
+                                          textsize = "13px", direction = "auto")) %>%
+    addLegend(pal = general_palette, values = general_bins,
+              title = "Percentage of Adults Reporting Heavy or Binge Drinking", position = "bottomright") %>%
+    addLayersControl(baseGroups = c("2011", "2012", "2013", "2014", "2015", "2016", "2017",
+                                    "2018", "2019", "2020"),
+                     options = layersControlOptions(collapsed = FALSE))
+```
+<br>
 Lastly, it is important to understand substance abuse and its relationship with incarceration through the community and policy level of the ecological model. The historical legacy of War on Drugs policies (for instance, the differentiation between crack and powder cocaine) combined with statistical over-policing of black and brown neighborhoods have helped to fuel the racial disparities seen in the criminal justice system. Data from the American Civil Liberties Union (ACLU) indicate the racial disparities in marijuana arrests between Black and White individuals (per 100k people). In Virginia, Black people are 3.4 times more likely to be arrested for marijuana possession than White people, a gap that has steadily widened from 2010 to 2018. In Halifax, Black people are 2.9 times more likely to be arrested for marijuana possession[^7]. While this pattern is indiciative of concerning racial disparities, it is difficult to disentangle these figures from the complex interplay of crime, poverty, and other social determinants of incarceration.
 
 <br>
@@ -294,8 +392,9 @@ va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 datasource <- merge(va_borders, datasource, by.x = "GEOID", by.y = "FIPS Code")
 unstable <- filter(datasource, `Meets Population & Reporting Thresholds` == "No")
+stable <- filter(datasource, `Meets Population & Reporting Thresholds` == "Yes")
 
-general_bins <- getJenksBreaks(datasource$`Times more likely Black person arrested in 2018`, k = 6)
+general_bins <- getJenksBreaks(stable$`Times more likely Black person arrested in 2018`, k = 6)
 general_bins <- sapply(general_bins, round)
 
 general_palette <- colorBin("BuPu", domain = datasource$`Times more likely Black person arrested in 2018`, bins = general_bins)
@@ -319,10 +418,8 @@ leaflet(width = "100%") %>%
 
 ### Conclusion and Policy Implications 
 
-**We could potentially have this info, and maybe should've included it. I would focus more on the other social determinants stuff below**
-_To better understand the relationship between substance abuse, incarceration, recidivism, particularly in Halifax Virginia, it would be helpful to have additional data sources. Primarily, data on substance abuse related crime in the Halifax County jail, such as demographic information, as well as breakdowns on frequencies for types of drug-related offenses, would be particularly relevant. However, such data poses confidentiality concerns for the individuals within the Halifax county jail, and thus larger ethical concerns._
 
-Additionally, data on substance abuse and SUD-related crime at various levels of the ecological model would be extremely helpful. For example, data on housing outcomes for individuals with SUD-related offenses, such as how many such individuals are homeless or struggling to find stable housing? In that vein, it would be helpful to have information about how receptive and inclusive public housing programs in the county are to formerly incarcerated individuals with drug offenses. Furthermore, data on job outcomes and prospects for individuals with SUD-related offenses would be particularly illuminating, such as how many individuals are unemployed or unable to find a permanent job. Though we have geographic data for substance abuse related treatment and help centers in Halifax County, it would be helpful to have data about the outcomes for individuals who seek out such resources. 
+To better understand the relationship between substance abuse, incarceration, recidivism, particularly in Halifax Virginia, it would be helpful to have additional data sources. To understand the social determinants of substance abuse related crime, it would be helpful to examine sources that magnify various aspects of substance abuse's ecological model. For example - on the individual level - data on housing outcomes for individuals with SUD-related offenses, such as how many such individuals are homeless or struggling to find stable housing? In that vein, it would be helpful to have information about how receptive and inclusive public housing programs in the county are to formerly incarcerated individuals with drug offenses. Furthermore, data on job outcomes and prospects for individuals with SUD-related offenses would be particularly illuminating, such as how many individuals are unemployed or unable to find a permanent job. Though we have geographic data for substance abuse related treatment and help centers in Halifax County, it would be helpful to have data about the outcomes for individuals who seek out such resources. 
 
 [^1]: 5 Startling Facts About Drug Abuse in US Prisons. (2017, July 10). Retrieved August 1, 2020, from https://www.confirmbiosciences.com/knowledge/blog/5-startling-facts-drug-abuse-us-prisons/
 [^2]: Bales, W. D., Slyke, S. V., & Blomberg, T. G. (2006). Substance Abuse Treatment in Prison and Community Reentry: Breaking the Cycle of Drugs, Crime, Incarceration, and Recidivism. Georgetown Journal on Poverty Law & Policy, 8(2).

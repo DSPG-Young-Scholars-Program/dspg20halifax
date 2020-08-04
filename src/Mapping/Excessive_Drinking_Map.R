@@ -1,10 +1,3 @@
-install.packages("tigris")
-install.packages('here')
-install.packages('rvest')
-install.packages('censusapi')
-install.packages('hablar')
-install.packages('BAMMtools')
-
 library(rvest)
 library(sf)
 library(tigris)
@@ -22,7 +15,7 @@ readRenviron("~/.Renviron")
 Sys.getenv("CENSUS_API_KEY")
 
 #get csv to read in
-datasource <- readr::read_csv(here::here("git", "TestDSPG", "Halifaxx", "data",
+datasource <- readr::read_csv(here::here("data",
                                          "original", "Substance_Abuse",
                                          "Excessive Drinking and Alcohol-Impaired Driving Deaths - Excessive Drinking.csv"))
 

@@ -190,6 +190,7 @@ drive_map
 
 ```{r, fig.height = 8}
 bike_map <- create_map(bike_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 11)
+bike_map
 ```
 <br><br>
 
@@ -197,6 +198,7 @@ bike_map <- create_map(bike_time_polys) %>% setView(lat = 36.6987, lng = -78.901
 
 ```{r, fig.height = 8}
 walk_map <- create_map(walk_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 12)
+walk_map
 ```
 
 <br>
