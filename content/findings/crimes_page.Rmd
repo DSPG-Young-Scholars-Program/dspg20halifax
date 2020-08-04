@@ -1,7 +1,6 @@
 ---
-title: "Crime + Arrests"
-description: "What are the trends in crimes in Halifax?"
-tags: ["R", "Visualization"]
+title: "Incarceration, Crime, & Arrests"
+description: "Trends in indicators over time"
 weight: 2
 draft: false
 output: html_document
@@ -57,9 +56,7 @@ rates_by_gender_system <- va_data %>%
          gender = ifelse(str_detect(jail_gender_combo, "female"), "Female", "Male"),
          gender = factor(gender, levels = c("Male", "Female")))
 
-scale_max <- max(c(va_data$male_prison_pop_rate, va_data$female_prison_pop_rate), na.rm = TRUE)
-
-
+scale_max <- max(c(va_data$male_prison_pop_rate / 100, va_data$female_prison_pop_rate / 100), na.rm = TRUE)
 
 theme_set(theme_minimal() +
             theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 24),
@@ -94,12 +91,12 @@ The figures below display the prison and jail incarceration rates in Virginia co
 ```{r}
 rates_by_gender_system %>%
   filter(system == "Prison") %>%
-  ggplot(aes(x = year, y = value, group = county_name, color = gender)) +
+  ggplot(aes(x = year, y = value / 100, group = county_name, color = gender)) +
   geom_line(lwd = 1.1) +
   scale_color_manual(values = cbbPalette) +
   gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE, unhighlighted_params = list(alpha = 0.2)) +
   scale_y_continuous(limits = c(0, scale_max)) +
-  labs(color = "Gender", title = "Prison Incarceration Rate", y = "Incarcerated Individuals per 100,000\n", x = "\nYear")  +
+  labs(color = "Gender", title = "Prison Incarceration Rate", y = "Incarcerated Individuals per 1,000\n", x = "\nYear")  +
   facet_wrap(gender~.) + theme(legend.position = "none")
 
 ```
@@ -107,17 +104,71 @@ rates_by_gender_system %>%
 ```{r}
 rates_by_gender_system %>%
   filter(system == "Jail") %>%
-  ggplot(aes(x = year, y = value, group = county_name, color = gender)) +
+  ggplot(aes(x = year, y = value / 100, group = county_name, color = gender)) +
   geom_line(lwd = 1.1) +
   scale_color_manual(values = cbbPalette) +
   gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE, unhighlighted_params = list(alpha = 0.2)) +
   scale_y_continuous(limits = c(0, scale_max)) +
-  labs(color = "Gender", title = "Jail Incarceration Rate", subtitle = "", y = "Incarcerated Individuals per 100,000\n", x = "\nYear")  +
+  labs(color = "Gender", title = "Jail Incarceration Rate", subtitle = "", y = "Incarcerated Individuals per 1,000\n", x = "\nYear")  +
   facet_wrap(gender~.) +
   theme(legend.position = "none")
-
 ```
 <br>
+
+As the incarcerated population has increased, so too has the cost per inmate, producing an unsustainable burden on Halifax County's budget. In 2017, it cost more than \$20,000 in corrections expenses for every jailed inmate in the county, which is similar to Virginia-wide costs reported by the Vera Institute of Justice.[^VERA2] 
+
+In general, calculating costs per inmate may be misleading, because expenses can appear to increase as a result of a decrease in incarceration. However, similar patterns emerge when calculating costs per Halifax resident, and raw corrections expenses have also been increasing in recent years.
+
+The high costs of incarceration suggest that a Family and Consumer Science Agent position could quickly provide a positive return on investment even if it prevented relatively few encounters with the criminal justice system amongst vulnerable residents in Halifax County.
+
+```{r, include=FALSE}
+budget <- readr::read_csv(here::here("data", "working", "HalifaxCTY_Budget_TimeSeries_(2010_2021).csv"))
+
+vera_data2 <- data.table::fread(here::here("data", "original", "Incarceration", "vera_incarceration_trends.csv")) %>% 
+  as.data.frame() %>%
+  filter(fips == "51083", year > 2007)
+
+# halifax_pop <- get_acs(geography = "county", state = "VA", output = "wide",
+#                       variables = c(total_population = "B01003"), year = 2018) %>%
+#   filter(GEOID == "51083")
+
+#Suggested Citation:												
+#Annual Estimates of the Resident Population for Counties in Virginia: April 1, 2010 to July 1, 2019 (CO-EST2019-ANNRES-51)												
+#Source: U.S. Census Bureau, Population Division												
+#Release Date: March 2020
+
+## Pop estimates from census by year:
+pops <- data.frame(GEOID = rep("51083", 10), name = rep("Halifax County", 10), state = rep("VA", 10), year = seq(2010, 2019), 
+           pop = c(36206,	36000, 35738,	35386,	35204,	35103	,34990,	34575,	34181, 33911))
+
+budget_vera <- full_join(budget, vera_data2)
+budget_vera_pops <- full_join(budget_vera, pops)
+```
+
+```{r}
+budget_vera_pops %>% 
+  filter(year <= 2017) %>%
+  mutate(cost_per_jail_pop = FYtotal_corrections_expenses_actual / total_jail_pop,
+         budgeted_per_jail_pop = FYtotal_corrections_expenses_approved / total_jail_pop) %>%
+  ggplot() +
+  #geom_col(aes(x = year, y = cost_per_jail_pop),fill = "#56B4E9", width = 0.5) +
+  geom_line(aes(x = year, y = cost_per_jail_pop), lwd = 1.1) +
+  geom_point(aes(x = year, y = cost_per_jail_pop), size = 2) +
+  #geom_line(aes(x = year, y = budgeted_per_jail_pop), color = "blue") +
+  scale_x_continuous(labels = seq(2008,2017), breaks = seq(2008, 2017)) +
+  theme_minimal() +
+  theme(panel.grid.minor = element_blank())
+```
+
+```{r}
+# budget_vera_pops %>% 
+#   mutate(cost_per_total_pop = FYtotal_corrections_expenses_actual / pop) %>%
+#   ggplot() +
+#   geom_line(aes(x = year, y = cost_per_total_pop)) +
+#   theme_minimal()
+```
+
+
 
 ```{r}
 # races <- c("black", "white")
@@ -434,3 +485,4 @@ mapping_data %>%
 
 [^CHART]: Chart retrieved from: https://www.prisonfellowship.org/wp-content/uploads/2019/02/Criminal_Justice_Chart_img.gif
 
+[^VERA2]: Mai, C., & Subramanian, R. (2017). The Price of Prisons. Vera Institute of Justice.

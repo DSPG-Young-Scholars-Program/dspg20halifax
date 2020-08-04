@@ -1,17 +1,16 @@
 ---
 title: "Substance Abuse"
-description: "How does Halifax compare to surrounding areas on opioid and alcohol use?"
-tags: ["R", "networks"]
+description: "Comparing Halifax to its neighbors on opioid and alcohol use"
 weight: 5
 draft: false
 output: html_document
 ---
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 10)
 #may not need 
 #add packages here
 options(knitr.duplicate.label = "allow")
-
 ```
 
 ### Background 

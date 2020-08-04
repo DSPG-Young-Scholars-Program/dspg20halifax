@@ -97,13 +97,13 @@ create_map <- function(data) {
   
 }
 
-drive_map <- create_map(drive_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 10)
-bike_map <- create_map(bike_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 11)
-walk_map <- create_map(walk_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 12)
-
-saveRDS(drive_map, here::here("data", "working", "isochrones", "drive_map.RDS"))
-saveRDS(bike_map, here::here("data", "working", "isochrones", "bike_map.RDS"))
-saveRDS(walk_map, here::here("data", "working", "isochrones", "walk_map.RDS"))
+# drive_map <- create_map(drive_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 10)
+# bike_map <- create_map(bike_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 11)
+# walk_map <- create_map(walk_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 12)
+# 
+# saveRDS(drive_map, here::here("data", "working", "isochrones", "drive_map.RDS"))
+# saveRDS(bike_map, here::here("data", "working", "isochrones", "bike_map.RDS"))
+# saveRDS(walk_map, here::here("data", "working", "isochrones", "walk_map.RDS"))
 
 
 #
