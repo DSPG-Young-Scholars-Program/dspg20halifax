@@ -395,8 +395,9 @@ va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 datasource <- merge(va_borders, datasource, by.x = "GEOID", by.y = "FIPS Code")
 unstable <- filter(datasource, `Meets Population & Reporting Thresholds` == "No")
+stable <- filter(datasource, `Meets Population & Reporting Thresholds` == "Yes")
 
-general_bins <- getJenksBreaks(datasource$`Times more likely Black person arrested in 2018`, k = 6)
+general_bins <- getJenksBreaks(stable$`Times more likely Black person arrested in 2018`, k = 6)
 general_bins <- sapply(general_bins, round)
 
 general_palette <- colorBin("BuPu", domain = datasource$`Times more likely Black person arrested in 2018`, bins = general_bins)
