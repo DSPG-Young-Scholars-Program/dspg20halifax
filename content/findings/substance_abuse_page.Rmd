@@ -27,10 +27,6 @@ In the United States, substance use and abuse has been thoroughly entangled with
 
 ### Main Findings 
 
-_This paragraph does not seem consistent with the data in the chart?_
-
-_The prevailing opioid epidemic has been felt strongly in rural America. However, data from the Center for Disease Control on opioid usage in Virginia counties suggests a positive perspective on the state of the opioid epidemic in Halifax County[^6]. While prescription rates peaked in 2010, they have been steadily decreasing since. In fact, Halifax seems to fare better than Virginia as a whole; opioid prescription rates in the state have decreased, but at a lesser rate and have peaked more frequently in 2012 and 2015._
-
 The prevailing opioid epidemic has been felt strongly in rural America, and data from the Centers for Disease Control provides mixed messages about the state of the epidemic in Halifax County. While it is encouraging to see prescription rates on a rapid decline, this trend likely tells only part of the story. Given the increased visiblity of the epidemic in recent years, this decline is likely driven more by changes in prescribing practices rather than reduced dependence on the part of those using opioids. In fact, as prescription rates decline, many may turn to heroin or fentanyl, which may be more dangerous to obtain and use, and may also be treated more strictly by the criminal justice system.
 
 ```{r}
@@ -259,10 +255,7 @@ ggplot(datasource, aes(x =Year, y =Count, fill=Drug))+
 ```
 <br>
 
-Another important aspect of substance abuse is alcohol related abuse and overdose. According to data from the National Center for Health Statistics[^9], the percentage of adults reporting heavy or binge drinking has increased steadily since 2011. This trend parallels that of Virginia as a whole, which consistently has a higher excessive drinking rate than Halifax. 
-
-
-_The corresponding map of this data illustrates how the majority of counties in Virginia – Halifax included –  become redder over time as rates steadily increase._
+Another important aspect of substance abuse is alcohol related abuse and overdose. According to data from the National Center for Health Statistics[^9], the percentage of adults reporting heavy or binge drinking has increased steadily since 2011. This trend parallels that of Virginia as a whole, which consistently has a higher excessive drinking rate than Halifax.
 
 <br>
 

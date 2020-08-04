@@ -39,9 +39,9 @@ The first source of data we considered was the Virginia Department of Correction
 
 We also considered court records data from the state of Virginia. However, while these data are publicly-available, they are only accessible via a user-facing search tool, whereas a more comprehensive analysis would require access to the underlying database. We initiated a request for these data, and while this has seen recent progress, it also became apparent that this source would be outside the scope for the summer portion of this project.
 
-Given these struggles, we decided to shift our approach to instead focus more directly on the social determinants of incarceration, to aid the proposed Family and Consumer Science Agent in Halifax County. Guided by the ecological model and an extensive literature review, we identified four primary social factors to explore: unemployment, substance abuse, affordable housing, and family structure/foster care.
+Given these challenges, we decided to shift our approach to instead focus more directly on the social determinants of incarceration to aid the proposed Family and Consumer Science Agent in Halifax County. We identified four primary social factors to explore: unemployment, substance abuse, affordable housing, and family structure/foster care.
 
-We encountered similar challenges as we considered various data sources on each of these topics, but ultimately arrived at a subset that could be incorporated into our exploration of these factors in Halifax. A summary of the final data sources used for each factor (as well as other relevant topics) are below
+We encountered similar challenges as we considered various data sources on each of these topics, but ultimately arrived at a subset that could be incorporated into our exploration of these factors in Halifax. A summary of the final data sources used for each factor (as well as other relevant topics) are below.
 
 ```{r}
 sources <- readr::read_csv(here::here("data", "working", "data_sources_final.csv")) %>%
@@ -69,11 +69,11 @@ Many of the most comprehensive data sources on these issues do not specifically 
 
 #### Improper spatial resolution
 
-Many potential datasets measured variables that may have been valuable to include, but only measured them at the national or state level (this was particularly true for substance abuse). While these sources may have been helpful for context, their applicability to Halifax specifically was suspect.
+Many potential datasets measured variables that may have been valuable to include, but only measured them at the national or state level. Data at these resolutions often masks important local variation and may not be appropriate to apply to a rural county like Halifax.
 
 Furthermore, as mentioned above, the data that did exist at the sub-county level suffered from low sample sizes and associated high uncertainty, making it difficult to draw definitive conclusions for particular regions in Halifax.
 
-As an example, consider the following map, which was constructed by using ACS data for geographic mobility at the census tract level in Halifax. Each layer of the map represents a different sampled value based on the variability of the estimates reported by the ACS. It's easy to see that many tracts have significantly different reported mobility values depending on the random sample taken. This serves to highlight the potential issues relying on ACS estimates at the tract level for rural counties like Halifax.
+As an example, consider the following map, which was constructed by using ACS data for geographic mobility at the census tract level in Halifax. Each layer of the map represents a different sampled value based on the variability of the estimates reported by the ACS. It's easy to see that many tracts' reported mobility values vary widely depending on the random sample taken. This serves to highlight the potential issues relying on ACS estimates at the tract level for rural counties like Halifax.
 
 ```{r results = "hide"}
 source(here("src", "Mapping", "map_template.R"))
@@ -151,15 +151,15 @@ map_samples(data = geog_mobility_tracts,
 
 #### Incarceration, or Crime?
 
-After exhausting the data sources most relevant to incarceration and recidivism specifically, we were left with large-scale trends from the Vera Institute for Justice and crime records reported by the Virginia State Police. However, we hestitated to rely too heavily on the Virginia crime records for multiple reasons. 
+After exhausting other data sources, we explored large-scale trends in incarceration from the Vera Institute of Justice and crime records reported by the Virginia State Police. However, we hesitated to rely too heavily on the Virginia crime records for multiple reasons. First, crime is not necessarily an optimal way to explore incarceration because it provides no indication of whether an individual ends up being held in jail and/or sentenced to time in prison. Incorporating the comprehensive court records data may help to resolve some of these concerns as we would be able to develop a better sense of the actual court outcomes for individuals in Halifax County.
 
-First, crime is not necessarily an optimal way to explore incarceration because crime records tend to strongly reflect systemic biases that exist both in the criminal justice system and in policing practices, and make no indication of whether an individual ends up actually being convicted and sentenced or not. Because of the strong underlying biases, we wanted to be sure not to over-interpret the data we did have. Incorporating the recently-obtained court records data may help to resolve some of these concerns, as we would be able to develop a better sense of the actual court outcomes for individuals in Halifax County.
+Additionally, it is important to note that criminal justice data almost always reflects underlying biases in the systems themselves. For instance, Black communities tend to have higher rates of arrests, but this may result from disproportionate police presence in these areas.
 
 ### Summary
 
 Overall, the course of this project revealed many of the difficulties inherent in exploring the topics of incarceration and recidivism. The latter in particular requires nuanced data that either are collected only very intermittently at the national level (for instance, the Bureau of Justice Statistics' recidivism analysis tool)[^BJS] or simply do not exist. Given the sensitive nature of the topic, substituting proxies for these missing data can easily risk simply capturing the biases that already exist in the criminal justice system.
 
-Ultimately, a more thorough investigation of this topic would require more targeted data collection on a variety of topics. Especially in a rural area like Halifax County, much of this data collection may need to be organized by local leaders within the county for an accurate picture of incarceration and recidivism to emerge. As we discuss various social determinants of incarceration throughout this website, we attempt to highlight the most glaring gaps in data collection that could help provide a more thorough view of these issues were they to be filled.
+Ultimately, a more thorough investigation of this topic would require more targeted data collection on a variety of topics. Especially in a rural area like Halifax County, much of this data collection may need to be organized by local leaders within the county for an accurate picture of incarceration and recidivism to emerge. As we discuss various social determinants of incarceration throughout this website, we highlight the most glaring gaps in data collection that could help provide a more thorough view of these issues.
 
 [^CENSUS]: U.S. Census Bureau (2020). Annual Estimates of the Resident Population for Counties in Virginia: April 1, 2010 to July 1, 2019 (CO-EST2019-ANNRES-51). Retrieved from https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-total.html.
 

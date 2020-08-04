@@ -1,6 +1,6 @@
 ---
 title: "Family Structure"
-description: "How stable are family units?"
+description: "Family unit stability and its incarceration implications"
 weight: 6
 draft: false
 output: html_document
@@ -225,26 +225,6 @@ plot <- ggplot() +
 
 plot
 ```
-
-
-_Uncited references?_
-
-Guttmacher Data Center. (n.d.). Guttmacher Institute. Retrieved July 25, 2020, from https://data.guttmacher.org/counties/
-
-National Center for Health Statistics. (n.d.). NCHS Data Visualization Gallery - Teen Birth Rates for Age Group 15-19 in the United States by County. Center for Disease Control and Prevention. Retrieved July 25, 2020, from https://www.cdc.gov/nchs/data-visualization/county-teen-births/
-
-Office of Adolescent Health. (2019, May 30). Trends in Teen Pregnancy and Childbearing. U.S. Department of Health & Human Services. https://www.hhs.gov/ash/oah/adolescent-development/reproductive-health-and-teen-pregnancy/teen-pregnancy-and-childbearing/trends/index.html
-
-Pregnancy Prevention | Youth.gov. (n.d.). Youth.Gov. Retrieved July 25, 2020, from https://youth.gov/youth-topics/pregnancy-prevention
-
-Products - Data Briefs - Number 209 - July 2015. (2015, July). Center for Disease and Prevention. https://www.cdc.gov/nchs/products/databriefs/db209.htm
-
-Teen births. (n.d.). County Health Rankings. Retrieved July 25, 2020, from https://www.countyhealthrankings.org/explore-health-rankings/measures-data-sources/county-health-rankings-model/health-factors/health-behaviors/sexual-activity/teen-births
-
-Teen Births. (2019, May 24). Child Trends. https://www.childtrends.org/indicators/teen-births
-
-
-
 
 [^NIH]: The impact of family structure on the health of children: Effects of divorce. (2020, November 2). National Institutes of Health. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4240051/
 

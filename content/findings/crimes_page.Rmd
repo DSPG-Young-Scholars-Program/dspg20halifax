@@ -1,6 +1,6 @@
 ---
 title: "Incarceration, Crime, & Arrests"
-description: "Trends in indicators over time"
+description: "Trends in criminal justice indicators"
 weight: 2
 draft: false
 output: html_document
@@ -76,7 +76,7 @@ options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 
 ### Background
 
-Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed in the court system, or an individual may be found not guilty at trial. Furthermore, even after being found guilty, a variety of punishments exist that do not involve incarceration, including fines and community service.
+Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed, an individual may post bail or not be held pre-trial, or may be found not guilty at trial. Furthermore, even after being convicted, a variety of punishments exist that do not involve incarceration, including fines and community service.
 
 Individuals who are incarcerated may be placed in a jail or prison. Jails hold individuals who are awaiting trial or who have been sentenced to less than year of incarceration. Prisons hold individuals who have been convicted and sentenced to more than year of incarceration. Although there are some differences across states, jails are generally locally operated, and prisons are operated by state or federal governments [^BJS]. 
 
@@ -203,9 +203,9 @@ budget_vera_pops %>%
 #   facet_grid(~race)
 ```
 
-#### Overall crime trends over time
+#### Crime Trends Over Time
 
-The average number of crimes in Halifax County that came to the attention of law enforcement within the 10 year period between 2010 and 2019 was 2081 crimes a year. Across the years, the number of crimes was relatively stable, with slightly higher levels of observed crime before 2013 and slightly lower levels after 2013. 
+On average, 2,081 crimes came to the attention of law enforcement within the 10-year period between 2010 and 2019 in Halifax County. Across the years, the number of crimes was relatively stable, with slightly higher levels of observed crime before 2013 and slightly lower levels after 2013. 
 
 ```{r halifax_crimes}
 halifax_crime %>%
@@ -220,9 +220,9 @@ halifax_crime %>%
        title = "Total Number of Crimes from 2010 to 2019")
 ```
 
-#### Most common offense types and clearance rates
+#### Most Common Offense Types and Clearance Rates
 
-The following figure displays the types of crimes that came to the attention of law enforcement in Halifax County from most common to least common on the left and their corresponding clearance by arrest rate on the right. Drug violations, simple assault, larceny, and destruction of property made up the bulk of the crimes; however, this did not necessarily correspond to higher arrest rates. While drug violations and simple assaults resulted in arrests nearly $50\%$ of the time, larceny and destruction of property resulted in arrests much less frequently. This disparity highlights the complex process that proceeds a crime coming to the attention of law enforcement and precedes an arrest - namely that there exist many latent factors, including difficulty of "solving" the crime and effort put forth by law enforcement, that impact whether an arrest is made. 
+The following figure displays the types of crimes that came to the attention of law enforcement in Halifax County from most common to least common on the left and their corresponding clearance by arrest rate on the right. Drug violations, simple assault, larceny, and destruction of property made up the bulk of the crimes; however, this did not necessarily correspond to higher arrest rates. While drug violations and simple assaults resulted in arrests nearly 50% of the time, larceny and destruction of property resulted in arrests much less frequently. This disparity highlights the complex process that proceeds a crime coming to the attention of law enforcement and precedes an arrest - namely that there exist many latent factors, including difficulty of "solving" the crime and effort put forth by law enforcement, that impact whether an arrest is made. 
 
 ```{r halifax_top_crimes}
 
@@ -280,7 +280,7 @@ total_crime_plot + per_clear_plot +
   plot_annotation(title = 'Number of Crimes and Percent Cleared by Arrest Type')
 ```
 
-#### Crime trends by race (per 1000 of that race)
+#### Crime Trends by Race (per 1,000 individuals)
 
 The figure below highlights the disparity between the number of crimes by Black and White people that came to attention of law enforcement across Virginia counties. Overall, the number of crimes by White people that law enforcement were alerted to was below 50 per 100,000 White people for nearly all counties in Virginia. In contrast, there were many counties with over 50 crimes per 100,000 Black people, including several at or above 200 crimes per 100,000 Black people. In Halifax County specifically (denoted by the lines in color), the number of crimes by Black people that law enforcement were alerted to is nearly twice that of those by White people. This disparity again highlights the complex process by which crimes are given law enforcement attention - namely that any historical policies or varying levels of law enforcement presence in neighorhoods will impact said attention.
 
@@ -323,7 +323,7 @@ ggplot(filter(va_crime_per_cap, county_cap == "HALIFAX"), aes(x = incident_year,
 
 ```
 
-#### Clearance rates by race
+#### Clearance Rates by Race
 
 The figure below displays the clearance by arrest rates of all Virginia county crimes by race. Interestingly, the average clearance rate for crimes by White people was higher than that of crimes by Black people, which potentially underlies differences in the types of crimes. In Halifax County specifically (denoted by the lines in color), the clearance rate for crimes by Black people was above average compared to all Virginia counties, whereas it was below average for crimes by White people compared to other Virginia counties.
 
@@ -365,11 +365,11 @@ ggplot(filter(clearance_data, county_cap == "HALIFAX"),
 ```
 
 
-### Comparison of Halifax county to other VA counties
+### Comparison of Halifax County to other Virginia Counties
 
 The following figures compare the average number of crimes per 1000 people law enforcement was alerted to across all Virginia counties from 2010 to 2019. The darker colors indicate more crimes per 1000 people whereas the lighter colors indicate less crimes per 1000 people.  
 
-#### All crimes map
+#### Map of All Crimes
 
 Halifax County, compared to other Virginia counties, was around the median across all of Virginia in total crimes per 1000 that law enforcement were alerted to. The same conclusion holds when examining the average number of crimes per 1000 people by race. 
 
@@ -436,8 +436,7 @@ mapping_data %>%
 
 ```
 
-
-#### Drug crimes map
+#### Map of Drug Crimes
 
 Comparing just drug related crimes across Virginia counties, Halifax County was again close to the median levels of drug crimes per 1000 that law enforcement are alerted to across all of Virginia. The same conclusion holds when examining the average number of drug related crimes by race. 
 
