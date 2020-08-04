@@ -16,7 +16,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/background_page/</guid>
-      <description>Background Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade[^CENSUS]. Black individuals constitute approximately 34% of the county&#39;s population and whites 60%.</description>
+      <description>Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade[^CENSUS]. Black individuals constitute approximately 34% of the county&#39;s population and whites 60%.</description>
     </item>
     
     <item>
@@ -25,7 +25,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/crimes_page/</guid>
-      <description>Background Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed in the court system, or an individual may be found not guilty at trial.</description>
+      <description>Background Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed, an individual may post bail or not be held pre-trial, or may be found not guilty at trial.</description>
     </item>
     
     <item>
@@ -44,7 +44,7 @@ The relationship between employment and incarceration is almost certainly bidire
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/housing_page/</guid>
-      <description>.navbar-default .navbar-nav li a { color: white; }  Background Many now see access to affordable housing as one of the primary factors limiting successful re-entry for individuals leaving jails or prisons; an unstable living situation can severely impact employment opportunities, predispose individuals to return to criminal activity, and hinder efforts to reestablish family relationships and friendships1.</description>
+      <description>.navbar-default .navbar-nav li a { color: white; } .navbar-default .navbar-nav li a:hover { color: white; }  Background Many now see access to affordable housing as one of the primary factors limiting successful re-entry for individuals leaving jails or prisons; an unstable living situation can severely impact employment opportunities, predispose individuals to return to criminal activity, and hinder efforts to reestablish family relationships and friendships1.</description>
     </item>
     
     <item>
