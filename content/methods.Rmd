@@ -161,7 +161,5 @@ Overall, the course of this project revealed many of the difficulties inherent i
 
 Ultimately, a more thorough investigation of this topic would require more targeted data collection on a variety of topics. Especially in a rural area like Halifax County, much of this data collection may need to be organized by local leaders within the county for an accurate picture of incarceration and recidivism to emerge. As we discuss various social determinants of incarceration throughout this website, we highlight the most glaring gaps in data collection that could help provide a more thorough view of these issues.
 
-[^CENSUS]: U.S. Census Bureau (2020). Annual Estimates of the Resident Population for Counties in Virginia: April 1, 2010 to July 1, 2019 (CO-EST2019-ANNRES-51). Retrieved from https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-total.html.
-
 [^BJS]: Snyder, Howard N., Durose, Matthew R., Cooper, Alexia, & Mulako-Wangota, Joseph. Bureau of Justice Statistics. Retrieved from http://www.bjs.gov/recidivism_2005_arrest/
 

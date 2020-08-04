@@ -140,7 +140,7 @@ create_map(acs_median_income_county,
 It is difficult to discern demographic patterns within Halifax county itself because of the small sample sizes within each census tract and block group. In many cases, this makes the resulting estimates from the Census Bureau highly uncertain, and reduces our confidence in the precise values for the variables of interest. For this reason, to get a rough sense of tract-level demographic variation, we returned to he 2010 decennial census, which collects more data than the more frequent American Community Survey (ACS). However, given that the 2010 census is now a full decade out-of-date, these results should be treated with some caution.
 
 The following maps highlight the distribution of race and age across the county, revealing that census tracts west of South Boston are composed of larger Black communities, and that median ages increase in the more southern rural parts of the county.
-<br>
+<br><br>
 
 #### Race Breakdown by Census Tract
 
@@ -190,3 +190,5 @@ halifax_decennial_data %>%
 <br>
 
 While we were limited in our ability get reliable up-to-date demographic information at the sub-county level, these general patterns provide helpful context as we further consider patterns in incarceration in the county.
+
+[^CENSUS]: U.S. Census Bureau (2020). Annual Estimates of the Resident Population for Counties in Virginia: April 1, 2010 to July 1, 2019 (CO-EST2019-ANNRES-51). Retrieved from https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-total.html.

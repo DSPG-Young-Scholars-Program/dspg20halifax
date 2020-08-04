@@ -10,7 +10,9 @@ h3 {
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 10)
+```
 
+```{r}
 library(dplyr)
 library(ggplot2)
 
@@ -34,6 +36,8 @@ The United States incarcerates more people per capita than anywhere else in the 
 In addition to the human costs incurred by these mass incarceration policies, the current incarceration rate is extremely costly for taxpayers. The U.S. spends roughly \$60 to \$80 billion per year on state and federal prisons.[^APA2]$^,$[^ACLU] But despite these expenditures, roughly two-thirds of individuals released from prison are re-arrested within three years.[^BJS]
 
 Halifax County, Virginia, is not immune to these national trends. At more than \$2.6 million, the corrections line item constituted nearly 3% of Halifax County's overall budget in 2017, translating to roughly \$21,000 per jail inmate and \$78 per Halifax County resident. These figures are largely consistent with Virginia's statewide costs, which total roughly \$21,299 per inmate and $98 per state resident (though bear in mind these figures are calculated using prison populations rather than jail populations)[^VERA].
+
+<br>
 
 ```{r}
 budget <- readr::read_csv(here::here("data", "working", "HalifaxCTY_Budget_TimeSeries_(2010_2021).csv"))
@@ -66,16 +70,18 @@ budget_vera_pops %>%
   #geom_col(aes(x = year, y = cost_per_jail_pop),fill = "#56B4E9", width = 0.5) +
   geom_line(aes(x = year, y = cost_per_jail_pop), lwd = 1.1) +
   geom_point(aes(x = year, y = cost_per_jail_pop), size = 2) +
+  labs(x = "", y = "", title = "Corrections Expenses per Jail Inmate: Halifax County") +
+  scale_y_continuous(labels = c("$16,000", "$20,000", "$24,000"), breaks = c(16000, 20000, 24000)) +
   #geom_line(aes(x = year, y = budgeted_per_jail_pop), color = "blue") +
   scale_x_continuous(labels = seq(2008,2017), breaks = seq(2008, 2017)) +
-  theme_minimal() +
   theme(panel.grid.minor = element_blank())
 
 ```
+<br>
 
 Importantly, these values do not incorporate the many other operational expenses and indirect costs related to incarceration, including court proceedings, costs related to foster care, and costs for substance abuse treatment (among many others).
 
-Halifax County has partnered with DSPG 2020 to investigate the factors associated with its incarceration and recidivism rate in the hopes of investing in proactive services through the Virginia Cooperative Extension Service, like a Family and Consumer Science Agent. Among other things, this position would help connect formerly incarcerated individuals to the community resources needed to help them effectively re-enter society.
+Halifax County has partnered with DSPG 2020 to investigate the factors associated with its incarceration and recidivism rate in the hopes of investing in proactive services through the Virginia Cooperative Extension Service, like a Family and Consumer Science Agent. Among other things, this position would help connect formerly incarcerated individuals to the community resources needed to help them effectively re-enter society. Even if such an agent were able to prevent relatively few encounters with the criminal justice system, the high costs mentioned above indicate that these efforts may quickly pay for themselves.
 
 ### Project Goals
 

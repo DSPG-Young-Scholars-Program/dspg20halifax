@@ -78,7 +78,7 @@ options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 
 Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed, an individual may post bail or not be held pre-trial, or may be found not guilty at trial. Furthermore, even after being convicted, a variety of punishments exist that do not involve incarceration, including fines and community service.
 
-Individuals who are incarcerated may be placed in a jail or prison. Jails hold individuals who are awaiting trial or who have been sentenced to less than year of incarceration. Prisons hold individuals who have been convicted and sentenced to more than year of incarceration. Although there are some differences across states, jails are generally locally operated, and prisons are operated by state or federal governments [^BJS]. 
+Individuals who are incarcerated may be placed in a jail or prison. Jails hold individuals who are awaiting trial or who have been sentenced to less than year of incarceration. Prisons hold individuals who have been convicted and sentenced to more than year of incarceration. Although there are some differences across states, jails are generally locally operated, and prisons are operated by state or federal governments[^BJS]. 
 
 Research has mostly focused on men incarcerated in prisons in urban areas, but rural counties have seen a growth in the use of local jails[^VERA], particularly to incarcerate women. In fact, rural areas with populations between 10,000 and 50,000, such as Halifax County, have the highest rates of pre-trial detention[^URBAN]. 
 
@@ -88,6 +88,8 @@ Given that crime, arrests, and incarceration represent different parts of the cr
 
 The figures below display the prison and jail incarceration rates in Virginia counties, with Halifax County denoted by the lines in color, from 1983 to 2013 and 1970 to 2017, respectively. It is clear that prison incarceration rates, particularly among males, have consistently and dramatically increased over the past three to four decades. Comparatively, jail incarceration rates are not quite as high; however, they have drastically increased since the mid-1990's. Incarceration rates for females are significantly lower than those of males but have also increased noticably since 1990. 
 
+<br>
+
 ```{r}
 rates_by_gender_system %>%
   filter(system == "Prison") %>%
@@ -96,11 +98,13 @@ rates_by_gender_system %>%
   scale_color_manual(values = cbbPalette) +
   gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE, unhighlighted_params = list(alpha = 0.2)) +
   scale_y_continuous(limits = c(0, scale_max)) +
-  labs(color = "Gender", title = "Prison Incarceration Rate", y = "Incarcerated Individuals per 1,000\n", x = "\nYear")  +
+  labs(color = "Gender", title = "Prison Incarceration Rate", y = "Incarcerated Individuals per 1,000 Residents\n", x = "")  +
   facet_wrap(gender~.) + theme(legend.position = "none")
 
 ```
-<br>
+
+<br><br>
+
 ```{r}
 rates_by_gender_system %>%
   filter(system == "Jail") %>%
@@ -109,56 +113,13 @@ rates_by_gender_system %>%
   scale_color_manual(values = cbbPalette) +
   gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE, unhighlighted_params = list(alpha = 0.2)) +
   scale_y_continuous(limits = c(0, scale_max)) +
-  labs(color = "Gender", title = "Jail Incarceration Rate", subtitle = "", y = "Incarcerated Individuals per 1,000\n", x = "\nYear")  +
+  labs(color = "Gender", title = "Jail Incarceration Rate", subtitle = "", y = "Incarcerated Individuals per 1,000 Residents\n", x = "")  +
   facet_wrap(gender~.) +
   theme(legend.position = "none")
 ```
+
+
 <br>
-
-As the incarcerated population has increased, so too has the cost per inmate, producing an unsustainable burden on Halifax County's budget. In 2017, it cost more than \$20,000 in corrections expenses for every jailed inmate in the county, which is similar to Virginia-wide costs reported by the Vera Institute of Justice.[^VERA2] 
-
-In general, calculating costs per inmate may be misleading, because expenses can appear to increase as a result of a decrease in incarceration. However, similar patterns emerge when calculating costs per Halifax resident, and raw corrections expenses have also been increasing in recent years.
-
-The high costs of incarceration suggest that a Family and Consumer Science Agent position could quickly provide a positive return on investment even if it prevented relatively few encounters with the criminal justice system amongst vulnerable residents in Halifax County.
-
-```{r, include=FALSE}
-budget <- readr::read_csv(here::here("data", "working", "HalifaxCTY_Budget_TimeSeries_(2010_2021).csv"))
-
-vera_data2 <- data.table::fread(here::here("data", "original", "Incarceration", "vera_incarceration_trends.csv")) %>% 
-  as.data.frame() %>%
-  filter(fips == "51083", year > 2007)
-
-# halifax_pop <- get_acs(geography = "county", state = "VA", output = "wide",
-#                       variables = c(total_population = "B01003"), year = 2018) %>%
-#   filter(GEOID == "51083")
-
-#Suggested Citation:												
-#Annual Estimates of the Resident Population for Counties in Virginia: April 1, 2010 to July 1, 2019 (CO-EST2019-ANNRES-51)												
-#Source: U.S. Census Bureau, Population Division												
-#Release Date: March 2020
-
-## Pop estimates from census by year:
-pops <- data.frame(GEOID = rep("51083", 10), name = rep("Halifax County", 10), state = rep("VA", 10), year = seq(2010, 2019), 
-           pop = c(36206,	36000, 35738,	35386,	35204,	35103	,34990,	34575,	34181, 33911))
-
-budget_vera <- full_join(budget, vera_data2)
-budget_vera_pops <- full_join(budget_vera, pops)
-```
-
-```{r}
-budget_vera_pops %>% 
-  filter(year <= 2017) %>%
-  mutate(cost_per_jail_pop = FYtotal_corrections_expenses_actual / total_jail_pop,
-         budgeted_per_jail_pop = FYtotal_corrections_expenses_approved / total_jail_pop) %>%
-  ggplot() +
-  #geom_col(aes(x = year, y = cost_per_jail_pop),fill = "#56B4E9", width = 0.5) +
-  geom_line(aes(x = year, y = cost_per_jail_pop), lwd = 1.1) +
-  geom_point(aes(x = year, y = cost_per_jail_pop), size = 2) +
-  #geom_line(aes(x = year, y = budgeted_per_jail_pop), color = "blue") +
-  scale_x_continuous(labels = seq(2008,2017), breaks = seq(2008, 2017)) +
-  theme_minimal() +
-  theme(panel.grid.minor = element_blank())
-```
 
 ```{r}
 # budget_vera_pops %>% 
@@ -167,9 +128,6 @@ budget_vera_pops %>%
 #   geom_line(aes(x = year, y = cost_per_total_pop)) +
 #   theme_minimal()
 ```
-
-
-
 ```{r}
 # races <- c("black", "white")
 # 
@@ -205,7 +163,9 @@ budget_vera_pops %>%
 
 #### Crime Trends Over Time
 
-On average, 2,081 crimes came to the attention of law enforcement within the 10-year period between 2010 and 2019 in Halifax County. Across the years, the number of crimes was relatively stable, with slightly higher levels of observed crime before 2013 and slightly lower levels after 2013. 
+On average, 2,081 crimes came to the attention of law enforcement within the 10-year period between 2010 and 2019 in Halifax County.
+
+<br>
 
 ```{r halifax_crimes}
 halifax_crime %>%
@@ -220,9 +180,13 @@ halifax_crime %>%
        title = "Total Number of Crimes from 2010 to 2019")
 ```
 
+<br>
+
 #### Most Common Offense Types and Clearance Rates
 
 The following figure displays the types of crimes that came to the attention of law enforcement in Halifax County from most common to least common on the left and their corresponding clearance by arrest rate on the right. Drug violations, simple assault, larceny, and destruction of property made up the bulk of the crimes; however, this did not necessarily correspond to higher arrest rates. While drug violations and simple assaults resulted in arrests nearly 50% of the time, larceny and destruction of property resulted in arrests much less frequently. This disparity highlights the complex process that proceeds a crime coming to the attention of law enforcement and precedes an arrest - namely that there exist many latent factors, including difficulty of "solving" the crime and effort put forth by law enforcement, that impact whether an arrest is made. 
+
+<br>
 
 ```{r halifax_top_crimes}
 
@@ -279,10 +243,13 @@ per_clear_plot <- halifax_crime %>%
 total_crime_plot + per_clear_plot + 
   plot_annotation(title = 'Number of Crimes and Percent Cleared by Arrest Type')
 ```
+<br><br>
 
 #### Crime Trends by Race (per 1,000 individuals)
 
 The figure below highlights the disparity between the number of crimes by Black and White people that came to attention of law enforcement across Virginia counties. Overall, the number of crimes by White people that law enforcement were alerted to was below 50 per 100,000 White people for nearly all counties in Virginia. In contrast, there were many counties with over 50 crimes per 100,000 Black people, including several at or above 200 crimes per 100,000 Black people. In Halifax County specifically (denoted by the lines in color), the number of crimes by Black people that law enforcement were alerted to is nearly twice that of those by White people. This disparity again highlights the complex process by which crimes are given law enforcement attention - namely that any historical policies or varying levels of law enforcement presence in neighorhoods will impact said attention.
+
+<br>
 
 ```{r halifax_crime_by_race}
 va_crime_per_cap <- all_va_crime %>%
@@ -312,8 +279,8 @@ ggplot(filter(va_crime_per_cap, county_cap == "HALIFAX"), aes(x = incident_year,
   scale_color_manual(values = cbbPalette,
                      labels = c("Black", "White")) + 
   labs(x = NULL,
-       y = "Number of Crimes per Per 1000 People",
-       title = "Total Number of Crimes by Race per 1000 People",
+       y = "Number of Crimes per Per 1000 Residents",
+       title = "Total Number of Crimes by Race per 1000 Residents",
        color = NULL) +
   coord_cartesian(ylim = c(0, 200)) +
   facet_grid(.~offender_race) +
@@ -323,9 +290,13 @@ ggplot(filter(va_crime_per_cap, county_cap == "HALIFAX"), aes(x = incident_year,
 
 ```
 
+<br>
+
 #### Clearance Rates by Race
 
 The figure below displays the clearance by arrest rates of all Virginia county crimes by race. Interestingly, the average clearance rate for crimes by White people was higher than that of crimes by Black people, which potentially underlies differences in the types of crimes. In Halifax County specifically (denoted by the lines in color), the clearance rate for crimes by Black people was above average compared to all Virginia counties, whereas it was below average for crimes by White people compared to other Virginia counties.
+
+<br>
 
 ```{r}
 clearance_data <- all_va_crime %>%
@@ -363,15 +334,19 @@ ggplot(filter(clearance_data, county_cap == "HALIFAX"),
   theme(legend.position = "none")
   
 ```
-
+<br>
 
 ### Comparison of Halifax County to other Virginia Counties
 
-The following figures compare the average number of crimes per 1000 people law enforcement was alerted to across all Virginia counties from 2010 to 2019. The darker colors indicate more crimes per 1000 people whereas the lighter colors indicate less crimes per 1000 people.  
+The following figures compare the average number of crimes (per 1000 residents) law enforcement was alerted to across all Virginia counties from 2010 to 2019, with darker colors indicating higher crime rates and vice versa.
+
+<br>
 
 #### Map of All Crimes
 
-Halifax County, compared to other Virginia counties, was around the median across all of Virginia in total crimes per 1000 that law enforcement were alerted to. The same conclusion holds when examining the average number of crimes per 1000 people by race. 
+Halifax County, compared to other Virginia counties, was around the median across all of Virginia in total crimes per 1000 residents that law enforcement were alerted to. The same conclusion holds when examining the average number of crimes per 1000 residents by race. 
+
+<br>
 
 ```{r all_crime_map, fig.height = 4}
 counties_sp <- read_sf(here("data", "working", "va_counties.geojson"),
@@ -412,33 +387,35 @@ mapping_data %>%
               fillColor = ~leaflet_scale(year_crime_per_1000),
               group = "Yearly Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
-                                 Yearly Rate Per 1000: {round(year_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
+                                 Yearly Rate Per 1000 Residents: {round(year_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
     addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_white_per_1000),
               group = "Yearly White Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
-                                 Yearly Rate Per 1000: {round(year_crime_white_per_1000, 1)}"), htmltools::HTML)) %>% 
+                                 Yearly Rate Per 1000 Residents: {round(year_crime_white_per_1000, 1)}"), htmltools::HTML)) %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_black_per_1000),
               group = "Yearly Black Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
-                                 Yearly Rate Per 1000: {round(year_crime_black_per_1000, 1)}"), htmltools::HTML)) %>% 
+                                 Yearly Rate Per 1000 Residents: {round(year_crime_black_per_1000, 1)}"), htmltools::HTML)) %>% 
   addLayersControl(
-    baseGroups = c("Yearly Crimes Per 1000", 
-                   "Yearly White Crimes Per 1000",
-                   "Yearly Black Crimes Per 1000"),
+    baseGroups = c("Yearly Crime Rate", 
+                   "Yearly White Crime Rate",
+                   "Yearly Black Crime Rate"),
     options = layersControlOptions(collapsed = FALSE)) %>% 
   addLegend("bottomright", pal = leaflet_scale, values = ~year_crime_per_1000,
-            title = "Yearly Crimes Per 1000 People",
+            title = "Yearly Crimes (per 1000 Residents)",
             opacity = .8)
 
 ```
 
+<br>
+
 #### Map of Drug Crimes
 
-Comparing just drug related crimes across Virginia counties, Halifax County was again close to the median levels of drug crimes per 1000 that law enforcement are alerted to across all of Virginia. The same conclusion holds when examining the average number of drug related crimes by race. 
+Comparing just drug related crimes across Virginia counties, Halifax County was again close to the median levels of drug crimes per 1000 residents that law enforcement are alerted to across all of Virginia. The same conclusion holds when examining the average number of drug related crimes by race. 
 
 ```{r drug_crime_map, fig.height = 4}
 leaflet_scale <- colorBin("BuPu" , c(0, 120), c(0, 5, 10, 30, 120))
@@ -451,26 +428,26 @@ mapping_data %>%
               fillColor = ~leaflet_scale(year_drug_crime_per_1000),
               group = "Yearly Drug Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
-                                 Yearly Rate Per 1000: {round(year_drug_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
+                                 Yearly Rate Per 1000 Residents: {round(year_drug_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
     addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_white_per_1000),
               group = "Yearly White Drug Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
-                                 Yearly Rate Per 1000: {round(year_drug_crime_white_per_1000, 1)}"), htmltools::HTML)) %>% 
+                                 Yearly Rate Per 1000 Residents: {round(year_drug_crime_white_per_1000, 1)}"), htmltools::HTML)) %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_black_per_1000),
               group = "Yearly Black Drug Crimes Per 1000",
               label = ~map(glue("{NAME.x} County<br/>
-                                 Yearly Rate Per 1000: {round(year_drug_crime_black_per_1000, 1)}"), htmltools::HTML)) %>% 
+                                 Yearly Rate Per 1000 Residents: {round(year_drug_crime_black_per_1000, 1)}"), htmltools::HTML)) %>% 
   addLayersControl(
-    baseGroups = c("Yearly Drug Crimes Per 1000", 
-                   "Yearly White Drug Crimes Per 1000",
-                   "Yearly Black Drug Crimes Per 1000"),
+    baseGroups = c("Yearly Drug Crime Rate", 
+                   "Yearly White Drug Crime Rate",
+                   "Yearly Black Drug Crime Rate"),
     options = layersControlOptions(collapsed = FALSE)) %>% 
   addLegend("bottomright", pal = leaflet_scale, values = ~year_crime_per_1000,
-            title = "Yearly Drug Crimes Per 1000 People",
+            title = "Yearly Drug Crimes (per 1000 Residents)",
             opacity = .8)
 
 ```
