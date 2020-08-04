@@ -1,5 +1,4 @@
 ---
-title: "Team"
 output: html_document
 ---
 
@@ -7,26 +6,33 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<style>
-    {
-        box-sizing: border-box;
-    }
+```{css, echo = FALSE}
+{
+  box-sizing: border-box;
+}
 
-    .column {
-    float: left;
-    width: 25%;
-    }
+.column {
+  float: left;
+  width: 25%;
+}
 
-    .row:after {
-    content: "";
-    display: table;
-    clear: both;
-    }
-</style>
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.justify {
+  text-align: justify
+}
+
+```
 
 ### UVA Data Science for the Public Good Program {style=text-align:center}
 
+<div class="justify">
 [The Data Science for the Public Good (DSPG) Young Scholars program](https://biocomplexity.virginia.edu/social-decision-analytics/dspg-program) is a summer immersive program held at the [Biocomplexity Institute’s Social and Decision Analytics division (SDAD)](https://biocomplexity.virginia.edu/social-decision-analytics). In its seventh year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today. DSPG young scholars conduct research at the intersection of statistics, computation, and the social sciences to determine how information generated within every community can be leveraged to improve quality of life and inform public policy. For more information on program highlights, how to apply, and our annual symposium, please visit the official [Biocomplexity DSPG website]((https://biocomplexity.virginia.edu/social-decision-analytics/dspg-program)).
+</div>
 
 ### Halifax County: Factors of Incarceration and Recidivism {style=text-align:center}
 
@@ -34,7 +40,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 <div class="row">
 <div class="column">
-![Finn Roberts](/findings/head_shots/UVA.fellow.Finn_Roberts.jpg "Finn Roberts"){style="width:60%; display: block; margin-left: auto; margin-right: auto;"} 
+![](/findings/head_shots/UVA.fellow.Finn_Roberts.jpg){style="width:60%; display: block; margin-left: auto; margin-right: auto;"} 
 
 [Finn Roberts](https://github.com/robe2037), Fellow  
 
@@ -44,29 +50,32 @@ Biostatistics, Geographic Information Systems
 </div>
 
 <div class="column">
-![Riya Berry](/findings/head_shots/UVA.Intern.Riya.Berry.jpg "Riya Berry"){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
+![](/findings/head_shots/UVA.Intern.Riya.Berry.jpg){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
 
 [Riya Berry](https://github.com/18rberry), Intern  
 
-UC Berkley
+California - Berkley    
+
 Data Science, Interdisciplinary Studies
 </div>
 
 <div class="column">
-![Ellen Graham](/findings/head_shots/UVA.intern.Ellen_Graham.jpg "Ellen Graham"){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
+![](/findings/head_shots/UVA.intern.Ellen_Graham.jpg){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
 
 [Ellen Graham](https://github.com/grahamammal), Intern  
 
 Macalester College  
+
 Applied Mathematics and Statistics, Computer Science
 </div>
 
 <div class="column">
-![Mychala Walker](/findings/head_shots/UVA.intern.Mychala.Walker.jpg "Mychala Walker"){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
+![](/findings/head_shots/UVA.intern.Mychala.Walker.jpg){style="width:60%; display: block; margin-left: auto; margin-right: auto;"}
 
 [Mychala Walker](https://github.com/mew4kc), Intern  
 
 Virginia State University
+
 Political Science
 </div>
 
@@ -74,10 +83,10 @@ Political Science
 
 #####  {style=text-align:center} 
 
-[Nat Ratcliffe, Research Assistant Professor](https://biocomplexity.virginia.edu/nathaniel-ratcliff)  
-[Joel Thurston, Senior Scientist](https://biocomplexity.virginia.edu/joel-thurston)  
-[Alyssa Mikytuck, ](https://biocomplexity.virginia.edu/) 
-[Eric Oh, ](https://biocomplexity.virginia.edu/) 
+[Nat Ratcliff, Research Assistant Professor](https://biocomplexity.virginia.edu/nathaniel-ratcliff) <br> 
+[Joel Thurston, Senior Scientist](https://biocomplexity.virginia.edu/joel-thurston)  <br>
+[Alyssa Mikytuck, Post-doctoral Research Associate](https://biocomplexity.virginia.edu/alyssa-mikytuck) <br>
+[Eric Oh, Research Assistant Professor](https://biocomplexity.virginia.edu/eric-oh) 
 
 ### Project Sponsors/Stakeholders {style=text-align:center}
 

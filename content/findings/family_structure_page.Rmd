@@ -1,7 +1,6 @@
 ---
 title: "Family Structure"
-description: "How stable are family units in Halifax?"
-tags: ["R", "Visualization"]
+description: "How stable are family units?"
 weight: 6
 draft: false
 output: html_document
@@ -9,7 +8,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 #set up r function on website
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 20, fig.height = 10)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 10)
 
 library(here)
 library(dplyr)
@@ -19,6 +18,9 @@ library(leaflet)
 library(sf)
 library(leaflet.extras)
 library(leaflet.mapboxgl)
+library(tidycensus)
+library(stringr)
+library(glue)
 
 options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 
@@ -33,31 +35,53 @@ theme_set(theme_minimal() +
                   legend.text = element_text(size = 14, color = "gray30"),
                   legend.title = element_text(size = 20, color = "gray10")))
 
+
+## Read in all public housing data and clean county strings
+pub_housing_summary <- vroom::vroom(here("data", "original", "Housing", "county_pub_housing_2013_2019.csv")) %>%
+  replace("NA", NA) %>%
+  mutate(across(everything(), function(col) ifelse(col == -1 | col == -4 | col == -5, NA, col))) %>% ## -1 = NA, -4 = Suppressed, -5 = % reporting too low
+  mutate(name = str_extract(str_replace_all(str_to_lower(name), "[0-9]{3} ", ""), "^([^,])+"), ## County names have numbers for some years, include state name after a comma for some years. Clean these
+         name = str_to_title(trimws(ifelse(str_detect(name, "city county"), str_replace_all(name, "county", ""), name)))) ## Clean duplicated counties that are labeled as both city and county
+
+## Vera incarceration data
+vera_data <- vroom::vroom(here::here("data", "original", "Incarceration", "vera_incarceration_trends.csv")) %>%
+  as.data.frame() %>%
+  mutate(fips = as.character(fips))
+
+## Subset to overall HUD summary data
+va_pub_housing <- pub_housing_summary %>%
+  filter(program_label == "Summary of All HUD Programs", state == "VA")
+
+halifax_pub_housing <- va_pub_housing %>% filter(code == "51083")
+
+## Join on incarceration data for recent years
+va_housing_vera <- vera_data %>%
+  filter(state == "VA", year > 2011) %>%
+  full_join(va_pub_housing, by = c("fips" = "code", "year" = "year"))
+
 #read in Teen Birth Data
-Teen_Births_VA <- st_read(here::here("src", "Data_Ingestion", "Teen_Births_VA.geojson"))
+# Teen_Births_VA <- st_read(here::here("src", "Data_Ingestion", "Teen_Births_VA.geojson"))
 ```
 
-```{r}
-halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
+```{r, results = "hide"}
+## Read birth rate data
+birth_rates <- readr::read_csv(here::here("data", "original", "Teen_Pregnancy", "NCHS_-_Teen_Birth_Rates_for_Age_Group_15-19_in_the_United_States_by_County.csv"))
 
-BAMMtools::getJenksBreaks(halifax_decennial_data$pct_female_no_husband_household, 4)
-pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 0.1, 0.15, 0.25, 1))
+## Get population from census. Mainly just using this as a roundabout way to get polylines since tigris was giving weird polygons for the Eastern Shore
+pops <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA", survey = "acs5", geometry = TRUE) %>% st_transform(crs = 4326)
 
-halifax_decennial_data %>%
-  #limited dragging and set minimum and maximum zoom settings
-leaflet(width = "100%") %>%
-  #added base tiles
-  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
-  #added layers of chloropleth maps depicting each race
-  addPolygons(fillColor = ~pal(pct_female_no_husband_household),
-              fillOpacity = 0.8,
-              color = "#444444",
-              weight = 0.5) %>%
-  addLegend(position = "bottomright", pal = pal, values = c(0,1), 
-            title = "Proportion Single Women Households")
+## Get border for Halifax to highlight
+halifax_border <- pops %>% filter(GEOID == "51083")
 
-```
+## Clean birth_rates data for merge
+colnames(birth_rates) <- str_replace_all(colnames(birth_rates), " ", "_")
+birth_rates <- birth_rates %>% rename(GEOID = Combined_FIPS_Code) %>% mutate(GEOID = as.character(GEOID))
 
+## Filter to Virginia and merge on spatial data
+va_birth_rates <- birth_rates %>% filter(State == "Virginia")
+va_birth_rates_sp <- full_join(pops, va_birth_rates, by = "GEOID")
+
+<<<<<<< HEAD
 ### Background
 
 Decades of research has found that family structure has the power to impact a child’s development. For example, children growing up in two parent homes tend to have better health and social outcomes than those who grow up in single parent homes (The Impact of Family Structure on the Health of Children: Effects of Divorce, 2020). Teen pregnancy is generally defined as pregnancy between the ages of 15 and 19 years old. Teen pregnancies are estimated to cost U.S. taxpayers between $9 and $11 billion dollars per year and Virginia is estimated to spend $183 million dollars on factors related to teen pregnancy (Teen Childbearing Is Costly to Taxpayers, 2020).
@@ -67,54 +91,161 @@ Decades of research has found that family structure has the power to impact a ch
 In 2017, the rate of teen pregnancy (per 1,000 women aged 15 - 19) was 18.8 in the United States. In the same time period, the rate of teen pregnancy (per 1,000 women aged 15 - 19) in Virginia was 15 and in Halifax county the rate was estimated at 30.8. This put Halifax at the 24th highest rate of teen births out of 134 counties in Virginia. While the number of teen births has been declining since 2003, the high rate led us to investigate factors that could be related to the high rate of teen births in Halifax.  
 
 We found several factors in Halifax that have been linked to higher rates of teen births. For example, Halifax is a rural county with a high rate of poverty, which has been linked to higher teen birth rates (Products - Data Briefs - Number 264 - November 2016, 2016). Additionally, Halifax county only has one publicly funded clinic and zero federally qualified health centers to aid in female contraception usage. By the age of 18, a woman is more than 3 times likely to have a teen birth if they do not use a proper method of contraception (Products - Data Briefs - Number 209 - July 2015, 2015). Thus, the small number of clinics may be contributing to the high rate of teen births in Halifax.
+=======
 
+i <- 1
+map_data <- list()
 
-```{r}
-Teen_B_colors <- colorBin("YlGnBu", domain = c(0, 100), 
-                              bins = c(0, 15, 30, 45, 60, 75, 90, 100))
-#teen births rate map over 12 years
-Teen_Births_VA %>%
-  leaflet(options = leafletOptions(minZoom = 7, maxZoom = 12)) %>%
-  setView(-78.6569, 38, 7) %>%
-  addTiles()%>%
-  addResetMapButton() %>%
-  addPolygons(fillColor = ~Teen_B_colors(BirthRate2018), color = "black", 
-              fillOpacity = 1, group = "2018", opacity = 1, weight = 2,
-              highlight = highlightOptions(color = "white",  
-                                           bringToFront = TRUE),
-              label = ~paste0("Birth Rate: ", (BirthRate2018))) %>%
-  addPolygons(fillColor = ~Teen_B_colors(BirthRate2015), color = "black",
-              fillOpacity = 1, group = "2015", weight = 2, opacity = 1,
-              highlight = highlightOptions(color = "white",
-                                           bringToFront = TRUE),
-              label = ~paste0("Birth Rate: ", (BirthRate2015))) %>%
-  addPolygons(fillColor = ~Teen_B_colors(BirthRate2012), color = "black",
-              fillOpacity = 1, group = "2012", weight = 2, opacity = 1,
-              highlight = highlightOptions(color = "white", 
-                                           bringToFront = TRUE),
-              label = ~paste0("Birth Rate: ", (BirthRate2012))) %>%
-  addPolygons(fillColor = ~Teen_B_colors(BirthRate2009), color = "black",
-              fillOpacity = 1, group = "2009", weight = 2, opacity = 1,
-              highlight = highlightOptions(color = "white",
-                                           bringToFront = TRUE),
-              label = ~paste0("Birth Rate: ", (BirthRate2009))) %>%
-  addPolygons(fillColor = ~Teen_B_colors(BirthRate2006), color = "black",
-              fillOpacity = 1, group = "2006", weight = 2, opacity = 1,
-              highlight = highlightOptions(color = "white",
-                                           bringToFront = TRUE),
-              label = ~paste0("Birth Rate: ", (BirthRate2006))) %>%
-  addLayersControl(baseGroups = c("2018", "2015", "2012",
-                                  "2009", "2006"),
-                   position = "topleft") %>%
-  addLegend(position = "bottomleft", pal = Teen_B_colors, values = c(0,100), 
-            title = "Birth Rate") 
+for (year in unique(va_birth_rates_sp$Year)) {
+  map_data[[i]] <- va_birth_rates_sp %>% filter(Year == year)
+  i <- i + 1
+}
 ```
 
-### Conclusion and Policy Implications 
+### Background
 
+Decades of research has found that family structure has the power to impact a child’s development. For example, children growing up in two parent homes tend to have better health and social outcomes than those who grow up in single parent homes [^NIH]. Teen pregnancy (defined as pregnancy between the ages of 15 and 19 years old), costs U.S. taxpayers between \$9 and \$11 billion dollars per year and Virginia is estimated to spend $183 million dollars on factors related to teen pregnancy[^NCSL].
+
+Not only are teen mothers more likely to drop out of high school, find themselves unemployed, use public assistance, and have lower incomes, but their children are also at elevated risk for a variety of similar outcomes[^CDC]. The fact that low levels of family supervision are related to higher rates of juvenile delinquency in adolescents is particularly troublesome in the context of incarceration trends[^LYNSKEY]. The children of young, single parents, particularly those also experiencing financial strain, are thus at heightened risk of delinquent behavior, putting them at increased risk of encounters with law enforcement. Over time, these encounters may predispose these individuals to heightened risk of entering the criminal justice system. When these individuals are thus absent from family life themselves, the potential exists for the cycle to repeat itself, as children of incarcerated parents are more likely to be involved with the criminal justice system themselves[^TASCA].
+
+### Main Findings 
+
+In 2017, the rate of teen pregnancy (per 1,000 women) was 18.8 in the United States. In the same time period, the rate of teen pregnancy (per 1,000 women) in Virginia was 15 and in Halifax county the rate was estimated at 30.8(National Center for Health Statistics, n.d.). This put Halifax at the 24th highest rate of teen births out of 134 counties in Virginia. While the number of teen births has been declining since 2003, the fact that Halifax was in the upper portion of the distribution indicates the potential for effective interventions on this factor.
+>>>>>>> 61273ed55e8dd393d6c7ff76d46aac4ec1cfcfe6
+
+<br>
+
+```{r}
+va_birth_rates %>%
+  ggplot() +
+  geom_line(aes(x = Year, y = Birth_Rate, group = County), color = "#FC4444", lwd = 1.1) +
+  gghighlight(County == "Halifax", use_direct_label = FALSE, unhighlighted_params = list(alpha = 0.2)) +
+  scale_x_continuous(breaks = seq(2003, 2018, 3)) +
+  labs(x = "", y = "Teen Birth Rate (per 1000 births)", title = "Teen Birth Rate Trends", subtitle = "Virginia Counties")
+```
+
+The overall decline in teen birth rates across Virginia in the past decade is encouraging, but there exist distinct spatial clusters where higher teen birth rates exist. In 2018, south west and Southside Virginia both seemed to have higher teen birth rates than much of the rest of Virginia.
+
+<br>
+
+<<<<<<< HEAD
 Teen pregnancy can have drastic effects on the individual, interpersonal, and the school/work environments of both the mother and their child, as well as costly effects on society. As a result of their pregnancy, teen mothers are at elevated risk for low academic achievement, dropping out of high school, being unemployed, using public assistance, and being in poverty than non-pregnant women of the same age (About Teen Pregnancy | CDC, n.d.). Children of teen mothers are also at elevated risk for low academic achievement, low health and behavioral outcomes, high unemployment, and delinquency compared to children of non-teen mothers (About Teen Pregnancy | CDC, n.d.). Children of teenage mothers are also more likely to become teen parents (Pregnancy Prevention | Youth.gov, n.d.). Thus, it is will be important to continue to investigate how to mitigate teen births.  
+=======
+```{r, fig.height = 4}
+va_birth_rates_2018 <- va_birth_rates_sp %>% filter(Year == 2018)
+#BAMMtools::getJenksBreaks(va_birth_rates_2018$Birth_Rate, 6)
+pal <- colorBin("BuPu", range(va_birth_rates_2018$Birth_Rate, na.rm = TRUE), bins = c(0, 10, 20, 30, 40, 60))
 
-### References 
+## Map
+leaflet(width = "100%") %>%
+  addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  addPolygons(data =  va_birth_rates_2018,
+              weight = 1,
+              color = "#444444",
+              fillOpacity = 0.7,
+              fillColor = ~pal(Birth_Rate),
+              label = ~purrr::map(glue("<strong>{County} County<br/></strong> <strong>Teen birth rate</strong>: {Birth_Rate}"), htmltools::HTML)) %>%
+  # addPolygons(data =  map_data[[2]],
+  #             weight = 1,
+  #             color = "#444444",
+  #             fillOpacity = 0.7,
+  #             fillColor = ~pal(Birth_Rate),
+  #             label = ~purrr::map(glue("<strong>{County} County<br/></strong> <strong>Teen birth rate</strong>: {Birth_Rate}"), htmltools::HTML),
+  #             group = "2017") %>%
+  # addPolygons(data =  map_data[[3]],
+  #             weight = 1,
+  #             color = "#444444",
+  #             fillOpacity = 0.7,
+  #             fillColor = ~pal(Birth_Rate),
+  #             label = ~purrr::map(glue("<strong>{County} County<br/></strong> <strong>Teen birth rate</strong>: {Birth_Rate}"), htmltools::HTML),
+  #             group = "2016") %>%
+  # addPolygons(data =  map_data[[4]],
+  #             weight = 1,
+  #             color = "#444444",
+  #             fillOpacity = 0.7,
+  #             fillColor = ~pal(Birth_Rate),
+  #             label = ~purrr::map(glue("<strong>{County} County<br/></strong> <strong>Teen birth rate</strong>: {Birth_Rate}"), htmltools::HTML),
+  #             group = "2015") %>%
+  # addLayersControl(baseGroups = c("2015", "2016", "2017", "2018")) %>%
+  addLegend("bottomright", pal = pal, values = c(0, 100), title = "Teen Birth Rate")
+```
+>>>>>>> 61273ed55e8dd393d6c7ff76d46aac4ec1cfcfe6
+
+<br>
+
+Given that these areas tend to be rural (a pattern consistent with current research)[^CDC2], efforts to reduce teen birth rates that focus on this cultural context may be particularly valuable. Important to note is that Halifax county has only one publicly funced clinic and no federally qualified health cetners to aid in female contraception usage(Guttmacher Data Center, n.d.). By the age of 18, a women is more than 3 times as likely to have had a teen birth if they do not reliably use contraception (Products - Data Briefs - Number 209 - July 2015.). Because of these few resources, the importance of effectively connecting young women to these resources becomes paramount, and is a role that could potentially be filled by the proposed FCSA.
+
+```{r, results = "hide"}
+# halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
+# ```
+# ```{r, fig.height = 4}
+# #BAMMtools::getJenksBreaks(halifax_decennial_data$pct_female_no_husband_household, 4)
+# pal <- colorBin("BuPu", domain = c(0, 1), bins = c(0, 0.1, 0.15, 0.25, 1))
+# 
+# halifax_decennial_data %>%
+#   #limited dragging and set minimum and maximum zoom settings
+#   leaflet(width = "100%") %>%
+#   #added base tiles
+#   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+#   #added layers of chloropleth maps depicting each race
+#   addPolygons(fillColor = ~pal(pct_female_no_husband_household),
+#               fillOpacity = 0.8,
+#               color = "#444444",
+#               weight = 0.5) %>%
+#   addLegend(position = "bottomright", pal = pal, values = c(0,1), 
+#             title = "Proportion Single Women Households")
+```
+
+We can get a more granular look at these issues by exploring the demographic makeup of the subsidized housing population in Halifax. The population is almost exclusively non-hispanic black, and contains a disproportionate number of single adults with children. In addition, many of these family units are headed by someone (often the mother) younger than 24. The plot below highlights the difference in the ages of heads-of-households across the two common subsidized housing types in the county. Families headed by younger adults are more likely to live in project-based housing. While this does not indicate that project based housing is linked to incarceration, it does highlight a population that could benefit from community programs tailored to its particular needs, and emphasizes the relationships between the various social determinants we explore in this project. Teen births, housing opportunities, and racial discrepancies are all interrelated components in understanding incaceration and re-entry in Halifax County.
+
+<br>
+
+```{r, fig.height = 15, fig.width = 25}
+## Pct of households headed by a single parent (most are females in Halifax - can show)
+va_data <- pub_housing_summary %>%
+  filter(year == 2019, program_label %in% c("Housing Choice Vouchers", "Project Based Section 8")) %>%
+  mutate(isVA = ifelse(state == "VA", TRUE, FALSE),
+         isHalifax = ifelse(state == "VA" & name == "Halifax County", TRUE, FALSE),
+         pct_lt24_head = ifelse(is.na(pct_lt24_head), 100 - pct_age25_50 - pct_age51_61 - pct_age62plus, pct_lt24_head)) %>%
+  filter(isVA == TRUE)
+
+us_data <- pub_housing_summary %>%
+  filter(year == 2019, program_label %in% c("Housing Choice Vouchers", "Project Based Section 8")) %>%
+  mutate(isVA = ifelse(state == "VA", TRUE, FALSE),
+         isHalifax = ifelse(state == "VA" & name == "Halifax County", TRUE, FALSE),
+         pct_lt24_head = ifelse(is.na(pct_lt24_head), 100 - pct_age25_50 - pct_age51_61 - pct_age62plus, pct_lt24_head)) %>%
+  filter(isVA == FALSE)
+
+plot <- ggplot() +
+  geom_point(data = us_data, aes(x = pct_black_nonhsp, y = pct_1adult, color = interaction(isVA, isHalifax), size = pct_lt24_head, alpha = isVA), stroke = 1.25) +
+  geom_point(data = va_data, aes(x = pct_black_nonhsp, y = pct_1adult, color = interaction(isVA, isHalifax), size = pct_lt24_head, alpha = isVA), stroke = 1.25) +
+  coord_flip() +
+  scale_size_continuous(range = c(0, 20), labels = c("0%", "10%", "20%", "30%", "40%")) +
+  scale_color_manual(labels = c("U.S.", "Virginia", "Halifax County"), values = c("#f1f1f0", "#c1c5df", "#FC4444"), na.translate=FALSE) +
+  labs(y = "\nPercent Single Adults with Children", x = "Percent Black (Non-Hispanic)\n", 
+       title = "Characteristics of Subsidized Housing Population\n", 
+       size = "Household heads less \nthan 24 years old") +
+  guides(alpha = FALSE, color = guide_legend(title = "Locale", override.aes = list(size=10)), size = guide_legend(override.aes = list(shape = 21, alpha = 0.8))) +
+  scale_alpha_manual(values = c(0.3, 0.8)) +
+  facet_wrap(~program_label, ncol = 2) +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 30),
+        plot.subtitle = element_text(hjust = 0.5, color = "gray30", face = "italic", size = 26),
+        axis.title = element_text(size = 26, color = "gray10"),
+        axis.text = element_text(size = 24, color = "gray30"),
+        strip.text = element_text(size = 28, color = "gray30"),
+        panel.spacing = unit(4, "lines"),
+        legend.key.size = unit(3, "line"),
+        legend.text = element_text(size = 22, color = "gray30"),
+        legend.title = element_text(size = 28, color = "gray10"))
+
+plot
+```
+
+### Future Findings
+To better assess teen pregnancy it would be beneficial to have data that tells how many incarcerated persons are teen parents or are children of teen parents. This could better show how delinquency and teen pregnancy are connected. It would also be helpful to have more data regarding the economic costs of teen pregnancy on the national, state, and local levels. 
+
+_Uncited references?_
 
 About Teen Pregnancy | CDC. (n.d.). Center for Disease Control and Prevention. Retrieved July 22, 2020, from https://www.cdc.gov/teenpregnancy/about/index.htm
 
@@ -128,10 +259,6 @@ Pregnancy Prevention | Youth.gov. (n.d.). Youth.Gov. Retrieved July 25, 2020, fr
 
 Products - Data Briefs - Number 209 - July 2015. (2015, July). Center for Disease and Prevention. https://www.cdc.gov/nchs/products/databriefs/db209.htm
 
-Products - Data Briefs - Number 264 - November 2016. (2016, November). Center for Disease Control and Prevention. https://www.cdc.gov/nchs/products/databriefs/db264.htm#:%7E:text=From%202007%20through%202015%2C%20the%20rates%20in%20these%20counties%20were,greater%20than%20the%20national%20rate.
-
-Teen births. (n.d.). County Health Rankings. Retrieved July 25, 2020, from https://www.countyhealthrankings.org/explore-health-rankings/measures-data-sources/county-health-rankings-model/health-factors/health-behaviors/sexual-activity/teen-births
-
 Teen Births. (2019, May 24). Child Trends. https://www.childtrends.org/indicators/teen-births
 
 Teen Childbearing is Costly to Taxpayers. (2020). National Conference of State Legislatures. https://www.ncsl.org/research/health/teen-childbearing-is-costly-to-taxpayers.aspx
@@ -140,6 +267,14 @@ The impact of family structure on the health of children: Effects of divorce. (2
 
 
 
+[^NIH]: The impact of family structure on the health of children: Effects of divorce. (2020, November 2). National Institutes of Health. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4240051/
 
+[^NCSL]: Teen Childbearing is Costly to Taxpayers. (2020). National Conference of State Legislatures. https://www.ncsl.org/research/health/teen-childbearing-is-costly-to-taxpayers.aspx
 
+[^CDC]: About Teen Pregnancy | CDC. (n.d.). Center for Disease Control and Prevention. Retrieved July 22, 2020, from https://www.cdc.gov/teenpregnancy/about/index.htm
 
+[^LYNSKEY]: Lynskey, D. P., Winfree Jr, L. T., Esbensen, F. A., & Clason, D. L. (2000). Linking gender, minority group status and family matters to self‐control theory: A multivariate analysis of key self‐control concepts in a youth‐gang context. Juvenile and Family Court Journal, 51(3), 1-19.
+
+[^TASCA]: Tasca, M., Rodriguez, N., & Zatz, M. S. (2011). Family and residential instability in the context of paternal and maternal incarceration. Criminal Justice and Behavior, 38(3), 231-247
+
+[^CDC2]: Products - Data Briefs - Number 264 - November 2016. (2016, November). Center for Disease Control and Prevention. https://www.cdc.gov/nchs/products/databriefs/db264.htm#:%7E:text=From%202007%20through%202015%2C%20the%20rates%20in%20these%20counties%20were,greater%20than%20the%20national%20rate.

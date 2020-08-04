@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Housing</title>
+        <link rel="canonical" href="../../findings/housing_page_2/">
+        <style>
+
+    html body {
+        font-family: 'Oxygen', sans-serif;
+        background-color: #FFFFFF;
+    }
+
+    :root {
+        --accent: #232D4B;
+        --border-width:  0 ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ascetic.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="../../css/main.css">
+
+
+
+
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/bash.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+
+
+<script>
+$(document).ready(function(){
+    
+  var input = $('#night-mode-toggle');
+  var container = $('#bigbody');
+  var stat = $('#button-status');
+  
+  container.toggleClass(localStorage.toggled);
+  stat.bootstrapToggle(localStorage.button).change();
+  
+  input.on('click', function() {
+      if (localStorage.toggled != "-nightmode" ) {
+          container.toggleClass("-nightmode", true );
+          localStorage.toggled = "-nightmode";
+          localStorage.button = "on";
+       } else {
+          container.toggleClass("-nightmode", false );
+          localStorage.toggled = "";
+          localStorage.button = "off"
+       }
+  })
+});
+</script>
+ <meta name="generator" content="Hugo 0.74.2" />
+        <link href="" rel="alternate" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        <link href="" rel="feed" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="../../apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="../../favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="../../favicon-16x16.png">
+    <link rel="manifest" href="../../site.webmanifest">
+    <link rel="mask-icon" href="../../img/favicon/safari-pinned-tab.svg" color="#000000">
+    <link rel="shortcut icon" href="../../img/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    
+    
+    
+    <meta property="og:title" content="Housing">
+    <meta property="og:type" content="article">
+      
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:image" content="/favicon/uva-dspg-logo.jpg" >
+      
+    <meta property="description" content="What kinds of affordable housing options exist?">
+    <meta property="og:description" content="What kinds of affordable housing options exist?">
+    
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:site" content="">
+    
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+    <body id = "bigbody">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand visible-xs" href="#">Housing</a>
+                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="collapse navbar-collapse">
+                    
+                        <ul class="nav navbar-nav">
+                            
+                                <li><a href="../../">Home</a></li>
+                            
+                                <li><a href="../../overview/">Overview</a></li>
+                            
+                                <li><a href="../../methods/">Data &amp; Methods</a></li>
+                            
+                                <li><a href="../../findings/">Findings</a></li>
+                            
+                                <li><a href="../../team/">Team</a></li>
+                            
+                        </ul>
+                    
+                    
+                        <ul class="nav navbar-nav navbar-right">
+                            
+                                <li class="navbar-icon"><a href="https://biocomplexity.virginia.edu/social-decision-analytics/dspg-program"><i class="fas fa-globe-americas"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://github.com/DSPG-Young-Scholars-Program"><i class="fab fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="https://twitter.com/UVA_BI"><i class="fab fa-twitter"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="mailto:kb7hp@virginia.edu"><i class="far fa-envelope"></i></a></li>
+                            
+                            
+                        </ul>
+                    
+                </div>
+            </div>
+        </nav>
+
+
+<main>
+
+    <div class="item">
+
+    
+    
+    
+
+    
+      
+      
+    
+
+    <h4><a href="../../findings/housing_page_2/">Housing</a></h4>
+    
+    <h5>What kinds of affordable housing options exist?</h5>
+
+    
+    
+    <a href="../../tags/r">
+        <kbd class="item-tag"> R </kbd>
+    </a>
+    
+    <a href="../../tags/visualization">
+        <kbd class="item-tag"> Visualization </kbd>
+    </a>
+    
+
+</div>
+
+
+    <br> <div class="text-justify">
+<script src="../../rmarkdown-libs/kePrint/kePrint.js"></script>
+
+
+<div id="background" class="section level3">
+<h3>Background</h3>
+<p>Many now see access to affordable housing as one of the primary factors limiting successful re-entry for individuals leaving jails or prisons; an unstable living situation can severely impact employment opportunities, predispose individuals to return to criminal activity, and hinder efforts to reestablish family relationships and friendships<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>.</p>
+<p>Using the ecological model as a framework, we can see how housing impacts an individuals re-entry. At the policy level, eligibility for low-income housing opportunities may be limited by prior convictions (despite HUD recommendations to the contrary)<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>. At the community level, affordable housing locations can impact an individual’s access to other services that they may need, including substance abuse treatment, education, and employment opportunities. At the interpersonal level, housing can serve as either a platform for successful reintegration by allowing for the re-establishment of family connections (or can present a challenge when these relationships are already frayed)<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>.</p>
+<p>To assess housing affordability in Halifax County, we relied primarily on the Picture of Subsidized Households dataset (<a href="https://www.huduser.gov/portal/datasets/assthsg.html" class="uri">https://www.huduser.gov/portal/datasets/assthsg.html</a>) as well as Low-Income Housing Tax Credit property data (<a href="https://www.huduser.gov/portal/datasets/lihtc.html" class="uri">https://www.huduser.gov/portal/datasets/lihtc.html</a>), both of which are furnished by the Department of Housing and Urban Development (HUD).</p>
+<p>HUD maintains datasets on low-income housing tax credit funding, characteristics of individuals living in federally subsidized housing, and administrative data used to calculate income limits for subsidized housing. While these datasets provide a picture of housing affordability in an area, they do not focus explicitly on the formerly incarcerated population, and often don’t address the unique challenges these individuals have accessing these housing opportunities.</p>
+</div>
+<div id="main-findings" class="section level3">
+<h3>Main Findings</h3>
+<p>As of 2019, the Department of Housing and Urban development lists a total of 171 units across 9 official properties in Halifax County designed to support low-income individuals. The relative income distribution of those living in HUD subsidized housing has been shifting upwards in recent years, and extremely low income individuals and families make up a slightly smaller proportion of the subsidized housing population. These patterns are in keeping with the patterns followed by many other Virginia counties between 2012 and 2019.</p>
+<table class="table table-striped table-bordered" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+<span id="tab:unnamed-chunk-3">Table 1: </span>Income Distribution of Subsidized Housing Population: Halifax County
+</caption>
+<thead>
+<tr>
+<th style="border-bottom:hidden" colspan="1">
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="5">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Raw Income (thousands of dollars)
+</div>
+</th>
+<th style="border-bottom:hidden; padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="2">
+<div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+Relative to Median
+</div>
+</th>
+</tr>
+<tr>
+<th style="text-align:right;">
+Year
+</th>
+<th style="text-align:left;">
+&lt; $5
+</th>
+<th style="text-align:left;">
+$5 - $10
+</th>
+<th style="text-align:left;">
+$10 - $15
+</th>
+<th style="text-align:left;">
+$15 - $20
+</th>
+<th style="text-align:left;">
+&gt; $20
+</th>
+<th style="text-align:left;">
+&lt; 50% median income
+</th>
+<th style="text-align:left;">
+&lt; 30% median income
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+2012
+</td>
+<td style="text-align:left;">
+39%
+</td>
+<td style="text-align:left;">
+30%
+</td>
+<td style="text-align:left;">
+19%
+</td>
+<td style="text-align:left;">
+7%
+</td>
+<td style="text-align:left;">
+5%
+</td>
+<td style="text-align:left;">
+95%
+</td>
+<td style="text-align:left;">
+82%
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2013
+</td>
+<td style="text-align:left;">
+37%
+</td>
+<td style="text-align:left;">
+35%
+</td>
+<td style="text-align:left;">
+16%
+</td>
+<td style="text-align:left;">
+11%
+</td>
+<td style="text-align:left;">
+1%
+</td>
+<td style="text-align:left;">
+100%
+</td>
+<td style="text-align:left;">
+83%
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2014
+</td>
+<td style="text-align:left;">
+30%
+</td>
+<td style="text-align:left;">
+33%
+</td>
+<td style="text-align:left;">
+21%
+</td>
+<td style="text-align:left;">
+13%
+</td>
+<td style="text-align:left;">
+3%
+</td>
+<td style="text-align:left;">
+98%
+</td>
+<td style="text-align:left;">
+78%
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2015
+</td>
+<td style="text-align:left;">
+32%
+</td>
+<td style="text-align:left;">
+35%
+</td>
+<td style="text-align:left;">
+21%
+</td>
+<td style="text-align:left;">
+9%
+</td>
+<td style="text-align:left;">
+2%
+</td>
+<td style="text-align:left;">
+98%
+</td>
+<td style="text-align:left;">
+83%
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2016
+</td>
+<td style="text-align:left;">
+30%
+</td>
+<td style="text-align:left;">
+34%
+</td>
+<td style="text-align:left;">
+19%
+</td>
+<td style="text-align:left;">
+13%
+</td>
+<td style="text-align:left;">
+4%
+</td>
+<td style="text-align:left;">
+98%
+</td>
+<td style="text-align:left;">
+75%
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2017
+</td>
+<td style="text-align:left;">
+32%
+</td>
+<td style="text-align:left;">
+30%
+</td>
+<td style="text-align:left;">
+20%
+</td>
+<td style="text-align:left;">
+13%
+</td>
+<td style="text-align:left;">
+6%
+</td>
+<td style="text-align:left;">
+96%
+</td>
+<td style="text-align:left;">
+78%
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2018
+</td>
+<td style="text-align:left;">
+30%
+</td>
+<td style="text-align:left;">
+27%
+</td>
+<td style="text-align:left;">
+21%
+</td>
+<td style="text-align:left;">
+11%
+</td>
+<td style="text-align:left;">
+10%
+</td>
+<td style="text-align:left;">
+95%
+</td>
+<td style="text-align:left;">
+76%
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2019
+</td>
+<td style="text-align:left;">
+26%
+</td>
+<td style="text-align:left;">
+28%
+</td>
+<td style="text-align:left;">
+22%
+</td>
+<td style="text-align:left;">
+14%
+</td>
+<td style="text-align:left;">
+10%
+</td>
+<td style="text-align:left;">
+97%
+</td>
+<td style="text-align:left;">
+76%
+</td>
+</tr>
+</tbody>
+</table>
+<p>A key question when considering the ability of federally subsidized housing to help address issues of recidivism and incarceration is whether the subsidized housing system even has the capacity to serve as a resource to formerly incarcerated individuals as they re-enter society. Below, we display the size of the annual number of jail discharges relative to the overall subsidized housing capacity, with Halifax County highlighted. Very few Virginia counties have a general subsidized housing supply on par with the annual discharge rate. So, while Halifax is by no means an outlier, it still discharges roughly three times the number of individuals from jail as people in its subsidized housing system. While many of these individuals will find housing elsewhere, this finding speaks to the limitations of considering the federally subsidized housing as a sole option to help re-integrate these individuals affordably and effectively.</p>
+<p><img src="../../findings/housing_page_2_files/figure-html/unnamed-chunk-5-1.png" width="1440" /></p>
+<p>Identifying and connecting individuals with other affordable housing options may therefore be a valuable role for a potential Family and Consumer Science Agent in the county. Similarly, motivating the community to consider alternative options for developing a robust affordable housing stock may be warranted, and bringing private landlords into the discussion may be an important component of a successful strategy.</p>
+</div>
+<div id="housing-accessibility" class="section level3">
+<h3>Housing Accessibility</h3>
+<p>One of the most fundamental ways housing can provide a strong foundation for formerly incarcerated individuals is by providing reliable access to the resources required to re-enter society effectively. Housing that is otherwise affordable may not be a sustainable option if it prevents individuals from getting to work, substance abuse treatment programs, or adult education opportunities. A comprehensive consideration of accessibility would also include considerations of the culture, values, and circumstances that may encourage or discourage individuals from even attempting to access certain resources, but at its most fundamental level, resource accessibility can be framed as a question of physical proximity.</p>
+<p>To better understand how the location of affordable housing options may influence resource accessibility for formely incarcerated individuals, we created a series of maps displaying isochrone lines that delineate areas of equal travel time from a given point. Each map below displays the areas within 10, 20, and 30 minutes of a selected subsidized housing property in Halifax County. Also displayed are the locations of the top employers in the county, schools, and substance abuse treatment/support centers.</p>
+<p><br></p>
+<div id="accessibility-by-car" class="section level4">
+<h4>Accessibility by Car</h4>
+<p><br><br></p>
+</div>
+<div id="accessibility-by-bike" class="section level4">
+<h4>Accessibility by Bike</h4>
+<p><br><br></p>
+</div>
+<div id="accessibility-on-foot" class="section level4">
+<h4>Accessibility on Foot</h4>
+<p><br></p>
+<p>These maps suggest that many of the necessary resources may be within a reasonable travel distance of affordable housing options, at least when traveling by car. However, transportation access is a commonly cited concern amongst those re-entering society after being incarcerated.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a> Some may be able to rely on familial support in the short term, but this is less likely to be a sustainable long-term transportation strategy. The second and third map reveal the extent of the reduction in resources accessibility for those without access to a car.</p>
+</div>
+</div>
+<div id="future-directions-additional-data-sources" class="section level3">
+<h3>Future Directions + Additional Data Sources</h3>
+<p>As mentioned before, physical distance, while a valuable starting point, is only one component of resource accessibility. One limitation of the above maps is that they are calculated using subsidized housing properties as their starting destinations, but most people re-entering society will likely live elsewhere. More data on where re-entering individuals tend to find housing opportunities would be valuable in providing a more accurate picture of resource accessibility in the county. Also valuable would be data on housing outcomes for formerly incarcerated individuals in these areas (evictions, length of stay in housing, etc.). Historically, prior convictions would have rendered someone ineligible for many of these housing options<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a> on the grounds that these individuals constituted a high risk to the community. Evaluating the validity of these concerns would be valuable to inform the conversation about potentially increasing access to these affordable housing options for formerly incarcerated persons in Halifax. Of course, any data collected on this vulnerable population would have to be done with extreme care, and these difficulties may explain why HUD's Picture of Subsidized Households dataset does not explicitly record any information about individuals with prior convictions. However, there may be a way to incorporate this information ethically, and it could help to provide community leaders (like an FCSA) valuable information about the types of housing resources they can direct people to.</p>
+<p>Also relevant would be survey data assessing the attitudes of private landlords concerning those with past convictions. Reluctance on the part of landlords to rent to those with prior convictions may effectively close off an entire subset of housing to these individuals, potentially concentrating them into lower-income and more vulnerable areas. Addressing these concerns in the local community may be another potential role for an FCSA.</p>
+<p>Similarly, a more thorough review of the employers known to provide opportunities to those with past convictions would provide a more nuanced look at work accessibility. Given the difficulties finding work after being released from incarceration, it is unlikely that each of the top employers in the area is equally open to hiring those with past convictions. Zoning information could also be incorporated to provide a clearer picture of how residential and business areas in Halifax are connected more generally.</p>
+<p>Another obvious next step would be to include public transit travel times and distances, as public transit is likely to be relied upon extensively by those without reliable car access. Unfortunately, most comprehensive data sources on public transit exist only for larger cities, but it is possible that Halifax County itself may already have (or be able to collect) data to assess its public transportation infrastructure.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Fontaine, J. (2013). Examining housing as a pathway to successful reentry: A demonstration design process. Washington, DC: Urban Institute.<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Gaitan, V., &amp; Brennan, M. (2020). For Reentry Success and Beyond, Rental Housing Access Matters. Retrieved from <a href="https://housingmatters.urban.org/articles/reentry-success-and-beyond-rental-housing-access-matters" class="uri">https://housingmatters.urban.org/articles/reentry-success-and-beyond-rental-housing-access-matters</a><a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>Fontaine, J., &amp; Biess, J. (2012). Housing as a platform for formerly incarcerated persons. Washington, DC: Urban Institute.<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>Cobbina, J. E. (2010). Reintegration success and failure: Factors impacting reintegration among incarcerated and formerly incarcerated women. Journal of Offender Rehabilitation, 49(3), 210-232.<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>See footnote 3<a href="#fnref5">↩</a></p></li>
+</ol>
+</div>
+</div>
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+</main>
+
+        <footer id = "bigfooter">
+            <div style = "padding:15px;">
+                <p>Powered by <a href="https://gohugo.io">Hugo</a>. Themed by <a href="https://github.com/nathancday/min_night">min_night_dspg</a>. <a href="https://biocomplexity.virginia.edu/social-decision-analytics">Website by University of Virginia Biocomplexity Institute.</a>
+                </p>
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"
+                title="Creative Commons Attribution 4.0 International license">
+                <i class="fab fa-creative-commons" aria-hidden="true"></i> Attribution 4.0 International license
+                </a>
+            </div>
+        </footer>
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+          gtag('config', '');
+        </script>
+       
+    </body>
+
+</html>
+
