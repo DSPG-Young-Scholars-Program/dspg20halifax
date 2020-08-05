@@ -30,13 +30,18 @@ options(mapbox.accessToken = token)
 * Goal: **social determinants** of incarceration & recidivism in Halifax, VA
 * Approach: ecological model
     + How factors at the individual, neighborhood, community, and policy levels shape behavior 
-<br> 
-![Model](/SEM-graphc.jpg)
-<br> 
+<br><br>
+![](/SEM-graphc.jpg)
+
+<br><br>
+
 * Workflow: illustrates relationship between factors 
+
 <br>
-![Workflow](/findings/general-overview_files/workflow.png)
-<br>
+
+![](/findings/general-overview_files/workflow.png)
+
+<br><br><br>
 
 ## Data Sources 
 
@@ -55,6 +60,8 @@ knitr::kable(sources, "html") %>%
     + Lack of relevance to formerly incarcerated population
     + Improper spatial resolution
     + Incarceration vs crime 
+
+<br><br><br>
 
 ## Findings
 
@@ -128,9 +135,11 @@ create_map(age_sex_race_county, c("percent_estimate_race_total_population_one_ra
            unstable_threshold = 1.5)
 ```
 
+<br><br><br>
+
 ### Incarceration, Crime & Arrests
-* crime, arrest, incarceration & jails vs prisons 
-* prison incarceration rates have *consistently increased* over the past 3-4 decades 
+* Crime, arrest, incarceration & jails vs prisons 
+* Prison incarceration rates have *consistently increased* over the past 3-4 decades 
 ```{r load_libs_data}
 library(here)
 library(dplyr)
@@ -249,8 +258,10 @@ total_crime_plot + per_clear_plot +
   plot_annotation(title = 'Number of Crimes and Percent Cleared by Arrest Type')
 ```
 
+<br><br><br>
+
 ### Employment
-* unemployment is a **large indicator of crime** and intersects w/ ecological model on multiple levels
+* Unemployment is a **large indicator of crime** and intersects w/ ecological model on multiple levels
 * Halifax has slightly higher unemployment rate than VA avg 
 
 ```{r}
@@ -310,12 +321,14 @@ plot <- laus_unemployment_county %>%
 plot
 ```
 
+<br><br><br>
+
 ### Housing
 * Ecological model:
     + Policy: eligibility for low-income opportunities limited by prior convictions
     + Interpersonal: reintegration into the community
-* size of annual number of jail discharges relative to subsidized housing capacity: 3x 
-* housing accessibility (physical proximity)
+* Size of annual number of jail discharges relative to subsidized housing capacity: 3x 
+* Housing accessibility (physical proximity)
 
 ```{r}
 library(here)
@@ -388,10 +401,12 @@ va_housing_vera %>%
         plot.margin = margin(0.5, 2, 0, 0.5, "cm"))
 ```
 
+<br><br><br>
+
 ### Substance Abuse
-* opioid prescription rates are declining, but still higher than VA and USA
-* steadily increasing rate of binge drinking
-* policy level: racial disparities in marijuana possession (and drug-related crime)
+* Opioid prescription rates are declining, but still higher than VA and USA
+* Steadily increasing rate of binge drinking
+* Policy level: racial disparities in marijuana possession (and drug-related crime)
 
 ```{r}
 library(ggplot2)
@@ -451,11 +466,13 @@ va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 ```
 
+<br><br><br>
+
 ### Family Structure
-* family structure highly affects child's development
-* teen mothers more likely to drop out of high school, be unemployed, have lower incomes
-    + low levels of family supervision -> high rates of juvenile delicuency (cycle)
-* teen births, housing opportunities, and racial discrepancies are all important aspects
+* Family structure highly affects child's development
+* Teen mothers more likely to drop out of high school, be unemployed, have lower incomes
+    + Low levels of family supervision -> high rates of juvenile delicuency (cycle)
+* Teen births, housing opportunities, and racial discrepancies are all important aspects
 
 ```{r, fig.height = 15, fig.width = 25}
 ## Pct of households headed by a single parent (most are females in Halifax - can show)
