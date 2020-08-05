@@ -163,7 +163,7 @@ rates_by_gender_system %>%
 
 #### Crime Trends Over Time
 
-On average, 2,081 crimes came to the attention of law enforcement within the 10-year period between 2010 and 2019 in Halifax County.
+On average, 2,081 crimes came to the attention of law enforcement within the 10-year period between 2010 and 2019 in Halifax County. In contrast to the increase in incarceration, we notice a slight drop in reported crimes over the past few years. Including the Virginia court records data would help us determine whether these opposite trends may be explained by variations in sentencing tendencies or other court-related factors.
 
 <br>
 
@@ -184,7 +184,7 @@ halifax_crime %>%
 
 #### Most Common Offense Types and Clearance Rates
 
-The following figure displays the types of crimes that came to the attention of law enforcement in Halifax County from most common to least common on the left and their corresponding clearance by arrest rate on the right. Drug violations, simple assault, larceny, and destruction of property made up the bulk of the crimes; however, this did not necessarily correspond to higher arrest rates. While drug violations and simple assaults resulted in arrests nearly 50% of the time, larceny and destruction of property resulted in arrests much less frequently. This disparity highlights the complex process that proceeds a crime coming to the attention of law enforcement and precedes an arrest - namely that there exist many latent factors, including difficulty of "solving" the crime and effort put forth by law enforcement, that impact whether an arrest is made. 
+The following figure displays the types of crimes that came to the attention of law enforcement in Halifax County and their corresponding clearance by arrest rate on the right. Drug violations, simple assault, larceny, and destruction of property made up the bulk of the crimes; however, this did not necessarily correspond to higher arrest rates. While drug violations and simple assaults resulted in arrests nearly 50% of the time, larceny and destruction of property resulted in arrests much less frequently. This disparity highlights the complex process that proceeds a crime coming to the attention of law enforcement and precedes an arrest - namely that there exist many latent factors, including difficulty of "solving" the crime and effort put forth by law enforcement, that impact whether an arrest is made. 
 
 <br>
 
@@ -245,7 +245,7 @@ total_crime_plot + per_clear_plot +
 ```
 <br><br>
 
-#### Crime Trends by Race (per 1,000 individuals)
+#### Crime Trends by Race
 
 The figure below highlights the disparity between the number of crimes by Black and White people that came to attention of law enforcement across Virginia counties. Overall, the number of crimes by White people that law enforcement were alerted to was below 50 per 100,000 White people for nearly all counties in Virginia. In contrast, there were many counties with over 50 crimes per 100,000 Black people, including several at or above 200 crimes per 100,000 Black people. In Halifax County specifically (denoted by the lines in color), the number of crimes by Black people that law enforcement were alerted to is nearly twice that of those by White people. This disparity again highlights the complex process by which crimes are given law enforcement attention - namely that any historical policies or varying levels of law enforcement presence in neighorhoods will impact said attention.
 
@@ -338,23 +338,17 @@ ggplot(filter(clearance_data, county_cap == "HALIFAX"),
 
 ### Comparison of Halifax County to other Virginia Counties
 
-The following figures compare the average number of crimes (per 1000 residents) law enforcement was alerted to across all Virginia counties from 2010 to 2019, with darker colors indicating higher crime rates and vice versa.
+The following figures compare the average number of crimes (per 1000 residents) law enforcement was alerted to across all Virginia counties from 2010 to 2019, with darker colors indicating higher crime rates and vice versa. Both when considering all crimes as well as drug crimes specifically, Halifax is around the median rate of crimes per 1000 residents. However, while this holds for both White and Black crimes, there is a striking state-wide increase in crime rates for Blacks relative to Whites. Of course, this pattern reflects an incredibly complex mix of social factors, which are difficult if not impossible to tease apart at this level of analysis.
 
 <br>
 
 #### Map of All Crimes
 
-Halifax County, compared to other Virginia counties, was around the median across all of Virginia in total crimes per 1000 residents that law enforcement were alerted to. The same conclusion holds when examining the average number of crimes per 1000 residents by race. 
-
-<br>
-
 ```{r all_crime_map, fig.height = 4}
 counties_sp <- read_sf(here("data", "working", "va_counties.geojson"),
-                       quiet = TRUE) %>% 
-  st_transform(crs = 4326) %>% 
+                       quiet = TRUE) %>%
+  st_transform(crs = 4326) %>%
   mutate(county_cap = toupper(str_extract(NAME, r"(.*(?= County| city))")))
-                                
-
 
 # I need to make: black crime per capita black, white crime per capita white, total crime per capita total, as well as drug crimes per capita across all three of these
 mapping_data <- all_va_crime %>% 
@@ -385,19 +379,19 @@ mapping_data %>%
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_per_1000),
-              group = "Yearly Crimes Per 1000",
+              group = "Yearly Crime Rate",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000 Residents: {round(year_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
     addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_white_per_1000),
-              group = "Yearly White Crimes Per 1000",
+              group = "Yearly White Crime Rate",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000 Residents: {round(year_crime_white_per_1000, 1)}"), htmltools::HTML)) %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_black_per_1000),
-              group = "Yearly Black Crimes Per 1000",
+              group = "Yearly Black Crime Rate",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000 Residents: {round(year_crime_black_per_1000, 1)}"), htmltools::HTML)) %>% 
   addLayersControl(
@@ -415,8 +409,6 @@ mapping_data %>%
 
 #### Map of Drug Crimes
 
-Comparing just drug related crimes across Virginia counties, Halifax County was again close to the median levels of drug crimes per 1000 residents that law enforcement are alerted to across all of Virginia. The same conclusion holds when examining the average number of drug related crimes by race. 
-
 ```{r drug_crime_map, fig.height = 4}
 leaflet_scale <- colorBin("BuPu" , c(0, 120), c(0, 5, 10, 30, 120))
 
@@ -426,19 +418,19 @@ mapping_data %>%
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_per_1000),
-              group = "Yearly Drug Crimes Per 1000",
+              group = "Yearly Drug Crime Rate",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000 Residents: {round(year_drug_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
     addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_white_per_1000),
-              group = "Yearly White Drug Crimes Per 1000",
+              group = "Yearly White Drug Crime Rate",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000 Residents: {round(year_drug_crime_white_per_1000, 1)}"), htmltools::HTML)) %>% 
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_black_per_1000),
-              group = "Yearly Black Drug Crimes Per 1000",
+              group = "Yearly Black Drug Crime Rate",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000 Residents: {round(year_drug_crime_black_per_1000, 1)}"), htmltools::HTML)) %>% 
   addLayersControl(

@@ -64,6 +64,8 @@ Halifax County has slightly higher unemployment rate than the average for Virgin
 
 Of particular note in the graph below is the massive spike in unemployment across all of Virginia at the beginning of the COVID-19 pandemic. As employment opportunities become even more restricted, vulnerable populations like the formerly incarcerated will likely feel the strongest effects. As more data become available, a better understanding of how the pandemic has affected various populations could be valuable in informing approaches to mitigate similar effects in the future.
 
+<br>
+
 ```{r}
 plot <- laus_unemployment_county %>%
   filter(NAME.x != "Halifax") %>%
@@ -72,7 +74,6 @@ plot <- laus_unemployment_county %>%
   geom_line(data = filter(laus_unemployment_county, NAME.x == "Halifax"),
             aes(x = year_month_frac, y = Value),
             color = "#d400d0") +
-  theme_minimal() +
   labs(x = "Year",
        y = "Unemployment Rate",
        title = "Unemployment Rate of Halifax County",
@@ -84,6 +85,8 @@ plot <- laus_unemployment_county %>%
 
 plot
 ```
+
+<br>
 
 Below we present the 5 year ACS unemployment estimates for counties in Virginia broken down by race. Counties with very imprecise and therefore unreliable estimates have been colored gray. 
 Halifax county displays similar patterns as the rest of Virginia when considering the disparity in employment between Black and white Americans. This pattern may both contribute to and be a result of similar disparities in incarceration across racial lines.
@@ -138,13 +141,11 @@ m <- leaflet(acs_unemployment_county_sp, width = "100%") %>%
 m
 ```
 
-### Conclusion and Policy Implications
+### Additional Data Sources
 
-Halifax doesn't stand out on financial features, but that doesn't mean improvements can't be made. Given the strong correlation between unemployment, incarceration, and crime, it is likely that working to increase employment would be helpful to reduce incarceration and recidivism while also providing numerous other economic beneifts. However, in order to fully understand how this might happen in Halifax, more data is needed. The following is a discussion of datasets that would prove useful in this regard.
+Halifax doesn't stand out on financial features, but that doesn't mean improvements can't be made. Given the strong correlation between unemployment, incarceration, and crime, it is likely that working to increase employment would be helpful to reduce incarceration and recidivism while also providing numerous other economic beneifts. 
 
-#### Additional Data Sources
-
-In order to properly understand the complicated relationship between incarceration, recidivism, and employment in Halifax, more data is required. Clearly, we would have records of employment rates for those who are formerly incarcerated specifically, but the quality of employment is also worth exploring. Data on employers most likely to hire those with criminal records and information on the pay and benefits of these jobs would help determine whether the types of opportunities are sufficient for those re-entering society to support themselves.  
+However, in order to fully understand how this might happen in Halifax, more data is needed. Clearly, we would have records of employment rates for those who are formerly incarcerated specifically, but the quality of employment is also worth exploring. Data on employers most likely to hire those with criminal records and information on the pay and benefits of these jobs would help determine whether the types of opportunities are sufficient for those re-entering society to support themselves.  
 Data on variation in unemployment within Halifax would also be valuable. Due to its small population, census estimates for different regions within Halifax county are extremely uncertain, making it difficult to understand the relationships between unemployment and other relevant social factors, like affordable housing.
 
 An alternative approach, and one we have explored during this project, would be to determine how accessible the primary employers in the county are to areas where formerly incarcerated individuals often live. While data on the largest employers is collected by the Virginia Employment Commission, finding the actual locations they are sited in is extremely difficult, and it remains unclear whether these are the same employers that may provide opportunities to those with criminal backgrounds.

@@ -169,7 +169,7 @@ va_housing_vera %>%
         plot.margin = margin(0.5, 2, 0, 0.5, "cm"))
 ```
 
-Identifying and connecting individuals with other affordable housing options may therefore be a valuable role for a potential Family and Consumer Science Agent in the county. Similarly, motivating the community to consider alternative options for developing a robust affordable housing stock may be warranted, and bringing private landlords into the discussion may be an important component of a successful strategy.
+Identifying and connecting individuals with other affordable housing options may be a valuable role for a potential Family and Consumer Science Agent in the county. Similarly, motivating the community to consider alternative options for developing a robust affordable housing stock may be warranted, and bringing private landlords into the discussion may be an important component of a successful strategy.
 
 ### Housing Accessibility
 

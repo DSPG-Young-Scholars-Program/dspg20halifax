@@ -90,7 +90,6 @@ ggplot(data = datasource, aes(x = Year, y = value, color = name)) +
 va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 ```
-<br>
 
 A map of the same data provides a spatial context for Halifax’s opioid prescription rates compared to other Virginia counties, as well as the change in prescription rates over time for Virginia. We see that not all rural counties are necessarily at similar risk: counties in southwest Virginia tend to have higher prescription rates than rural counties in Southside Virginia. Note that even the lower ends of the scale exceed 100 prescriptions per 100 people, suggesting that many people are linked to multiple prescriptions and emphasizing the magnitude of the epidemic.
 
@@ -382,11 +381,9 @@ ggplot(data = datasource, aes(x = X1)) +
 #                                     "2018", "2019", "2020"),
 #                      options = layersControlOptions(collapsed = FALSE))
 ```
-<br>
 
 Lastly, it is important to understand substance abuse and its relationship with incarceration through the community and policy level of the ecological model. The historical legacy of War on Drugs policies (for instance, the differentiation between crack and powder cocaine) combined with statistical over-policing of black and brown neighborhoods have helped to fuel the racial disparities seen in the criminal justice system. Data from the American Civil Liberties Union (ACLU) indicate the racial disparities in marijuana arrests between Black and White individuals (per 100k people). In Virginia, Black people are 3.4 times more likely to be arrested for marijuana possession than White people, a gap that has steadily widened from 2010 to 2018. In Halifax, Black people are 2.9 times more likely to be arrested for marijuana possession[^7]. While this pattern is indiciative of concerning racial disparities, it is difficult to disentangle these figures from the complex interplay of crime, poverty, and other social determinants of incarceration.
 
-<br>
 ```{r, fig.height = 6}
 datasource <- readr::read_csv(here::here("data",
                                          "original", "Substance_Abuse",
@@ -419,6 +416,8 @@ leaflet(width = "100%") %>%
   addLegend(pal = general_palette, values = general_bins,
             title = "Rates of Black vs White arrests <br>for marijuana possession (100k people)", position = "bottomright")
 ```
+
+<br>
 
 ### Conclusion and Policy Implications 
 

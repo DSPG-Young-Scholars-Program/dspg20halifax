@@ -35,7 +35,7 @@ The United States incarcerates more people per capita than anywhere else in the 
 
 In addition to the human costs incurred by these mass incarceration policies, the current incarceration rate is extremely costly for taxpayers. The U.S. spends roughly \$60 to \$80 billion per year on state and federal prisons.[^APA2]$^,$[^ACLU] But despite these expenditures, roughly two-thirds of individuals released from prison are re-arrested within three years.[^BJS]
 
-Halifax County, Virginia, is not immune to these national trends. At more than \$2.6 million, the corrections line item constituted nearly 3% of Halifax County's overall budget in 2017, translating to roughly \$21,000 per jail inmate and \$78 per Halifax County resident. These figures are largely consistent with Virginia's statewide costs, which total roughly \$21,299 per inmate and $98 per state resident (though bear in mind these figures are calculated using prison populations rather than jail populations)[^VERA].
+Halifax County, Virginia, is not immune to these national trends. At more than \$2.6 million, the corrections line item constituted nearly 3% of Halifax County's overall budget in 2017, translating to roughly \$21,000 per jail inmate and \$78 per Halifax County resident. These figures are largely consistent with Virginia's statewide costs, which total roughly \$21,299 per inmate and $98 per state resident (though bear in mind these figures are calculated using prison populations rather than jail populations).[^VERA]
 
 <br>
 
@@ -79,15 +79,13 @@ budget_vera_pops %>%
 ```
 <br>
 
-Importantly, these values do not incorporate the many other operational expenses and indirect costs related to incarceration, including court proceedings, costs related to foster care, and costs for substance abuse treatment (among many others).
+Importantly, these values do not incorporate other operational expenses and indirect costs related to incarceration, including court proceedings, costs related to foster care, and costs for substance abuse treatment (among many others).
 
 Halifax County has partnered with DSPG 2020 to investigate the factors associated with its incarceration and recidivism rate in the hopes of investing in proactive services through the Virginia Cooperative Extension Service, like a Family and Consumer Science Agent. Among other things, this position would help connect formerly incarcerated individuals to the community resources needed to help them effectively re-enter society. Even if such an agent were able to prevent relatively few encounters with the criminal justice system, the high costs mentioned above indicate that these efforts may quickly pay for themselves.
 
 ### Project Goals
 
-Our primary goals for the summer have been to synthesize a variety of research to identify key social determinants of incarceration and recidivism as well as to identify accessible data sources that would allow us to characterize the state of these determinants in Halifax County.
-
-We hope that identifying emerging patterns in these determinants will allow Halifax to more specifically target those factors that are most relevant to the state of incarceration and recidivism in the county.
+Our primary goals for the summer have been to synthesize a variety of research to identify key social determinants of incarceration and recidivism as well as to identify accessible data sources that would allow us to characterize the state of these determinants in Halifax County. We hope that identifying emerging patterns in these determinants will allow Halifax to more specifically target those factors that are most relevant to the state of incarceration and recidivism in the county.
 
 ### Our Approach
 
