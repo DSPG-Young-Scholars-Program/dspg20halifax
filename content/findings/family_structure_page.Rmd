@@ -99,7 +99,8 @@ Not only are teen mothers more likely to drop out of high school, find themselve
 
 ### Main Findings 
 
-In 2017, the rate of teen pregnancy (per 1,000 women) was 18.8 in the United States. In the same time period, the rate of teen pregnancy (per 1,000 women) in Virginia was 15 and in Halifax county the rate was estimated at 30.8. This put Halifax at the 24th highest rate of teen births out of 134 counties in Virginia. While the number of teen births has been declining since 2003, the fact that Halifax was in the upper portion of the distribution indicates the potential for effective interventions on this factor.
+In 2017, the rate of teen pregnancy (per 1,000 women) was 18.8 in the United States. In the same time period, the rate of teen pregnancy (per 1,000 women) in Virginia was 15 and in Halifax county the rate was estimated at 30.8[^NCHS]. This put Halifax at the 24th highest rate of teen births out of 134 counties in Virginia. While the number of teen births has been declining since 2003, the fact that Halifax was in the upper portion of the distribution indicates the potential for effective interventions on this factor.
+
 
 <br>
 
@@ -157,7 +158,8 @@ leaflet(width = "100%") %>%
 
 <br>
 
-Given that these areas tend to be rural (a pattern consistent with current research)[^CDC2], efforts to reduce teen birth rates that focus on this cultural context may be particularly valuable. Important to note is that Halifax county has only one publicly funced clinic and no federally qualified health cetners to aid in female contraception usage. By the age of 18, a women is more than 3 times as likely to have had a teen birth if they do not reliably use contraception (CITE). Because of these few resources, the importance of effectively connecting young women to these resources becomes paramount, and is a role that could potentially be filled by the proposed FCSA.
+Given that these areas tend to be rural (a pattern consistent with current research)[^CDC2], efforts to reduce teen birth rates that focus on this cultural context may be particularly valuable. Important to note is that Halifax county has only one publicly funced clinic and no federally qualified health cetners to aid in female contraception usage.[^GUTT] By the age of 18, a women is more than 3 times as likely to have had a teen birth if they do not reliably use contraception.[^PDB] Because of these few resources, the importance of effectively connecting young women to these resources becomes paramount, and is a role that could potentially be filled by the proposed FCSA.
+
 
 ```{r, results = "hide"}
 # halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
@@ -210,7 +212,7 @@ plot <- ggplot() +
        title = "Characteristics of Subsidized Housing Population\n", 
        size = "Household heads less \nthan 24 years old") +
   guides(alpha = FALSE, color = guide_legend(title = "Locale", override.aes = list(size=10)), size = guide_legend(override.aes = list(shape = 21, alpha = 0.8))) +
-  scale_alpha_manual(values = c(0.3, 0.8)) +
+  scale_alpha_manual(values = c(0.5, 0.9)) +
   facet_wrap(~program_label, ncol = 2) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 30),
@@ -226,6 +228,7 @@ plot <- ggplot() +
 plot
 ```
 
+
 [^NIH]: The impact of family structure on the health of children: Effects of divorce. (2020, November 2). National Institutes of Health. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4240051/
 
 [^NCSL]: Teen Childbearing is Costly to Taxpayers. (2020). National Conference of State Legislatures. https://www.ncsl.org/research/health/teen-childbearing-is-costly-to-taxpayers.aspx
@@ -236,4 +239,10 @@ plot
 
 [^TASCA]: Tasca, M., Rodriguez, N., & Zatz, M. S. (2011). Family and residential instability in the context of paternal and maternal incarceration. Criminal Justice and Behavior, 38(3), 231-247
 
-[^CDC2]: Products - Data Briefs - Number 264 - November 2016. (2016, November). Center for Disease Control and Prevention. https://www.cdc.gov/nchs/products/databriefs/db264.htm#:%7E:text=From%202007%20through%202015%2C%20the%20rates%20in%20these%20counties%20were,greater%20than%20the%20national%20rate.
+[^CDC2]: Products - Data Briefs - Number 264 - November 2016. (2016, November). Center for Disease Control and Prevention. https://www.cdc.gov/nchs/products/databriefs/db264.htm.
+
+[^NCHS]: National Center for Health Statistics. (n.d.). NCHS Data Visualization Gallery - Teen Birth Rates for Age Group 15-19 in the United States by County. Center for Disease Control and Prevention. Retrieved July 25, 2020, from https://www.cdc.gov/nchs/data-visualization/county-teen-births/
+
+[^GUTT]: Guttmacher Data Center. (n.d.). Guttmacher Institute. Retrieved July 25, 2020, from https://data.guttmacher.org/counties/
+
+[^PDB]: Products - Data Briefs - Number 209 - July 2015. (2015, July). Center for Disease and Prevention. https://www.cdc.gov/nchs/products/databriefs/db209.htm

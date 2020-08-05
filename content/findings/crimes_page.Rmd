@@ -175,7 +175,7 @@ halifax_crime %>%
   geom_bar(stat = 'identity', fill = "#56B4E9") + 
   scale_x_continuous(breaks = c(seq(2010, 2019)),
                      labels = c(seq(2010, 2019))) +
-  labs(y = "Number of Crimes",
+  labs(y = NULL,
        x = NULL,
        title = "Total Number of Crimes from 2010 to 2019")
 ```
@@ -214,7 +214,7 @@ total_crime_plot <- halifax_crime_tally %>%
   geom_bar(stat = 'identity', fill = "#56B4E9") +
   coord_flip() + 
   labs(x = NULL,
-       y = "Number of Crimes")
+       y = NULL)
 
 
 
@@ -279,7 +279,7 @@ ggplot(filter(va_crime_per_cap, county_cap == "HALIFAX"), aes(x = incident_year,
   scale_color_manual(values = cbbPalette,
                      labels = c("Black", "White")) + 
   labs(x = NULL,
-       y = "Number of Crimes per Per 1000 Residents",
+       y = NULL,
        title = "Total Number of Crimes by Race per 1000 Residents",
        color = NULL) +
   coord_cartesian(ylim = c(0, 200)) +
@@ -326,7 +326,7 @@ ggplot(filter(clearance_data, county_cap == "HALIFAX"),
                      labels = c("Black", "White")) + 
   scale_y_continuous(labels = scales::label_percent(scale = 1)) +
   labs(x = NULL,
-       y = "Percent of Crimes Cleared by Arrest",
+       y = NULL,
        title = "Percent of Crimes Cleared by Arrest by Race",
        color = "Offender\nRace") +
   coord_cartesian(ylim = c(0, 100)) +
