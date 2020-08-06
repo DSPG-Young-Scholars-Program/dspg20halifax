@@ -241,7 +241,7 @@ per_clear_plot <- halifax_crime %>%
 
   
 total_crime_plot + per_clear_plot + 
-  plot_annotation(title = 'Number of Crimes and Percent Cleared by Arrest Type')
+  plot_annotation(title = 'Reported Crimes and Arrest Rates: Halifax County')
 ```
 <br><br>
 

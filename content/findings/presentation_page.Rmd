@@ -66,7 +66,7 @@ knitr::kable(sources, "html") %>%
 ## Findings
 
 ### Background
-* Halifax is a rural town of 8,000 with 60% of population being White, and 34% being Black 
+* Halifax is a rural county of 34,000 with 60% of population being White, and 34% being Black 
   + Racial disparities in income: White median income ($48,000) vs Black median income ($30,400)
 ```{r, results = "hide"}
 age_sex_race_county <- st_read(here::here("data", "original", "ACS", "acs_age_sex_race_county.geojson"))
@@ -255,7 +255,7 @@ per_clear_plot <- halifax_crime %>%
 
   
 total_crime_plot + per_clear_plot + 
-  plot_annotation(title = 'Number of Crimes and Percent Cleared by Arrest Type')
+  plot_annotation(title = 'Reported Crimes and Arrest Rates: Halifax County')
 ```
 
 <br><br><br>
