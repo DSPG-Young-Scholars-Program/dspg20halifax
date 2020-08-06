@@ -90,5 +90,5 @@ Political Science
 
 ### Project Sponsors/Stakeholders {style=text-align:center}
 
-Sonya Furgurson, District Director, Halifax Central
+Sonya Furgurson, District Director, Halifax Central <br>
 Hunter Martin, Extension Agent, 4H Youth Development, Halifax Central
