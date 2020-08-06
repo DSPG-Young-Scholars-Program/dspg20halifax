@@ -24,12 +24,12 @@ options(mapbox.accessToken = token)
 
 
 ## Overview
-* US incarcerates more people per capita then anywhere else 
+* US incarcerates more people per capita than anywhere else 
 * Incarceration rates: extremely costly for taxpayers
     + Halifax spends $21,000 per inmate and $78 per county resident 
 * Goal: **social determinants** of incarceration & recidivism in Halifax, VA
 * Approach: ecological model
-    + How factors at the individual, neighborhood, community, and policy levels shape behavior 
+    + How factors at the individual, relationship, community, and policy levels shape behavior 
 <br><br>
 ![](/SEM-graphc.jpg)
 
@@ -471,7 +471,7 @@ va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state
 ### Family Structure
 * Family structure highly affects child's development
 * Teen mothers more likely to drop out of high school, be unemployed, have lower incomes
-    + Low levels of family supervision -> high rates of juvenile delicuency (cycle)
+    + Low levels of family supervision -> high rates of juvenile delinquency (cycle)
 * Teen births, housing opportunities, and racial discrepancies are all important aspects
 
 ```{r, fig.height = 15, fig.width = 25}

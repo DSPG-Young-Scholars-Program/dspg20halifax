@@ -1,6 +1,6 @@
 ---
 title: "Incarceration, Crime, & Arrests"
-description: "Trends in criminal justice indicators"
+description: "Patterns in criminal justice indicators"
 weight: 2
 draft: false
 output: html_document
@@ -76,7 +76,7 @@ options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 
 ### Background
 
-Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed, an individual may post bail or not be held pre-trial, or may be found not guilty at trial. Furthermore, even after being convicted, a variety of punishments exist that do not involve incarceration, including fines and community service.
+Incarceration, crime, and arrest are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed, an individual may post bail or not be held pre-trial, or may be found not guilty at trial. Furthermore, even after being convicted, a variety of punishments exist that do not involve incarceration, including fines and community service.
 
 Individuals who are incarcerated may be placed in a jail or prison. Jails hold individuals who are awaiting trial or who have been sentenced to less than year of incarceration. Prisons hold individuals who have been convicted and sentenced to more than year of incarceration. Although there are some differences across states, jails are generally locally operated, and prisons are operated by state or federal governments[^BJS]. 
 
@@ -98,8 +98,8 @@ rates_by_gender_system %>%
   scale_color_manual(values = cbbPalette) +
   gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE, unhighlighted_params = list(alpha = 0.2)) +
   scale_y_continuous(limits = c(0, scale_max)) +
-  labs(color = "Gender", title = "Prison Incarceration Rate", y = "Incarcerated Individuals per 1,000 Residents\n", x = "")  +
-  facet_wrap(gender~.) + theme(legend.position = "none")
+  labs(color = "Gender", title = "Prison Incarceration Rate (per 1,000 residents)", y = "Incarcerated Individuals per 1,000 Residents\n", x = "")  +
+  facet_wrap(gender~.) + theme(legend.position = "none", axis.title = element_blank())
 
 ```
 
@@ -113,9 +113,9 @@ rates_by_gender_system %>%
   scale_color_manual(values = cbbPalette) +
   gghighlight(county_name == "Halifax County", use_direct_label = FALSE, calculate_per_facet = TRUE, unhighlighted_params = list(alpha = 0.2)) +
   scale_y_continuous(limits = c(0, scale_max)) +
-  labs(color = "Gender", title = "Jail Incarceration Rate", subtitle = "", y = "Incarcerated Individuals per 1,000 Residents\n", x = "")  +
+  labs(color = "Gender", title = "Jail Incarceration Rate (per 1,000 residents)", subtitle = "", y = "Incarcerated Individuals per 1,000 Residents\n", x = "")  +
   facet_wrap(gender~.) +
-  theme(legend.position = "none")
+  theme(legend.position = "none", axis.title = element_blank())
 ```
 
 
@@ -247,7 +247,7 @@ total_crime_plot + per_clear_plot +
 
 #### Crime Trends by Race
 
-The figure below highlights the disparity between the number of crimes by Black and White people that came to attention of law enforcement across Virginia counties. Overall, the number of crimes by White people that law enforcement were alerted to was below 50 per 100,000 White people for nearly all counties in Virginia. In contrast, there were many counties with over 50 crimes per 100,000 Black people, including several at or above 200 crimes per 100,000 Black people. In Halifax County specifically (denoted by the lines in color), the number of crimes by Black people that law enforcement were alerted to is nearly twice that of those by White people. This disparity again highlights the complex process by which crimes are given law enforcement attention - namely that any historical policies or varying levels of law enforcement presence in neighorhoods will impact said attention.
+Overall, law enforcement was alerted to less than 50 crimes committed by White individuals per 1,000 people for nearly all counties in Virginia. In contrast, law enforcement was alerted to more than 50 crimes committed by Black individuals per 1,000 people in counties in Virginia. In fact, several counties reported 200 crimes committed by Black people per 1,000 people. In Halifax County specifically (denoted by the lines in color), law enforcement learned of twice as many crimes committed by Black individuals compared to White individuals. This disparity highlights the complex process by which crimes are given law enforcement attention - namely that factors such as historical policies and/or varying levels of law enforcement presence in neighborhoods influences law enforcement attention.
 
 <br>
 
@@ -400,7 +400,7 @@ mapping_data %>%
                    "Yearly Black Crime Rate"),
     options = layersControlOptions(collapsed = FALSE)) %>% 
   addLegend("bottomright", pal = leaflet_scale, values = ~year_crime_per_1000,
-            title = "Yearly Crimes (per 1000 Residents)",
+            title = "Yearly Crimes (per 1,000 Residents)",
             opacity = .8)
 
 ```
@@ -439,7 +439,7 @@ mapping_data %>%
                    "Yearly Black Drug Crime Rate"),
     options = layersControlOptions(collapsed = FALSE)) %>% 
   addLegend("bottomright", pal = leaflet_scale, values = ~year_crime_per_1000,
-            title = "Yearly Drug Crimes (per 1000 Residents)",
+            title = "Yearly Drug Crimes (per 1,000 Residents)",
             opacity = .8)
 
 ```

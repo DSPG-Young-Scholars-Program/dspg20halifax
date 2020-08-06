@@ -84,7 +84,7 @@ acs_median_income_county <- st_read(here::here("data", "original", "ACS", "acs_m
 halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
 ```
 
-Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade[^CENSUS]. Black individuals constitute approximately 34% of the county's population and whites 60%. Because these two racial groups constitute the vast majority of the county's population, we restrict our focus to them when comparing across race throughout this website. This makeup is more balanced than in many other Virginia counties.
+Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade[^CENSUS]. Black individuals constitute approximately 34% of the county's population and White individuals 60%. Because these two racial groups constitute the vast majority of the county's population, we restrict our focus to them when comparing across race throughout this website. This makeup is more balanced than in many other Virginia counties.
 
 ```{r, fig.height = 4}
 #BAMMtools::getJenksBreaks(age_sex_race_county$percent_estimate_race_total_population_one_race_black_or_african_american_estimate, 6)
@@ -119,7 +119,7 @@ leaflet(width = "100%") %>%
 ```
 
 <br>
-Some gaps between Blacks and whites in Halifax county begin to reveal themselves when we explore median income. Across Virginia, Black individuals make consistently less than their white counterparts on aggregate. In Halifax county, the same pattern appears to play out, with the white median income roughly \$48,000 compared to the Black median income of approximately \$30,400. Importantly, the disparities in some neighboring counties appear slightly less pronounced. As we consider incarceration trends in the county, these patterns will serve as important context.
+Some gaps between Black individuals and White individuals in Halifax county begin to reveal themselves when we explore median income. Across Virginia, Black individuals make consistently less than their White counterparts on aggregate. In Halifax county, the same pattern appears to play out, with the White median income roughly \$48,000 compared to the Black median income of approximately \$30,400. Importantly, the disparities in some neighboring counties appear slightly less pronounced. As we consider incarceration trends in the county, these patterns will serve as important context.
 <br>
 
 ```{r, fig.height = 4}
@@ -189,6 +189,6 @@ halifax_decennial_data %>%
 
 <br>
 
-While we were limited in our ability get reliable up-to-date demographic information at the sub-county level, these general patterns provide helpful context as we further consider patterns in incarceration in the county.
+While we were limited in our ability to get reliable up-to-date demographic information at the sub-county level, these general patterns provide helpful context as we further consider patterns in incarceration in the county.
 
 [^CENSUS]: U.S. Census Bureau (2020). Annual Estimates of the Resident Population for Counties in Virginia: April 1, 2010 to July 1, 2019 (CO-EST2019-ANNRES-51). Retrieved from https://www.census.gov/data/tables/time-series/demo/popest/2010s-counties-total.html.
