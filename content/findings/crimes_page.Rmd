@@ -86,7 +86,7 @@ Given that crime, arrests, and incarceration represent different parts of the cr
 
 #### Incarceration
 
-The figures below display the prison and jail incarceration rates in Virginia counties, with Halifax County denoted by the lines in color, from 1983 to 2013 and 1970 to 2017, respectively. It is clear that prison incarceration rates, particularly among males, have consistently and dramatically increased over the past three to four decades. Comparatively, jail incarceration rates are not quite as high; however, they have drastically increased since the mid-1990's. Incarceration rates for females are significantly lower than those of males but have also increased noticably since 1990. 
+The figures below display the prison and jail incarceration rates in Virginia counties, with Halifax County denoted by the lines in color, from 1983 to 2013 and 1970 to 2017, respectively. It is clear that prison incarceration rates, particularly among males, have consistently and dramatically increased over the past three to four decades. Comparatively, jail incarceration rates are not quite as high; however, they have drastically increased since the mid-1990's. Incarceration rates for females are significantly lower than those for males but have also increased noticeably since 1990. 
 
 <br>
 
@@ -214,7 +214,7 @@ total_crime_plot <- halifax_crime_tally %>%
   geom_bar(stat = 'identity', fill = "#56B4E9") +
   coord_flip() + 
   labs(x = NULL,
-       y = NULL)
+       y = "Total Crimes Reported")
 
 
 

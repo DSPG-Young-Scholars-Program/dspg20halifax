@@ -228,7 +228,7 @@ total_crime_plot <- halifax_crime_tally %>%
   geom_bar(stat = 'identity', fill = "#56B4E9") +
   coord_flip() + 
   labs(x = NULL,
-       y = NULL)
+       y = "Total Crimes Reported")
 
 
 
