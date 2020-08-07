@@ -22,6 +22,15 @@ token <- Sys.getenv("MAPBOX_TOKEN")
 options(mapbox.accessToken = token)
 ```
 
+```{css, echo = FALSE}
+.navbar-default .navbar-nav li a {
+    color: white;
+}
+
+.navbar-default .navbar-nav li a:hover {
+    color: white;
+}
+```
 
 ## Overview
 * US incarcerates more people per capita then anywhere else 
@@ -31,11 +40,11 @@ options(mapbox.accessToken = token)
 * Approach: ecological model
     + How factors at the individual, relationship, community, and policy levels shape behavior 
 <br> 
-![Model](/sfs/qumulo/qhome/rb4ba/git/TestDSPG/Halifaxx/static/SEM-graphc.jpg)
+![](/SEM-graphc.jpg)
 <br> 
 * Workflow: illustrates relationship between factors 
 <br>
-![Workflow](/sfs/qumulo/qhome/rb4ba/git/TestDSPG/Halifaxx/static/findings/general-overview_files/workflow.png)
+![](/findings/general-overview_files/workflow.png)
 <br>
 
 <br><br><br>
@@ -556,12 +565,12 @@ plot <- ggplot() +
   geom_point(data = va_data, aes(x = pct_black_nonhsp, y = pct_1adult, color = interaction(isVA, isHalifax), size = pct_lt24_head, alpha = isVA), stroke = 1.25) +
   coord_flip() +
   scale_size_continuous(range = c(0, 20), labels = c("0%", "10%", "20%", "30%", "40%")) +
-  scale_color_manual(labels = c("U.S.", "Virginia", "Halifax County"), values = c("#f1f1f0", "#c1c5df", "#FC4444"), na.translate=FALSE) +
+  scale_color_manual(labels = c("U.S.", "Virginia", "Halifax County"), values = c("#DDD9D5", "#6b6385", "#FC4444"), na.translate=FALSE) +
   labs(y = "\nPercent Single Adults with Children", x = "Percent Black (Non-Hispanic)\n", 
        title = "Characteristics of Subsidized Housing Population\n", 
        size = "Household heads less \nthan 24 years old") +
   guides(alpha = FALSE, color = guide_legend(title = "Locale", override.aes = list(size=10)), size = guide_legend(override.aes = list(shape = 21, alpha = 0.8))) +
-  scale_alpha_manual(values = c(0.5, 0.9)) +
+  scale_alpha_manual(values = c(0.1, 0.8)) +
   facet_wrap(~program_label, ncol = 2) +
   theme_minimal() +
   theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 30),
