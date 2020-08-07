@@ -1,10 +1,7 @@
 ---
 title: "Presentation Page"
 description: "To use when presenting the Gates Halifax project for the DSPG Symposium."
-<<<<<<< HEAD
-=======
 weight: 6
->>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 output: html_document
 ---
 
@@ -27,17 +24,12 @@ options(mapbox.accessToken = token)
 
 
 ## Overview
-<<<<<<< HEAD
 * US incarcerates more people per capita then anywhere else 
-=======
-* US incarcerates more people per capita than anywhere else 
->>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 * Incarceration rates: extremely costly for taxpayers
     + Halifax spends $21,000 per inmate and $78 per county resident 
 * Goal: **social determinants** of incarceration & recidivism in Halifax, VA
 * Approach: ecological model
-<<<<<<< HEAD
-    + How factors at the individual, neighborhood, community, and policy levels shape behavior 
+    + How factors at the individual, relationship, community, and policy levels shape behavior 
 <br> 
 ![Model](/sfs/qumulo/qhome/rb4ba/git/TestDSPG/Halifaxx/static/SEM-graphc.jpg)
 <br> 
@@ -45,21 +37,8 @@ options(mapbox.accessToken = token)
 <br>
 ![Workflow](/sfs/qumulo/qhome/rb4ba/git/TestDSPG/Halifaxx/static/findings/general-overview_files/workflow.png)
 <br>
-=======
-    + How factors at the individual, relationship, community, and policy levels shape behavior 
-<br><br>
-![](/SEM-graphc.jpg)
-
-<br><br>
-
-* Workflow: illustrates relationship between factors 
-
-<br>
-
-![](/findings/general-overview_files/workflow.png)
 
 <br><br><br>
->>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 
 ## Data Sources 
 
@@ -79,19 +58,14 @@ knitr::kable(sources, "html") %>%
     + Improper spatial resolution
     + Incarceration vs crime 
 
-<<<<<<< HEAD
-## Findings
+<br> 
 
-### Background
-* Halifax is a rural town of 8,000 with 60% of population being White, and 34% being Black 
-=======
 <br><br><br>
 
 ## Findings
 
 ### Background
 * Halifax is a rural county of 34,000 with 60% of population being White, and 34% being Black 
->>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
   + Racial disparities in income: White median income ($48,000) vs Black median income ($30,400)
 ```{r, results = "hide"}
 age_sex_race_county <- st_read(here::here("data", "original", "ACS", "acs_age_sex_race_county.geojson"))
@@ -160,17 +134,13 @@ create_map(age_sex_race_county, c("percent_estimate_race_total_population_one_ra
            unstable_threshold = 1.5)
 ```
 
-<<<<<<< HEAD
-### Incarceration, Crime & Arrests
-* crime, arrest, incarceration & jails vs prisons 
-* prison incarceration rates have *consistently increased* over the past 3-4 decades 
-=======
+<br>
+
 <br><br><br>
 
 ### Incarceration, Crime & Arrests
 * Crime, arrest, incarceration & jails vs prisons 
 * Prison incarceration rates have *consistently increased* over the past 3-4 decades 
->>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 ```{r load_libs_data}
 library(here)
 library(dplyr)
@@ -259,13 +229,7 @@ total_crime_plot <- halifax_crime_tally %>%
   geom_bar(stat = 'identity', fill = "#56B4E9") +
   coord_flip() + 
   labs(x = NULL,
-<<<<<<< HEAD
-       y = NULL)
-=======
        y = "Total Crimes Reported")
->>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
-
-
 
 per_clear_plot <- halifax_crime %>%
   mutate(clearance_stat = case_when(incident_clearance == "Cleared by Arrest" ~ 1,
@@ -290,23 +254,16 @@ per_clear_plot <- halifax_crime %>%
 
   
 total_crime_plot + per_clear_plot + 
-<<<<<<< HEAD
-  plot_annotation(title = 'Number of Crimes and Percent Cleared by Arrest Type')
-```
-
-### Employment
-* unemployment is a **large indicator of crime** and intersects w/ ecological model on multiple levels
-=======
   plot_annotation(title = 'Reported Crimes and Arrest Rates: Halifax County')
 ```
+
+<br>
 
 <br><br><br>
 
 ### Employment
 * Unemployment is a **large indicator of crime** and intersects w/ ecological model on multiple levels
->>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 * Halifax has slightly higher unemployment rate than VA avg 
-
 ```{r}
 library(leaflet)
 library(purrr)
@@ -364,22 +321,69 @@ plot <- laus_unemployment_county %>%
 plot
 ```
 
-<<<<<<< HEAD
-=======
+<br>
+
 <br><br><br>
 
->>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 ### Housing
 * Ecological model:
     + Policy: eligibility for low-income opportunities limited by prior convictions
     + Interpersonal: reintegration into the community
-<<<<<<< HEAD
-* size of annual number of jail discharges relative to subsidized housing capacity: 3x 
-* housing accessibility (physical proximity)
-=======
 * Size of annual number of jail discharges relative to subsidized housing capacity: 3x 
 * Housing accessibility (physical proximity)
->>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
+
+```{r}
+library(here)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+library(gghighlight)
+library(tidyr)
+library(leaflet)
+library(leaflet.mapboxgl)
+library(sf)
+
+source(here("src", "Mapping", "isochrone_map.R"))
+
+theme_set(theme_minimal() +
+            theme(plot.title = element_text(hjust = 0.5, color = "gray10", size = 24),
+                  plot.subtitle = element_text(hjust = 0.5, color = "gray30", face = "italic", size = 20),
+                  axis.title = element_text(size = 20, color = "gray10"),
+                  axis.text = element_text(size = 18, color = "gray30"),
+                  strip.text = element_text(size = 22, color = "gray30"),
+                  panel.spacing = unit(4, "lines"),
+                  legend.key.size = unit(3, "line"),
+                  legend.text = element_text(size = 16, color = "gray30"),
+                  legend.title = element_text(size = 22, color = "gray10")))
+
+## Read in all public housing data and clean county strings
+pub_housing_summary <- vroom::vroom(here("data", "original", "Housing", "county_pub_housing_2013_2019.csv")) %>%
+  replace("NA", NA) %>%
+  mutate(across(everything(), function(col) ifelse(col == -1 | col == -4 | col == -5, NA, col))) %>% ## -1 = NA, -4 = Suppressed, -5 = % reporting too low
+  mutate(name = str_extract(str_replace_all(str_to_lower(name), "[0-9]{3} ", ""), "^([^,])+"), ## County names have numbers for some years, include state name after a comma for some years. Clean these
+         name = str_to_title(trimws(ifelse(str_detect(name, "city county"), str_replace_all(name, "county", ""), name)))) ## Clean duplicated counties that are labeled as both city and county
+
+## Vera incarceration data
+vera_data <- vroom::vroom(here::here("data", "original", "Incarceration", "vera_incarceration_trends.csv")) %>%
+  as.data.frame() %>%
+  mutate(fips = as.character(fips))
+
+## Subset to overall HUD summary data
+va_pub_housing <- pub_housing_summary %>%
+  filter(program_label == "Summary of All HUD Programs", state == "VA")
+
+halifax_pub_housing <- va_pub_housing %>% filter(code == "51083")
+
+## Join on incarceration data for recent years
+va_housing_vera <- vera_data %>%
+  filter(state == "VA", year > 2011) %>%
+  full_join(va_pub_housing, by = c("fips" = "code", "year" = "year"))
+```
+
+```{r, fig.height = 8}
+drive_map <- create_map(drive_time_polys) %>% setView(lat = 36.6987, lng = -78.9014, zoom = 10)
+drive_map
+```
 
 ```{r}
 library(here)
@@ -452,19 +456,15 @@ va_housing_vera %>%
         plot.margin = margin(0.5, 2, 0, 0.5, "cm"))
 ```
 
-<<<<<<< HEAD
-### Substance Abuse
-* opioid prescription rates are declining, but still higher than VA and USA
-* steadily increasing rate of binge drinking
-* policy level: racial disparities in marijuana possession (and drug-related crime)
-=======
+
+<br>
+
 <br><br><br>
 
 ### Substance Abuse
 * Opioid prescription rates are declining, but still higher than VA and USA
 * Steadily increasing rate of binge drinking
 * Policy level: racial disparities in marijuana possession (and drug-related crime)
->>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 
 ```{r}
 library(ggplot2)
@@ -524,13 +524,9 @@ va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 ```
 
-<<<<<<< HEAD
-### Family Structure
-* family structure highly affects child's development
-* teen mothers more likely to drop out of high school, be unemployed, have lower incomes
-    + low levels of family supervision -> high rates of juvenile delicuency (cycle)
-* teen births, housing opportunities, and racial discrepancies are all important aspects
-=======
+
+<br>
+
 <br><br><br>
 
 ### Family Structure
@@ -538,7 +534,6 @@ va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state
 * Teen mothers more likely to drop out of high school, be unemployed, have lower incomes
     + Low levels of family supervision -> high rates of juvenile delinquency (cycle)
 * Teen births, housing opportunities, and racial discrepancies are all important aspects
->>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 
 ```{r, fig.height = 15, fig.width = 25}
 ## Pct of households headed by a single parent (most are females in Halifax - can show)

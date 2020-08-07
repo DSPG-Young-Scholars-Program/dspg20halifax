@@ -393,8 +393,10 @@ datasource <- merge(va_borders, datasource, by.x = "GEOID", by.y = "FIPS Code")
 unstable <- filter(datasource, `Meets Population & Reporting Thresholds` == "No")
 stable <- filter(datasource, `Meets Population & Reporting Thresholds` == "Yes")
 
-general_bins <- getJenksBreaks(stable$`Times more likely Black person arrested in 2018`, k = 6)
-general_bins <- sapply(general_bins, round)
+quantile_summary <- quantile(stable$`Times more likely Black person arrested in 2018`, k = 6)
+# general_bins <- getJenksBreaks(stable$`Times more likely Black person arrested in 2018`, k = 6)
+general_bins <- sapply(quantile_summary, round)
+general_bins
 
 general_palette <- colorBin("BuPu", domain = datasource$`Times more likely Black person arrested in 2018`, bins = general_bins)
 label <- paste("County: ", datasource$County,"<br/>", "Rate: ",
@@ -412,7 +414,7 @@ leaflet(width = "100%") %>%
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addLegend(pal = general_palette, values = general_bins,
-            title = "Rates of Black vs White arrests <br>for marijuana possession (100k people)", position = "bottomright")
+            title = "Rates of Black vs White arrests <br>for marijuana possession (100k people)", position = "bottomright") 
 ```
 
 <br>

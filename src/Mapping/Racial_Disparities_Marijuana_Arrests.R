@@ -1,10 +1,3 @@
-install.packages("tigris")
-install.packages('here')
-install.packages('rvest')
-install.packages('censusapi')
-install.packages('hablar')
-install.packages('BAMMtools')
-
 library(rvest)
 library(sf)
 library(tigris)
@@ -28,7 +21,8 @@ datasource <- readr::read_csv(here::here("git", "TestDSPG", "Halifaxx", "data",
 va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state = "VA",
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 datasource <- merge(va_borders, datasource, by.x = "GEOID", by.y = "FIPS Code")
-
+unstable <- filter(datasource, `Meets Population & Reporting Thresholds` == "No")
+stable <- filter(datasource, `Meets Population & Reporting Thresholds` == "Yes")
 
 general_bins <- getJenksBreaks(datasource$`Times more likely Black person arrested in 2018`, k = 6)
 general_bins <- sapply(general_bins, round)
