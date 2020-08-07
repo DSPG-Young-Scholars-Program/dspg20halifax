@@ -116,7 +116,7 @@ va_housing_vera <- vera_data %>%
 
 Many now see access to affordable housing as one of the primary factors limiting successful re-entry for individuals leaving jails or prisons; an unstable living situation can severely impact employment opportunities, predispose individuals to return to criminal activity, and hinder efforts to reestablish family relationships and friendships[^1].
 
-Using the ecological model as a framework, we can see how housing impacts an individuals re-entry. At the policy level, eligibility for low-income housing opportunities may be limited by prior convictions (despite HUD recommendations to the contrary)[^2]. At the interpersonal level, housing can serve as either a platform for successful reintegration by allowing for the re-establishment of family connections (or can present a challenge when these relationships are already frayed)[^3]. We thought it would be most informative to consider housing at the community level, though, as the location of affordable housing options in the community can impact an individual’s access to other services that they may need, including substance abuse treatment, education, and employment opportunities. 
+Using the ecological model as a framework, we can see how housing impacts an individual's re-entry. At the policy level, eligibility for low-income housing opportunities may be limited by prior convictions (despite HUD recommendations to the contrary)[^2]. At the interpersonal level, housing can serve as either a platform for successful reintegration by allowing for the re-establishment of family connections (or can present a challenge when these relationships are already frayed)[^3]. We thought it would be most informative to consider housing at the community level, though, as the location of affordable housing options in the community can impact an individual’s access to other services that they may need, including substance abuse treatment, education, and employment opportunities. 
 
 To assess housing affordability in Halifax County, we relied primarily on the Picture of Subsidized Households dataset (https://www.huduser.gov/portal/datasets/assthsg.html) as well as Low-Income Housing Tax Credit property data (https://www.huduser.gov/portal/datasets/lihtc.html), both of which are furnished by the Department of Housing and Urban Development (HUD).
 
@@ -124,7 +124,7 @@ HUD maintains datasets on low-income housing tax credit funding, characteristics
 
 ### Main Findings
 
-As of 2019, the Department of Housing and Urban development lists a total of 171 units across 9 official properties in Halifax County designed to support low-income individuals. The relative income distribution of those living in HUD subsidized housing has been shifting upwards in recent years, and extremely low income individuals and families make up a slightly smaller proportion of the subsidized housing population. These patterns are in keeping with the patterns followed by many other Virginia counties between 2012 and 2019.
+As of 2019, the Department of Housing and Urban development lists a total of 171 units across 9 official properties in Halifax County designed to support low-income individuals. The relative income distribution of those living in HUD subsidized housing has been shifting upwards in recent years, and extremely low-income individuals and families make up a slightly smaller proportion of the subsidized housing population. These patterns are in keeping with the patterns followed by many other Virginia counties between 2012 and 2019.
 
 ```{r}
 library(kableExtra)

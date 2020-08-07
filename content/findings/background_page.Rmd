@@ -157,7 +157,7 @@ create_map(acs_median_income_county,
 ```
 
 <br>
-It is difficult to discern demographic patterns within Halifax county itself because of the small sample sizes within each census tract and block group. In many cases, this makes the resulting estimates from the Census Bureau highly uncertain, and reduces our confidence in the precise values for the variables of interest. For this reason, to get a rough sense of tract-level demographic variation, we returned to he 2010 decennial census, which collects more data than the more frequent American Community Survey (ACS). However, given that the 2010 census is now a full decade out-of-date, these results should be treated with some caution.
+It is difficult to discern demographic patterns within Halifax county itself because of the small sample sizes within each census tract and block group. In many cases, this makes the resulting estimates from the Census Bureau highly uncertain, and reduces our confidence in the precise values for the variables of interest. For this reason, to get a rough sense of tract-level demographic variation, we returned to the 2010 decennial census, which collects more data than the more frequent American Community Survey (ACS). However, given that the 2010 census is now a full decade out-of-date, these results should be treated with some caution.
 
 The following maps highlight the distribution of race and age across the county, revealing that census tracts west of South Boston are composed of larger Black communities, and that median ages increase in the more southern rural parts of the county.
 <br><br>

@@ -158,7 +158,7 @@ m
 
 ### Additional Data Sources
 
-Halifax doesn't stand out on financial features, but that doesn't mean improvements can't be made. Given the strong correlation between unemployment, incarceration, and crime, it is likely that working to increase employment would be helpful to reduce incarceration and recidivism while also providing numerous other economic beneifts. 
+Halifax doesn't stand out on financial features, but that doesn't mean improvements can't be made. Given the strong correlation between unemployment, incarceration, and crime, it is likely that working to increase employment would be helpful to reduce incarceration and recidivism while also providing numerous other economic benefits. 
 
 However, in order to fully understand how this might happen in Halifax, more data is needed. Clearly, it would be valuable to have records of employment rates for the formerly incarcerated population specifically, but the quality of employment is also worth exploring. Data on employers most likely to hire those with criminal records and information on the pay and benefits of these jobs would help determine whether the types of opportunities are sufficient for those re-entering society to support themselves.  
 
