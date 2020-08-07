@@ -106,7 +106,8 @@ create_map <- function(.data, # spatial dataset to use
   }
   
   map <- leaflet(.data, width = "100%") %>%
-    addMapboxGL(style = "mapbox://styles/mapbox/light-v9")
+    addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+    addMapPane("border", zIndex = 410)
   
   for (i in 1:length(variables)) {
     map <- map %>%
@@ -129,6 +130,11 @@ create_map <- function(.data, # spatial dataset to use
   
   map
 }
+
+halifax_border <- tigris::counties(state = "VA", cb = TRUE, resolution = "20m") %>% 
+  st_as_sf() %>% 
+  st_transform(crs = 4326) %>%
+  filter(GEOID == 51083)
 ```
 ```{r, fig.height = 4}
 #BAMMtools::getJenksBreaks(age_sex_race_county$percent_estimate_race_total_population_one_race_black_or_african_american_estimate, 6)
@@ -140,7 +146,12 @@ create_map(age_sex_race_county, c("percent_estimate_race_total_population_one_ra
            label_name = "Percentage",
            scale_domain = c(0, 1),
            scale_breaks = c(0, 10, 25, 40, 60, 75, 90, 100),
-           unstable_threshold = 1.5)
+           unstable_threshold = 1.5) %>%
+  addPolylines(data = halifax_border,
+               color = "#FC4444",
+               opacity = 0.9,
+               weight = 2,
+               options = pathOptions(pane = "border"))
 ```
 
 <br>

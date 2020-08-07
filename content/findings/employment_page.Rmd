@@ -46,6 +46,13 @@ laus_unemployment_county <- read.csv(here::here("data", "original","Unemployment
 options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 ```
 
+```{r, results = "hide"}
+halifax_border <- tigris::counties(state = "VA", cb = TRUE, resolution = "20m") %>% 
+  st_as_sf() %>% 
+  st_transform(crs = 4326) %>%
+  filter(GEOID == 51083)
+```
+
 ### Background
 
 A discussion of factors related to incarceration would be remiss without discussing unemployment. Empirical analyses have consistently found unemployment to be one of the factors most strongly correlated with crime: a 2005 meta-analysis of over 200 studies quantifying predictors of crime found that local unemployment rates had the second-largest effect size out of 31 predictors.^[Pratt, T. C., & Cullen, F. T. (2005). Assessing Macro-Level Predictors and Theories of Crime: A Meta-Analysis. Crime and Justice, 32, 373–450. https://doi.org/10.1086/655357] 
@@ -81,7 +88,8 @@ plot <- laus_unemployment_county %>%
        caption = "Halifax county rate shown in purple. All other counties shown in grey\nData from the Local Area Unemployment Survey") +
   coord_cartesian(ylim = c(0, 20)) +
   scale_x_continuous(breaks = seq(2010, 2020, by = 2),
-                     labels = as.character(seq(2010, 2020, by = 2)))
+                     labels = as.character(seq(2010, 2020, by = 2))) +
+  theme(axis.title = element_blank())
 
 plot
 ```
@@ -105,6 +113,7 @@ check_unstable <- function(variable_name) {
 unemployment_scale <- colorBin("BuPu", c(0,100), c(0, 3, 5, 7.5, 10, 30))
 m <- leaflet(acs_unemployment_county_sp, width = "100%") %>%
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%  
+  addMapPane("border", zIndex = 410) %>%
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.8,
               fillColor = unemployment_scale(check_unstable("estimate_unemployment_rate_population_16_years_and_over")),
@@ -137,7 +146,12 @@ m <- leaflet(acs_unemployment_county_sp, width = "100%") %>%
   addLayersControl(
     baseGroups = c("Overall Unemployment", "White Alone Unemployment", "Black Alone Unemployment"),
     options = layersControlOptions(collapsed = FALSE)
-  )
+  ) %>%
+  addPolylines(data = halifax_border,
+               color = "#FC4444",
+               opacity = 0.9,
+               weight = 2,
+               options = pathOptions(pane = "border"))
 
 m
 ```

@@ -31,7 +31,7 @@ Though it is encouraging to see prescription rates on a rapid decline overall, t
 
 <br>
 
-```{r}
+```{r, results = "hide"}
 library(ggplot2)
 library(rvest)
 library(sf)
@@ -60,6 +60,11 @@ theme_set(theme_minimal() +
 options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
 
 cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+halifax_border <- tigris::counties(state = "VA", cb = TRUE, resolution = "5m") %>% 
+  st_as_sf() %>% 
+  st_transform(crs = 4326) %>%
+  filter(GEOID == 51083)
 ```
 
 ```{r}
@@ -160,6 +165,7 @@ generate.label <- function(year_mapping) {
 #create the leaflet
 leaflet(width = "100%") %>%
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  addMapPane("border", zIndex = 410) %>%
   #add polygon for each year with respective template, label, and data
   addPolygons(data = mapping_2016, fillColor = ~generic_palette(mapping_2016$Rate),
               weight = 1, color =  "#444444", fillOpacity = 0.7, group = '2016',
@@ -231,7 +237,12 @@ leaflet(width = "100%") %>%
   #layer for each year
   addLayersControl(baseGroups = c("2006", "2007", "2008", "2009", "2010",
                                   "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018"),
-                   options = list(collapsed = FALSE))
+                   options = list(collapsed = FALSE)) %>%
+    addPolylines(data = halifax_border,
+               color = "#FC4444",
+               opacity = 0.9,
+               weight = 2,
+               options = pathOptions(pane = "border"))
 ```
 <br>
 
@@ -396,7 +407,7 @@ stable <- filter(datasource, `Meets Population & Reporting Thresholds` == "Yes")
 quantile_summary <- quantile(stable$`Times more likely Black person arrested in 2018`, k = 6)
 # general_bins <- getJenksBreaks(stable$`Times more likely Black person arrested in 2018`, k = 6)
 general_bins <- sapply(quantile_summary, round)
-general_bins
+#general_bins
 
 general_palette <- colorBin("BuPu", domain = datasource$`Times more likely Black person arrested in 2018`, bins = general_bins)
 label <- paste("County: ", datasource$County,"<br/>", "Rate: ",
@@ -407,6 +418,7 @@ label <- paste("County: ", datasource$County,"<br/>", "Rate: ",
 
 leaflet(width = "100%") %>%
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  addMapPane("border", zIndex = 410) %>%
   addPolygons(data = datasource, 
               fillColor = ~general_palette(datasource$`Times more likely Black person arrested in 2018`),
               weight = 1, color = "#444444", fillOpacity = 0.7,
@@ -414,7 +426,12 @@ leaflet(width = "100%") %>%
               labelOptions = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                                           textsize = "13px", direction = "auto")) %>%
   addLegend(pal = general_palette, values = general_bins,
-            title = "Rates of Black vs White arrests <br>for marijuana possession (100k people)", position = "bottomright") 
+            title = "Rates of Black vs White arrests <br>for marijuana possession (100k people)", position = "bottomright") %>%
+  addPolylines(data = halifax_border,
+               color = "#FC4444",
+               opacity = 0.9,
+               weight = 2,
+               options = pathOptions(pane = "border"))
 ```
 
 <br>

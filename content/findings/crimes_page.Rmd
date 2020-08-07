@@ -5,7 +5,7 @@ weight: 2
 draft: false
 output: html_document
 ---
- 
+
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.width = 15, fig.height = 10)
 
@@ -72,6 +72,13 @@ theme_set(theme_minimal() +
 cbbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
 options(mapbox.accessToken = Sys.getenv("MAPBOX_TOKEN"))
+```
+
+```{r, results = "hide"}
+halifax_border <- tigris::counties(state = "VA") %>% 
+  st_as_sf() %>% 
+  st_transform(crs = 4326) %>%
+  filter(GEOID == 51083)
 ```
 
 ### Background
@@ -197,7 +204,7 @@ halifax_crime_tally <- halifax_crime %>%
 per_clear_data <- halifax_crime %>%
   mutate(clearance_stat = case_when(incident_clearance == "Cleared by Arrest" ~ 1,
                                     incident_clearance != "Cleared by Arrest" ~ 0)
-         ) %>%
+  ) %>%
   group_by(offense_type, clearance_stat) %>%
   summarise(perc_clear = n()) %>%
   group_by(offense_type) %>%
@@ -221,7 +228,7 @@ total_crime_plot <- halifax_crime_tally %>%
 per_clear_plot <- halifax_crime %>%
   mutate(clearance_stat = case_when(incident_clearance == "Cleared by Arrest" ~ 1,
                                     incident_clearance != "Cleared by Arrest" ~ 0)
-         ) %>%
+  ) %>%
   group_by(offense_type, clearance_stat) %>%
   summarise(perc_clear = n()) %>%
   group_by(offense_type) %>%
@@ -239,7 +246,7 @@ per_clear_plot <- halifax_crime %>%
         axis.ticks.y=element_blank())
 
 
-  
+
 total_crime_plot + per_clear_plot + 
   plot_annotation(title = 'Reported Crimes and Arrest Rates: Halifax County')
 ```
@@ -263,12 +270,12 @@ va_crime_per_cap <- all_va_crime %>%
          is_halifax = county_cap == "HALIFAX",
          county_and_race = paste0(county_cap, offender_race),
          is_halifax_and_race = paste0(is_halifax, offender_race)
-
-         ) 
+         
+  ) 
 
 ggplot(filter(va_crime_per_cap, county_cap == "HALIFAX"), aes(x = incident_year, 
-                                                 y = crime_per_cap * 1000, 
-                                                 color = offender_race)) + 
+                                                              y = crime_per_cap * 1000, 
+                                                              color = offender_race)) + 
   geom_line(data = filter(va_crime_per_cap, county_cap != "HALIFAX"), 
             aes(group = county_and_race),
             color = "#dddddd") +
@@ -304,7 +311,7 @@ clearance_data <- all_va_crime %>%
                               "White")) %>%
   mutate(clearance_stat = case_when(incident_clearance == "Cleared by Arrest" ~ 1,
                                     incident_clearance != "Cleared by Arrest" ~ 0)
-         ) %>%
+  ) %>%
   group_by(incident_year, offender_race, county_cap, clearance_stat) %>%
   summarise(perc_clear = n()) %>%
   group_by(incident_year, county_cap) %>%
@@ -314,7 +321,7 @@ clearance_data <- all_va_crime %>%
 
 
 ggplot(filter(clearance_data, county_cap == "HALIFAX"), 
-         aes(x = incident_year, y = perc_clear, color = offender_race)) + 
+       aes(x = incident_year, y = perc_clear, color = offender_race)) + 
   geom_line(data = filter(clearance_data, county_cap != "HALIFAX"), 
             aes(group = county_and_race),
             color = "#dddddd") +
@@ -332,7 +339,7 @@ ggplot(filter(clearance_data, county_cap == "HALIFAX"),
   coord_cartesian(ylim = c(0, 100)) +
   facet_grid(.~offender_race) +
   theme(legend.position = "none")
-  
+
 ```
 <br>
 
@@ -376,13 +383,14 @@ leaflet_scale <- colorBin("BuPu" , c(0, 200), c(0, 30, 40, 50, 100, 400))
 mapping_data %>% 
   leaflet(width = "100%") %>% 
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>% 
+  addMapPane("border", zIndex = 410) %>%
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_per_1000),
               group = "Yearly Crime Rate",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000 Residents: {round(year_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
-    addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
+  addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_crime_white_per_1000),
               group = "Yearly White Crime Rate",
@@ -401,7 +409,12 @@ mapping_data %>%
     options = layersControlOptions(collapsed = FALSE)) %>% 
   addLegend("bottomright", pal = leaflet_scale, values = ~year_crime_per_1000,
             title = "Yearly Crimes (per 1,000 Residents)",
-            opacity = .8)
+            opacity = .8) %>%
+  addPolylines(data = halifax_border,
+               color = "#FC4444",
+               opacity = 0.9,
+               weight = 2,
+               options = pathOptions(pane = "border"))
 
 ```
 
@@ -415,13 +428,14 @@ leaflet_scale <- colorBin("BuPu" , c(0, 120), c(0, 5, 10, 30, 120))
 mapping_data %>% 
   leaflet(width = "100%") %>% 
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>% 
+  addMapPane("border", zIndex = 410) %>%
   addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_per_1000),
               group = "Yearly Drug Crime Rate",
               label = ~map(glue("{NAME.x} County<br/>
                                  Yearly Rate Per 1000 Residents: {round(year_drug_crime_per_1000, 1)}"), htmltools::HTML)) %>% 
-    addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
+  addPolygons(color = "#444444", weight = 0.5, smoothFactor = 0.5,
               opacity = 1.0, fillOpacity = 0.7,
               fillColor = ~leaflet_scale(year_drug_crime_white_per_1000),
               group = "Yearly White Drug Crime Rate",
@@ -440,7 +454,12 @@ mapping_data %>%
     options = layersControlOptions(collapsed = FALSE)) %>% 
   addLegend("bottomright", pal = leaflet_scale, values = ~year_crime_per_1000,
             title = "Yearly Drug Crimes (per 1,000 Residents)",
-            opacity = .8)
+            opacity = .8) %>%
+  addPolylines(data = halifax_border,
+               color = "#FC4444",
+               opacity = 0.9,
+               weight = 2,
+               options = pathOptions(pane = "border"))
 
 ```
 

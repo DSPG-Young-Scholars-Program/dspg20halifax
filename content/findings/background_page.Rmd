@@ -53,7 +53,8 @@ create_map <- function(.data, # spatial dataset to use
   }
   
   map <- leaflet(.data, width = "100%") %>%
-    addMapboxGL(style = "mapbox://styles/mapbox/light-v9")
+    addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+    addMapPane("border", zIndex = 410)
   
   for (i in 1:length(variables)) {
     map <- map %>%
@@ -82,6 +83,11 @@ create_map <- function(.data, # spatial dataset to use
 age_sex_race_county <- st_read(here::here("data", "original", "ACS", "acs_age_sex_race_county.geojson"))
 acs_median_income_county <- st_read(here::here("data", "original", "ACS", "acs_median_income_county.geojson"))
 halifax_decennial_data <- st_read(here::here("src", "Data_Ingestion", "halifax_decennial_data.geojson"))
+
+halifax_border <- tigris::counties(state = "VA", cb = TRUE, resolution = "20m") %>% 
+  st_as_sf() %>% 
+  st_transform(crs = 4326) %>%
+  filter(GEOID == 51083)
 ```
 
 Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade[^CENSUS]. Black individuals constitute approximately 34% of the county's population and White individuals 60%. Because these two racial groups constitute the vast majority of the county's population, we restrict our focus to them when comparing across race throughout this website. This makeup is more balanced than in many other Virginia counties.
@@ -96,7 +102,12 @@ create_map(age_sex_race_county, c("percent_estimate_race_total_population_one_ra
            label_name = "Percentage",
            scale_domain = c(0, 1),
            scale_breaks = c(0, 10, 25, 40, 60, 75, 90, 100),
-           unstable_threshold = 1.5)
+           unstable_threshold = 1.5) %>%
+  addPolylines(data = halifax_border,
+               color = "#FC4444",
+               opacity = 0.9,
+               weight = 2,
+               options = pathOptions(pane = "border"))
 ```
 
 <br>
@@ -115,7 +126,11 @@ leaflet(width = "100%") %>%
               color = "#444444",
               weight = 1,
               label = ~purrr::map(glue("<strong>{NAME.x} County<br/></strong> <strong>Age</strong>: {age_sex_race_county$estimate_sex_and_age_total_population_median_age_.years._estimate} years<br/><strong>MOE</strong>: {age_sex_race_county$estimate_sex_and_age_total_population_median_age_.years._moe}"), htmltools::HTML)) %>%
-  addLegend("bottomright", title = "Median Age", pal = pal, values = c(20, 60))
+  addLegend("bottomright", title = "Median Age", pal = pal, values = c(20, 60)) %>%
+  addPolylines(data = halifax_border,
+               color = "#FC4444",
+               opacity = 0.9,
+               weight = 2)
 ```
 
 <br>
@@ -133,7 +148,12 @@ create_map(acs_median_income_county,
            label_name = "Median income",
            scale_domain = c(10000, 150000),
            scale_breaks = c(10000, 35000, 50000, 65000, 100000, 150000),
-           unstable_threshold = 1.5)
+           unstable_threshold = 1.5) %>%
+  addPolylines(data = halifax_border,
+               color = "#FC4444",
+               opacity = 0.9,
+               weight = 2,
+               options = pathOptions(pane = "border"))
 ```
 
 <br>
@@ -181,8 +201,7 @@ halifax_decennial_data %>%
   addPolygons(fillColor = ~pal(total_median_age),
               fillOpacity = 0.7,
               color = "#444444",
-              weight = 0.5,
-              label = ~total_median_age) %>%
+              weight = 0.5) %>%
   addLegend(position = "bottomright", pal = pal, values = c(0,1), 
             title = "Median Age")
 ```

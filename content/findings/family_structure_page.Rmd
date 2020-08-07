@@ -125,6 +125,7 @@ pal <- colorBin("BuPu", range(va_birth_rates_2018$Birth_Rate, na.rm = TRUE), bin
 ## Map
 leaflet(width = "100%") %>%
   addMapboxGL(style = "mapbox://styles/mapbox/light-v9") %>%
+  addMapPane("border", zIndex = 410) %>%
   addPolygons(data =  va_birth_rates_2018,
               weight = 1,
               color = "#444444",
@@ -153,7 +154,12 @@ leaflet(width = "100%") %>%
   #             label = ~purrr::map(glue("<strong>{County} County<br/></strong> <strong>Teen birth rate</strong>: {Birth_Rate}"), htmltools::HTML),
   #             group = "2015") %>%
   # addLayersControl(baseGroups = c("2015", "2016", "2017", "2018")) %>%
-  addLegend("bottomright", pal = pal, values = c(0, 100), title = "Teen Birth Rate")
+  addLegend("bottomright", pal = pal, values = c(0, 100), title = "Teen Birth Rate") %>%
+  addPolylines(data = halifax_border,
+               color = "#FC4444",
+               opacity = 0.9,
+               weight = 2,
+               options = pathOptions(pane = "border"))
 ```
 
 <br>
