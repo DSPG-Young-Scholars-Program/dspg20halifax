@@ -90,8 +90,5 @@ Political Science
 
 ### Project Sponsors/Stakeholders {style=text-align:center}
 
-##### [Photos, information, and/or links about your sponsor go about here. You may want to use materials that your sponsors have already shared with you about their institution or coordinate with your stakeholders to include pertinent information here.] {style=text-align:center}
-
-### Acknowledgements {style=text-align:center}
-
-##### [Optional: You can also include external collaborators in this section or a separate section.] {style=text-align:center}
+Sonya Furgurson, District Director, Halifax Central <br>
+Hunter Martin, Extension Agent, 4H Youth Development, Halifax Central

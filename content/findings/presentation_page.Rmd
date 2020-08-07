@@ -1,6 +1,10 @@
 ---
 title: "Presentation Page"
 description: "To use when presenting the Gates Halifax project for the DSPG Symposium."
+<<<<<<< HEAD
+=======
+weight: 6
+>>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 output: html_document
 ---
 
@@ -23,11 +27,16 @@ options(mapbox.accessToken = token)
 
 
 ## Overview
+<<<<<<< HEAD
 * US incarcerates more people per capita then anywhere else 
+=======
+* US incarcerates more people per capita than anywhere else 
+>>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 * Incarceration rates: extremely costly for taxpayers
     + Halifax spends $21,000 per inmate and $78 per county resident 
 * Goal: **social determinants** of incarceration & recidivism in Halifax, VA
 * Approach: ecological model
+<<<<<<< HEAD
     + How factors at the individual, neighborhood, community, and policy levels shape behavior 
 <br> 
 ![Model](/sfs/qumulo/qhome/rb4ba/git/TestDSPG/Halifaxx/static/SEM-graphc.jpg)
@@ -36,6 +45,21 @@ options(mapbox.accessToken = token)
 <br>
 ![Workflow](/sfs/qumulo/qhome/rb4ba/git/TestDSPG/Halifaxx/static/findings/general-overview_files/workflow.png)
 <br>
+=======
+    + How factors at the individual, relationship, community, and policy levels shape behavior 
+<br><br>
+![](/SEM-graphc.jpg)
+
+<br><br>
+
+* Workflow: illustrates relationship between factors 
+
+<br>
+
+![](/findings/general-overview_files/workflow.png)
+
+<br><br><br>
+>>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 
 ## Data Sources 
 
@@ -55,10 +79,19 @@ knitr::kable(sources, "html") %>%
     + Improper spatial resolution
     + Incarceration vs crime 
 
+<<<<<<< HEAD
 ## Findings
 
 ### Background
 * Halifax is a rural town of 8,000 with 60% of population being White, and 34% being Black 
+=======
+<br><br><br>
+
+## Findings
+
+### Background
+* Halifax is a rural county of 34,000 with 60% of population being White, and 34% being Black 
+>>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
   + Racial disparities in income: White median income ($48,000) vs Black median income ($30,400)
 ```{r, results = "hide"}
 age_sex_race_county <- st_read(here::here("data", "original", "ACS", "acs_age_sex_race_county.geojson"))
@@ -127,9 +160,17 @@ create_map(age_sex_race_county, c("percent_estimate_race_total_population_one_ra
            unstable_threshold = 1.5)
 ```
 
+<<<<<<< HEAD
 ### Incarceration, Crime & Arrests
 * crime, arrest, incarceration & jails vs prisons 
 * prison incarceration rates have *consistently increased* over the past 3-4 decades 
+=======
+<br><br><br>
+
+### Incarceration, Crime & Arrests
+* Crime, arrest, incarceration & jails vs prisons 
+* Prison incarceration rates have *consistently increased* over the past 3-4 decades 
+>>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 ```{r load_libs_data}
 library(here)
 library(dplyr)
@@ -218,7 +259,11 @@ total_crime_plot <- halifax_crime_tally %>%
   geom_bar(stat = 'identity', fill = "#56B4E9") +
   coord_flip() + 
   labs(x = NULL,
+<<<<<<< HEAD
        y = NULL)
+=======
+       y = "Total Crimes Reported")
+>>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 
 
 
@@ -245,11 +290,21 @@ per_clear_plot <- halifax_crime %>%
 
   
 total_crime_plot + per_clear_plot + 
+<<<<<<< HEAD
   plot_annotation(title = 'Number of Crimes and Percent Cleared by Arrest Type')
 ```
 
 ### Employment
 * unemployment is a **large indicator of crime** and intersects w/ ecological model on multiple levels
+=======
+  plot_annotation(title = 'Reported Crimes and Arrest Rates: Halifax County')
+```
+
+<br><br><br>
+
+### Employment
+* Unemployment is a **large indicator of crime** and intersects w/ ecological model on multiple levels
+>>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 * Halifax has slightly higher unemployment rate than VA avg 
 
 ```{r}
@@ -309,12 +364,22 @@ plot <- laus_unemployment_county %>%
 plot
 ```
 
+<<<<<<< HEAD
+=======
+<br><br><br>
+
+>>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 ### Housing
 * Ecological model:
     + Policy: eligibility for low-income opportunities limited by prior convictions
     + Interpersonal: reintegration into the community
+<<<<<<< HEAD
 * size of annual number of jail discharges relative to subsidized housing capacity: 3x 
 * housing accessibility (physical proximity)
+=======
+* Size of annual number of jail discharges relative to subsidized housing capacity: 3x 
+* Housing accessibility (physical proximity)
+>>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 
 ```{r}
 library(here)
@@ -387,10 +452,19 @@ va_housing_vera %>%
         plot.margin = margin(0.5, 2, 0, 0.5, "cm"))
 ```
 
+<<<<<<< HEAD
 ### Substance Abuse
 * opioid prescription rates are declining, but still higher than VA and USA
 * steadily increasing rate of binge drinking
 * policy level: racial disparities in marijuana possession (and drug-related crime)
+=======
+<br><br><br>
+
+### Substance Abuse
+* Opioid prescription rates are declining, but still higher than VA and USA
+* Steadily increasing rate of binge drinking
+* Policy level: racial disparities in marijuana possession (and drug-related crime)
+>>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 
 ```{r}
 library(ggplot2)
@@ -450,11 +524,21 @@ va_borders <- get_acs(table = "B01003", geography = "county", year = 2018, state
                       survey = "acs5", geometry = TRUE, cache_table = TRUE) %>% st_transform(crs = 4326)
 ```
 
+<<<<<<< HEAD
 ### Family Structure
 * family structure highly affects child's development
 * teen mothers more likely to drop out of high school, be unemployed, have lower incomes
     + low levels of family supervision -> high rates of juvenile delicuency (cycle)
 * teen births, housing opportunities, and racial discrepancies are all important aspects
+=======
+<br><br><br>
+
+### Family Structure
+* Family structure highly affects child's development
+* Teen mothers more likely to drop out of high school, be unemployed, have lower incomes
+    + Low levels of family supervision -> high rates of juvenile delinquency (cycle)
+* Teen births, housing opportunities, and racial discrepancies are all important aspects
+>>>>>>> 404bc8f39c6824815e4fff236d4f948a0566335f
 
 ```{r, fig.height = 15, fig.width = 25}
 ## Pct of households headed by a single parent (most are females in Halifax - can show)

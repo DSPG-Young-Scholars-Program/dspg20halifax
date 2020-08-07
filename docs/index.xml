@@ -16,7 +16,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/background_page/</guid>
-      <description>Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade1. Black individuals constitute approximately 34% of the county&#39;s population and whites 60%.</description>
+      <description>Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade1. Black individuals constitute approximately 34% of the county&#39;s population and White individuals 60%.</description>
     </item>
     
     <item>
@@ -25,7 +25,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/findings/crimes_page/</guid>
-      <description>Background Crime, arrest, and incarceration are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed, an individual may post bail or not be held pre-trial, or may be found not guilty at trial.</description>
+      <description>Background Incarceration, crime, and arrest are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed, an individual may post bail or not be held pre-trial, or may be found not guilty at trial.</description>
     </item>
     
     <item>
@@ -66,13 +66,22 @@ The relationship between employment and incarceration is almost certainly bidire
     </item>
     
     <item>
+      <title>Presentation Page</title>
+      <link>/findings/presentation_page/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/findings/presentation_page/</guid>
+      <description>Overview  US incarcerates more people per capita than anywhere else Incarceration rates: extremely costly for taxpayers  Halifax spends $21,000 per inmate and $78 per county resident  Goal: social determinants of incarceration &amp;amp; recidivism in Halifax, VA Approach: ecological model  How factors at the individual, relationship, community, and policy levels shape behavior</description>
+    </item>
+    
+    <item>
       <title></title>
       <link>/methods/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/methods/</guid>
       <description>h1, h2, h3 { text-align: center; } body { text-align: justify }  Data Sources As this was a new project, we devoted significant time to the data discovery process.
-The first source of data we considered was the Virginia Department of Corrections, which maintains data on inmates in Virginia jails and prisons. Unfortunately, we were unable to get access to this data within the summer timeframe due to the time associated with receiving approval to work with sensitive data on a vulnerable population.</description>
+The first source of data we considered was the Virginia Department of Corrections, which maintains data on inmates in Virginia jails and prisons. Unfortunately, we were unable to get access to this data due to the time associated with receiving approval to work with sensitive data on a vulnerable population.</description>
     </item>
     
     <item>
