@@ -175,7 +175,7 @@ Identifying and connecting individuals with other affordable housing options may
 
 One of the most fundamental ways housing can provide a strong foundation for formerly incarcerated individuals is by providing reliable access to the resources required to re-enter society effectively. Housing that is otherwise affordable may not be a sustainable option if it prevents individuals from getting to work, substance abuse treatment programs, or adult education opportunities. A comprehensive consideration of accessibility would also include considerations of the culture, values, and circumstances that may encourage or discourage individuals from even attempting to access certain resources, but at its most fundamental level, resource accessibility can be framed as a question of physical proximity.
 
-To better understand how the location of affordable housing options may influence resource accessibility for formely incarcerated individuals, we created a series of maps displaying isochrone lines that delineate areas of equal travel time from a given point. Each map below displays the areas within 10, 20, and 30 minutes of a selected subsidized housing property in Halifax County. Also displayed are the locations of the top employers in the county, schools, and substance abuse treatment/support centers.
+To better understand how the location of affordable housing options may influence resource accessibility for formerly incarcerated individuals, we created a series of maps displaying isochrone lines that delineate areas of equal travel time from a given point. Each map below displays the areas within 10, 20, and 30 minutes of a selected subsidized housing property in Halifax County. Also displayed are the locations of the top employers in the county, schools, and substance abuse treatment/support centers.
 
 <br>
 
@@ -204,7 +204,7 @@ walk_map
 
 <br>
 
-These maps suggest that many of the necessary resources may be within a reasonable travel distance of affordable housing options, at least when traveling by car. However, transportation access is a commonly cited concern amongst those re-entering society after being incarcerated.[^6] Some may be able to rely on familial support in the short term, but this is less likely to be a sustainable long-term transportation strategy. The second and third map reveal the extent of the reduction in resources accessibility for those without access to a car.
+These maps suggest that many of the necessary resources may be within a reasonable travel distance of affordable housing options, at least when traveling by car. However, transportation access is a commonly cited concern among those re-entering society after being incarcerated.[^6] Some may be able to rely on familial support in the short term, but this is less likely to be a sustainable long-term transportation strategy. The second and third map reveal the extent of the reduction in resources accessibility for those without access to a car.
 
 ### Future Directions + Additional Data Sources
 

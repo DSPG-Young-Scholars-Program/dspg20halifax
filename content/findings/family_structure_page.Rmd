@@ -207,7 +207,7 @@ plot <- ggplot() +
   geom_point(data = va_data, aes(x = pct_black_nonhsp, y = pct_1adult, color = interaction(isVA, isHalifax), size = pct_lt24_head, alpha = isVA), stroke = 1.25) +
   coord_flip() +
   scale_size_continuous(range = c(0, 20), labels = c("0%", "10%", "20%", "30%", "40%")) +
-  scale_color_manual(labels = c("U.S.", "Virginia", "Halifax County"), values = c("#CAC6C2", "#6b6385", "#FC4444"), na.translate=FALSE) +
+  scale_color_manual(labels = c("U.S.", "Virginia", "Halifax County"), values = c("#DDD9D5", "#6b6385", "#FC4444"), na.translate=FALSE) +
   labs(y = "\nPercent Single Adults with Children", x = "Percent Black (Non-Hispanic)\n", 
        title = "Characteristics of Subsidized Housing Population\n", 
        size = "Household heads less \nthan 24 years old") +

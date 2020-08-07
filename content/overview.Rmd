@@ -99,7 +99,7 @@ We are using the social-ecological model[^CDC] to understand the factors related
 
 With this framework as context, we sought to identify the levels at which various social determinants may influence patterns of incarceration and recidivism. Single factors may enter at numerous levels, emphasizing the nuances involved in exploring these issues.
 
-For instance, access to housing for formerly incarcerated individuals is a complex result of policies that render them ineligible for certain housing opportunities, community atitudes surrounding willingness to live in areas near affordable housing projects, and family relationships that may provide a temporary housing option post-release.
+For instance, access to housing for formerly incarcerated individuals is a complex result of policies that render them ineligible for certain housing opportunities, community attitudes surrounding willingness to live in areas near affordable housing projects, and family relationships that may provide a temporary housing option post-release.
 
 Under this framework, our approach centered around an extensive literature review of research in the area, a comprehensive exploration and accumulation of available data sources on key factors impacting arrest and incarceration, and data visualizations to communicate the state of these factors in Halifax County, VA.
 
