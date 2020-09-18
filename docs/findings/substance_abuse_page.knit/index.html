@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Substance Abuse</title>
+        <link rel="canonical" href="/dspg20halifax/findings/substance_abuse_page.knit/">
+        <style>
+
+    html body {
+        font-family: 'Oxygen', sans-serif;
+        background-color: #FFFFFF;
+    }
+
+    :root {
+        --accent: #232D4B;
+        --border-width:  0 ;
+    }
+
+</style>
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Oxygen">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=VT323">
+
+
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/ascetic.min.css"> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.0/css/all.css" integrity="sha384-Mmxa0mLqhmOeaE8vgOSbKacftZcsNYDjQzuCOm6D02luYSzBG8vpaOykv9lFQ51Y" crossorigin="anonymous">
+
+
+<link rel="stylesheet" href="/dspg20halifax/css/main.css">
+
+
+
+
+ 
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/bash.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+
+<script>$(document).on('click', function() { $('.collapse').collapse('hide'); })</script>
+
+
+<script>
+$(document).ready(function(){
+    
+  var input = $('#night-mode-toggle');
+  var container = $('#bigbody');
+  var stat = $('#button-status');
+  
+  container.toggleClass(localStorage.toggled);
+  stat.bootstrapToggle(localStorage.button).change();
+  
+  input.on('click', function() {
+      if (localStorage.toggled != "-nightmode" ) {
+          container.toggleClass("-nightmode", true );
+          localStorage.toggled = "-nightmode";
+          localStorage.button = "on";
+       } else {
+          container.toggleClass("-nightmode", false );
+          localStorage.toggled = "";
+          localStorage.button = "off"
+       }
+  })
+});
+</script>
+ <meta name="generator" content="Hugo 0.70.0" />
+        <link href="" rel="alternate" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        <link href="" rel="feed" type="application/rss+xml" title="UVA Biocomplexity Institute" />
+        
+
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/img/favicon/safari-pinned-tab.svg" color="#000000">
+    <link rel="shortcut icon" href="/img/favicon/favicon.ico">
+    <meta name="msapplication-TileColor" content="#2b5797">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+
+    
+    
+    <meta property="og:title" content="Substance Abuse">
+    <meta property="og:type" content="article">
+      
+      <meta name="twitter:card" content="summary">
+      <meta name="twitter:image" content="/dspg20halifax/favicon/uva-dspg-logo.jpg" >
+      
+    <meta property="description" content="Comparing Halifax to its neighbors on opioid and alcohol use">
+    <meta property="og:description" content="Comparing Halifax to its neighbors on opioid and alcohol use">
+    
+    <meta name="twitter:creator" content="">
+    <meta name="twitter:site" content="">
+
+    </head>
+
+    
+    
+    <script type="text/javascript" async
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
+    
+
+
+    <style>
+      .container {
+      	text-align: center;
+      	border: 0px solid green;
+      }
+      .container ul {
+      	border: 0px solid red;
+      	display: inline-block;
+      	margin: 10px 0;
+      	padding: 2px;
+      }
+      .container li {
+      	display: inline-block;
+      	font-weight: bold;
+      }
+      .container li a {
+      	display: inline-block;
+      	color: #FFF;
+      	padding: 5px;
+      	text-decoration: none;
+      }
+
+    </style>
+
+    <body id = "bigbody">
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container" style="width:800px; margin: auto;">
+                <div class="collapse navbar-collapse container">
+                    
+                        <ul class="nav">
+                          <li class="header_img">
+                            <img class="img-responsive" src="/dspg20halifax/img/AEMLogoGatesColors-11.png" alt="Whoopsies, this is my bad side!" style = "margin: 0 auto; height: 42px"></li>
+                            
+                                <li><a href="/dspg20halifax/" style="background-color: transparent;">Overview</a></li>
+                            
+                                <li><a href="/dspg20halifax/methods/" style="background-color: transparent;">Data &amp; Methods</a></li>
+                            
+                                <li><a href="/dspg20halifax/findings/" style="background-color: transparent;">Findings</a></li>
+                            
+                                <li><a href="/dspg20halifax/team/" style="background-color: transparent;">Team</a></li>
+                            
+                        </ul>
+                    
+                    
+                        <ul class="nav">
+                            
+                                <li class="navbar-icon"><a href="https://github.com/DSPG-Young-Scholars-Program" style="background-color: transparent;"><i class="fab fa-github"></i></a></li>
+                            
+                                <li class="navbar-icon"><a href="mailto:kb7hp@virginia.edu" style="background-color: transparent;"><i class="far fa-envelope"></i></a></li>
+                            
+                            
+                        </ul>
+                    
+                </div>
+            </div>
+        </nav>
+
+
+
+
+<main>
+
+    <div class="item">
+
+    
+    
+    
+
+    
+      
+      
+    
+
+    <h4><a href="/dspg20halifax/findings/substance_abuse_page.knit/">Substance Abuse</a></h4>
+    
+    <h5>Comparing Halifax to its neighbors on opioid and alcohol use</h5>
+
+    
+    
+
+</div>
+
+
+    <br> <div class="text-justify"><h3 id="background">Background</h3>
+<p>Approximately three out of four state prisoners and four out of five federal prisoners are detained for alcohol and or drug related offenses<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup>. Additionally, 58% of state prisoners and 63% of sentenced jail inmates meet the criteria for substance abuse disorders (SUDs), compared to 5% of the general adult population<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup>. Not considered in these figures is the high rate of drug-related crime; for example, 17% of state prisoners and 18% of federal inmates committed their offense to obtain money to purchase drugs<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup>.</p>
+<p>Effective substance abuse treatment has been linked with decreased rates of recidivism, but many inmates do not receive sufficient treatment, compounding their difficulties re-integrating into society after release. Unfortunately, 60-80% of drug offenders commit a new drug-related crime upon being released from prison<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup>.</p>
+<p>Substance abuse intersects with incarceration at recidivism at various levels of the ecological model. Though stable housing is critical for recovery from SUDs, on an individual level, many people struggle to find places to live and become homeless. At the community level, support resources both for substance abuse disorders as well as other related factors, like mental health problems and family stressors may be lacking<sup id="fnref:5"><a href="#fn:5" class="footnote-ref" role="doc-noteref">5</a></sup>. Substance abuse can also have severe impacts on individuals&rsquo; interpersonal relationships, distancing them from a support network that could otherwise provide important support while re-entering society after release. On the policy level, strict restrictions on eligibility for employment, housing, and various welfare benefits directly linked to past substance use may present significant obstacles for formerly incarcerated individuals to effectively re-enter society. Systemic racism baked into the criminal justice system also leads to vast racial disparities in substance related arrests, convictions, and felonies.</p>
+<p>In the United States, substance use and abuse has been thoroughly entangled with incarceration for decades, and remains a critical component of any comprehensive analysis of incarceration trends.</p>
+<h3 id="main-findings">Main Findings</h3>
+<p>The prevailing opioid epidemic has been felt strongly in rural America, and data from the Centers for Disease Control provides mixed messages about the state of the epidemic in Halifax County. Halifax began with lower opioid prescription rates than Virginia and the U.S. from 2006 to 2011, yet went on to continuously surpass both from 2011 until 2018. While Halifax rates peaked in 2015 and have been sharply decreasing since, Halifax continues to be behind the United States and the state of Virginia. In fact, the state of Virginia consistently fares better than overall US rates. These data illustrate how strongly the county of Halifax has been affected by the opioid epidemic, with opioid prescription rates for 100 people still not lowering beyond 50.</p>
+<p>Though it is encouraging to see prescription rates on a rapid decline overall, this trend likely tells only part of the story. Given the increased visibility of the epidemic in recent years, this decline is likely driven more by changes in prescribing practices rather than reduced dependence on the part of those using opioids. In fact, as prescription rates decline, many may turn to heroin or fentanyl, which may be more dangerous to obtain and use, and may also be treated more strictly by the criminal justice system.</p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted --></p>
+<p>A map of the same data provides a spatial context for Halifax’s opioid prescription rates compared to other Virginia counties, as well as the change in prescription rates over time for Virginia. We see that not all rural counties are necessarily at similar risk: counties in Southwest Virginia tend to have higher prescription rates than rural counties in Southside Virginia (where Halifax County is located). Note that even the lower ends of the scale exceed 100 prescriptions per 100 people, suggesting that many people are linked to multiple prescriptions and emphasizing the magnitude of the epidemic.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>The Virginia Department of Health Office of Epidemiology provides further insight into substance abuse in Halifax county. Data on unintentional drug overdose in Halifax indicate that the majority of overdoses are due to opioids, followed by other types of drugs and with the smallest portion being heroin related<sup id="fnref:6"><a href="#fn:6" class="footnote-ref" role="doc-noteref">6</a></sup>. As noted before, it will be interesting to see if the relative proportion of heroin overdoses continues to increase as prescription rates decline. If so, this could represent an important issue for Halifax to target given both the potential health and criminal consequences involved in heroin use.</p>
+<!-- raw HTML omitted -->
+<p>Another important aspect of substance abuse is alcohol related abuse and overdose. According to data from the National Center for Health Statistics<sup id="fnref:7"><a href="#fn:7" class="footnote-ref" role="doc-noteref">7</a></sup>, the percentage of adults reporting heavy or binge drinking has increased steadily since 2011. This trend parallels that of Virginia as a whole, which consistently has a higher excessive drinking rate than Halifax.</p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted --></p>
+<p>Lastly, it is important to understand substance abuse and its relationship with incarceration through the community and policy level of the ecological model. The historical legacy of War on Drugs policies (for instance, the differentiation between crack and powder cocaine) combined with over-policing of communities of color have helped to fuel the racial disparities seen in the criminal justice system. Data from the American Civil Liberties Union (ACLU) indicate the racial disparities in marijuana arrests between Black and White individuals (per 100k people). In Virginia, Black people are 3.4 times more likely to be arrested for marijuana possession than White people, a gap that has steadily widened from 2010 to 2018. In Halifax, Black people are 2.9 times more likely to be arrested for marijuana possession<sup id="fnref:8"><a href="#fn:8" class="footnote-ref" role="doc-noteref">8</a></sup>. While this pattern is indicative of concerning racial disparities, it is difficult to disentangle these figures from the complex interplay of crime, poverty, and other social determinants of incarceration.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h3 id="conclusion-and-policy-implications">Conclusion and Policy Implications</h3>
+<p>To better understand the relationship between substance abuse, incarceration, recidivism, particularly in Halifax Virginia, it would be helpful to have additional data sources. To understand the social determinants of substance abuse related crime, it would be helpful to examine sources that magnify various aspects of substance abuse&rsquo;s ecological model. For example - on the individual level - data on housing outcomes for individuals with SUD-related offenses, such as how many such individuals are homeless or struggling to find stable housing? In that vein, it would be helpful to have information about how receptive and inclusive public housing programs in the county are to formerly incarcerated individuals with drug offenses. Furthermore, data on job outcomes and prospects for individuals with SUD-related offenses would be particularly illuminating, such as how many individuals are unemployed or unable to find a permanent job. Though we have geographic data for substance abuse related treatment and help centers in Halifax County, it would be helpful to have data about the outcomes for individuals who seek out such resources.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1" role="doc-endnote">
+<p>Bales, W. D., Slyke, S. V., &amp; Blomberg, T. G. (2006). Substance Abuse Treatment in Prison and Community Reentry: Breaking the Cycle of Drugs, Crime, Incarceration, and Recidivism. Georgetown Journal on Poverty Law &amp; Policy, 8(2). <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2" role="doc-endnote">
+<p>Bronson, J., Stroop, J., Zimmer, S., &amp; Berzofsky, M. (2017, June). Drug Use, Dependence, and Abuse Among State Prisoners and Jail Inmates, 2007-2009 (Rep.). Retrieved <a href="https://www.bjs.gov/content/pub/pdf/dudaspji0709.pdf">https://www.bjs.gov/content/pub/pdf/dudaspji0709.pdf</a> <a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3" role="doc-endnote">
+<p>Drug use and crime. (n.d.). Retrieved August 1, 2020, from <a href="https://www.bjs.gov/content/dcf/duc.cfm">https://www.bjs.gov/content/dcf/duc.cfm</a> <a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4" role="doc-endnote">
+<p>5 Startling Facts About Drug Abuse in US Prisons. (2017, July 10). Retrieved August 1, 2020, from <a href="https://www.confirmbiosciences.com/knowledge/blog/5-startling-facts-drug-abuse-us-prisons/">https://www.confirmbiosciences.com/knowledge/blog/5-startling-facts-drug-abuse-us-prisons/</a> <a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:5" role="doc-endnote">
+<p>Drug Misuse and Addiction. (2020, July 13). Retrieved from <a href="https://www.drugabuse.gov/publications/drugs-brains-behavior-science-addiction/drug-misuse-addiction">https://www.drugabuse.gov/publications/drugs-brains-behavior-science-addiction/drug-misuse-addiction</a> <a href="#fnref:5" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:6" role="doc-endnote">
+<p>Virginia Department of Health. (n.d.). Retrieved from <a href="https://www.vdh.virginia.gov/opioid-data/emergency-department/">https://www.vdh.virginia.gov/opioid-data/emergency-department/</a> <a href="#fnref:6" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:7" role="doc-endnote">
+<p>Virginia Rankings Data. (n.d.). Retrieved from <a href="https://www.countyhealthrankings.org/app/virginia/2020/downloads">https://www.countyhealthrankings.org/app/virginia/2020/downloads</a> <a href="#fnref:7" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:8" role="doc-endnote">
+<p>Virginia. (n.d.). Retrieved from <a href="https://graphics.aclu.org/marijuana-arrest-report/VA">https://graphics.aclu.org/marijuana-arrest-report/VA</a> <a href="#fnref:8" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</section>
+</div>
+
+    
+    
+
+    
+
+    
+
+    
+
+    
+
+</main>
+
+        <footer id = "bigfooter">
+            <div style = "padding:15px;">
+                <p>Powered by <a href="https://gohugo.io">Hugo</a>. Themed by <a href="https://github.com/nathancday/min_night">min_night_dspg</a>. <a href="https://biocomplexity.virginia.edu/social-decision-analytics">Website by University of Virginia Biocomplexity Institute.</a>
+                </p>
+                <a rel="license" href="https://creativecommons.org/licenses/by/4.0/"
+                title="Creative Commons Attribution 4.0 International license">
+                <i class="fab fa-creative-commons" aria-hidden="true"></i> Attribution 4.0 International license
+                </a>
+            </div>
+        </footer>
+        
+        <script async src="https://www.googletagmanager.com/gtag/js?id="></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments)};
+          gtag('js', new Date());
+          gtag('config', '');
+        </script>
+        
+        <script>
+           var referer = document.referrer;
+           var n = referer.includes('economic');
+           var x = document.getElementsByClassName('header_img');
+           if (n != true) {
+             x[0].innerHTML = '<div><a href="https://datascienceforthepublicgood.org/events/symposium2020/poster-sessions">' +
+                              '<img src="\/dspg20halifax\/img/DSPG_white-01.png", alt="DSPG 2020 Symposium Proceedings", style="height:42px; margin-top:5px;">' +
+                              '</a></div>';
+           } else {
+             x[0].innerHTML = '<div><a href="https://datascienceforthepublicgood.org/economic-mobility/community-insights">' +
+                              '<img src="./img/AEMLogoGatesColors-11.png", alt="Gates Economic Mobility Case Studies", style="height:42px; margin-top:5px;">' +
+                              '</a></div>';
+           }
+    </script>
+       
+    </body>
+
+</html>
+

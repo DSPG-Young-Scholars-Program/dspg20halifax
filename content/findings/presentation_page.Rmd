@@ -40,11 +40,11 @@ options(mapbox.accessToken = token)
 * Approach: ecological model
     + How factors at the individual, relationship, community, and policy levels shape behavior 
 <br> 
-![](/SEM-graphc.jpg)
+![](/dspg20halifax/SEM-graphc.jpg)
 <br> 
 * Workflow: illustrates relationship between factors 
 <br>
-![](/findings/general-overview_files/workflow.png)
+![](/dspg20halifax/findings/general-overview_files/workflow.png)
 <br>
 
 <br><br><br>
