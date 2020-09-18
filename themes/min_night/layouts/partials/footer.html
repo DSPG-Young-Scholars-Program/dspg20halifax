@@ -16,6 +16,21 @@
           gtag('js', new Date());
           gtag('config', '{{ .Site.GoogleAnalytics }}');
         </script>
+        
+        <script>
+           var referer = document.referrer;
+           var n = referer.includes('economic');
+           var x = document.getElementsByClassName('header_img');
+           if (n != true) {
+             x[0].innerHTML = '<div><a href="https://datascienceforthepublicgood.org/events/symposium2020/poster-sessions">' +
+                              '<img src="{{ .Site.BaseURL }}img/DSPG_white-01.png", alt="DSPG 2020 Symposium Proceedings", style="height:42px; margin-top:5px;">' +
+                              '</a></div>';
+           } else {
+             x[0].innerHTML = '<div><a href="https://datascienceforthepublicgood.org/economic-mobility/community-insights">' +
+                              '<img src="./img/AEMLogoGatesColors-11.png", alt="Gates Economic Mobility Case Studies", style="height:42px; margin-top:5px;">' +
+                              '</a></div>';
+           }
+    </script>
        
     </body>
 

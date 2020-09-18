@@ -2,103 +2,103 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>UVA Biocomplexity Institute</title>
-    <link>/</link>
+    <link>/dspg20halifax/</link>
     <description>Recent content on UVA Biocomplexity Institute</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="/dspg20halifax/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Background</title>
-      <link>/findings/background_page/</link>
+      <link>/dspg20halifax/findings/background_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/background_page/</guid>
+      <guid>/dspg20halifax/findings/background_page/</guid>
       <description>Halifax County is a large, predominantly rural county in Southside Virginia. Its largest town, South Boston, recorded a population just shy of 8,000 during the decennial census, and the county as a whole has seen a recent decline in population from around 36,000 to 34,000 residents in the past decade1. Black individuals constitute approximately 34% of the county&#39;s population and White individuals 60%.</description>
     </item>
     
     <item>
       <title>Incarceration, Crime, &amp; Arrests</title>
-      <link>/findings/crimes_page/</link>
+      <link>/dspg20halifax/findings/crimes_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/crimes_page/</guid>
+      <guid>/dspg20halifax/findings/crimes_page/</guid>
       <description>Background Incarceration, crime, and arrest are related but distinct concepts. Crimes occur when individuals break the law, but not all crimes come to the attention of law enforcement. Of the crimes that do come to the attention of law enforcement, some are diverted from formal proceedings and others result in arrest. Again, not all arrests result in incarceration. Charges may be dismissed, an individual may post bail or not be held pre-trial, or may be found not guilty at trial.</description>
     </item>
     
     <item>
       <title>Employment</title>
-      <link>/findings/employment_page/</link>
+      <link>/dspg20halifax/findings/employment_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/employment_page/</guid>
+      <guid>/dspg20halifax/findings/employment_page/</guid>
       <description>Background A discussion of factors related to incarceration would be remiss without discussing unemployment. Empirical analyses have consistently found unemployment to be one of the factors most strongly correlated with crime: a 2005 meta-analysis of over 200 studies quantifying predictors of crime found that local unemployment rates had the second-largest effect size out of 31 predictors.1
 The relationship between employment and incarceration is almost certainly bidirectional, and enters the ecological model at multiple levels.</description>
     </item>
     
     <item>
       <title>Housing</title>
-      <link>/findings/housing_page/</link>
+      <link>/dspg20halifax/findings/housing_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/housing_page/</guid>
+      <guid>/dspg20halifax/findings/housing_page/</guid>
       <description>.navbar-default .navbar-nav li a { color: white; } .navbar-default .navbar-nav li a:hover { color: white; }  Background Many now see access to affordable housing as one of the primary factors limiting successful re-entry for individuals leaving jails or prisons; an unstable living situation can severely impact employment opportunities, predispose individuals to return to criminal activity, and hinder efforts to reestablish family relationships and friendships1.</description>
     </item>
     
     <item>
       <title>Substance Abuse</title>
-      <link>/findings/substance_abuse_page/</link>
+      <link>/dspg20halifax/findings/substance_abuse_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/substance_abuse_page/</guid>
+      <guid>/dspg20halifax/findings/substance_abuse_page/</guid>
       <description>Background Approximately three out of four state prisoners and four out of five federal prisoners are detained for alcohol and or drug related offenses1. Additionally, 58% of state prisoners and 63% of sentenced jail inmates meet the criteria for substance abuse disorders (SUDs), compared to 5% of the general adult population2. Not considered in these figures is the high rate of drug-related crime; for example, 17% of state prisoners and 18% of federal inmates committed their offense to obtain money to purchase drugs3.</description>
     </item>
     
     <item>
       <title>Family Structure</title>
-      <link>/findings/family_structure_page/</link>
+      <link>/dspg20halifax/findings/family_structure_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/family_structure_page/</guid>
+      <guid>/dspg20halifax/findings/family_structure_page/</guid>
       <description>Background Decades of research has found that family structure has the power to impact a child’s development. For example, children growing up in two parent homes tend to have better health and social outcomes than those who grow up in single parent homes 1. Teen pregnancy (defined as pregnancy between the ages of 15 and 19 years old), costs U.S. taxpayers between $9 and $11 billion dollars per year and Virginia is estimated to spend $183 million dollars on factors related to teen pregnancy2.</description>
     </item>
     
     <item>
       <title>Presentation Page</title>
-      <link>/findings/presentation_page/</link>
+      <link>/dspg20halifax/findings/presentation_page/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/findings/presentation_page/</guid>
+      <guid>/dspg20halifax/findings/presentation_page/</guid>
       <description>.navbar-default .navbar-nav li a { color: white; } .navbar-default .navbar-nav li a:hover { color: white; }  Overview  US incarcerates more people per capita then anywhere else Incarceration rates: extremely costly for taxpayers  Halifax spends $21,000 per inmate and $78 per county resident  Goal: social determinants of incarceration &amp;amp; recidivism in Halifax, VA Approach: ecological model  How factors at the individual, relationship, community, and policy levels shape behavior   Workflow: illustrates relationship between factors</description>
     </item>
     
     <item>
       <title></title>
-      <link>/methods/</link>
+      <link>/dspg20halifax/methods/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/methods/</guid>
+      <guid>/dspg20halifax/methods/</guid>
       <description>h1, h2, h3 { text-align: center; } body { text-align: justify }  Data Sources As this was a new project, we devoted significant time to the data discovery process.
 The first source of data we considered was the Virginia Department of Corrections, which maintains data on inmates in Virginia jails and prisons. Unfortunately, we were unable to get access to this data due to the time associated with receiving approval to work with sensitive data on a vulnerable population.</description>
     </item>
     
     <item>
       <title></title>
-      <link>/overview/</link>
+      <link>/dspg20halifax/overview/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/overview/</guid>
+      <guid>/dspg20halifax/overview/</guid>
       <description>h3 { text-align:center }  2020 DSPG Halifax County Summer Project The United States incarcerates more people per capita than anywhere else in the world,1 and a disproportionate number of those incarcerated are Black and Hispanic.2 Estimates from the ACLU suggest that one out of every three Black males and one out of every six Latino males will be incarcerated, compared to only one out of seventeen White males.</description>
     </item>
     
     <item>
       <title></title>
-      <link>/team/</link>
+      <link>/dspg20halifax/team/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>/team/</guid>
+      <guid>/dspg20halifax/team/</guid>
       <description>{ box-sizing: border-box; } .column { float: left; width: 25%; } .row:after { content: &#34;&#34;; display: table; clear: both; } .justify { text-align: justify }  UVA Data Science for the Public Good Program The Data Science for the Public Good (DSPG) Young Scholars program is a summer immersive program held at the Biocomplexity Institute’s Social and Decision Analytics division (SDAD). In its seventh year, the program engages students from across the country to work together on projects that address state, federal, and local government challenges around critical social issues relevant in the world today.</description>
     </item>
     

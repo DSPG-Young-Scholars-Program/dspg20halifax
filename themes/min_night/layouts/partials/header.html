@@ -9,7 +9,7 @@
         <link href="{{ with .OutputFormats.Get "RSS" }}{{ .RelPermalink }}{{ end }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
         <link href="{{ with .OutputFormats.Get "RSS" }}{{ .RelPermalink }}{{ end }}" rel="feed" type="application/rss+xml" title="{{ .Site.Title }}" />
         {{ if .Site.GoogleAnalytics }}
-        
+
         <!-- Global Site Tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id={{ .Site.GoogleAnalytics }}"></script>
         <script>
@@ -30,7 +30,7 @@
     <meta name="msapplication-TileColor" content="#2b5797">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-    
+
     <!-- Twitter Cards - https://xvrdm.github.io/2017/10/23/socialize-your-blogdown/ -->
     {{ if eq .RelPermalink "/" }}
     <meta property="og:title" content="{{ .Site.Title }}">
@@ -54,7 +54,7 @@
     {{ end }}
     <meta name="twitter:creator" content="{{ .Params.twitterAuthor }}">
     <meta name="twitter:site" content="{{ .Params.twitterSite }}">
-    
+
     </head>
 
     {{ if .Site.Params.MathJax | default true }}
@@ -64,29 +64,48 @@
     </script>
     {{ end }}
 
+
+    <style>
+      .container {
+      	text-align: center;
+      	border: 0px solid green;
+      }
+      .container ul {
+      	border: 0px solid red;
+      	display: inline-block;
+      	margin: 10px 0;
+      	padding: 2px;
+      }
+      .container li {
+      	display: inline-block;
+      	font-weight: bold;
+      }
+      .container li a {
+      	display: inline-block;
+      	color: #FFF;
+      	padding: 5px;
+      	text-decoration: none;
+      }
+
+    </style>
+
     <body id = "bigbody">
         <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand visible-xs" href="#">{{ .Title }}</a>
-                    <button class="navbar-toggle" data-target=".navbar-collapse" data-toggle="collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse">
+            <div class="container" style="width:800px; margin: auto;">
+                <div class="collapse navbar-collapse container">
                     {{ if .Site.Menus.main }}
-                        <ul class="nav navbar-nav">
+                        <ul class="nav">
+                          <li class="header_img">
+                            <img class="img-responsive" src="{{ .Site.BaseURL }}img/AEMLogoGatesColors-11.png" alt="Whoopsies, this is my bad side!" style = "margin: 0 auto; height: 42px"></li>
                             {{ range sort .Site.Menus.main }}
-                                <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+                                <li><a href="{{ .URL }}" style="background-color: transparent;">{{ .Name }}</a></li>
                             {{ end }}
                         </ul>
                     {{ end }}
                     {{ if .Site.Menus.icon }}
-                        <ul class="nav navbar-nav navbar-right">
+                        <ul class="nav">
                             {{ range sort .Site.Menus.icon }}
-                                <li class="navbar-icon"><a href="{{ .URL }}"><i class="{{ .Name }}"></i></a></li>
+                                <li class="navbar-icon"><a href="{{ .URL }}" style="background-color: transparent;"><i class="{{ .Name }}"></i></a></li>
                             {{ end }}
                             <!--{{ partial "toggle"}}-->
                         </ul>
@@ -94,3 +113,5 @@
                 </div>
             </div>
         </nav>
+
+
