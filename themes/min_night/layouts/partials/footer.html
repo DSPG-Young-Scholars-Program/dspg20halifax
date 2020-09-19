@@ -25,12 +25,20 @@
              x[0].innerHTML = '<div><a href="https://datascienceforthepublicgood.org/events/symposium2020/poster-sessions">' +
                               '<img src="{{ .Site.BaseURL }}img/DSPG_white-01.png", alt="DSPG 2020 Symposium Proceedings", style="height:42px; margin-top:5px;">' +
                               '</a></div>';
+                              
+             var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?dspg';
+             //alert(newurl);
+             window.history.pushState({path:newurl},'',newurl);
            } else {
-             x[0].innerHTML = '<div><a href="https://datascienceforthepublicgood.org/economic-mobility/community-insights">' +
-                              '<img src="./img/AEMLogoGatesColors-11.png", alt="Gates Economic Mobility Case Studies", style="height:42px; margin-top:5px;">' +
+             x[0].innerHTML = '<div><a href="https://datascienceforthepublicgood.org/economic-mobility/community-insights/case-studies">' +
+                              '<img src="{{ .Site.BaseURL }}img/AEMLogoGatesColors-11.png", alt="Gates Economic Mobility Case Studies", style="height:42px; margin-top:5px;">' +
                               '</a></div>';
+             
+             var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?economic';
+             //alert(newurl);
+             window.history.pushState({path:newurl},'',newurl);
            }
-    </script>
+        </script>
        
     </body>
 
