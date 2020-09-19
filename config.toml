@@ -49,7 +49,7 @@ publishDir = "docs"
 # The list of available icons can be found at http://fontawesome.io/icons/
 
 [[menu.icon]]
-    url = "https://github.com/DSPG-Young-Scholars-Program"
+    url = "https://github.com/DSPG-Young-Scholars-Program/dspg20fairfax/"
     name = "fab fa-github"
     weight = 2
     
