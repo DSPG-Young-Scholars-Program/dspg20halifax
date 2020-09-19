@@ -41,10 +41,13 @@ options(mapbox.accessToken = token)
     + How factors at the individual, relationship, community, and policy levels shape behavior 
 <br> 
 ![](/dspg20halifax/SEM-graphc.jpg)
+<!-- ![](../../static/SEM-graphc.jpg) -->
+
 <br> 
 * Workflow: illustrates relationship between factors 
 <br>
 ![](/dspg20halifax/findings/general-overview_files/workflow.png)
+<!-- ![](../../static/findings/general-overview_files/workflow.png) -->
 <br>
 
 <br><br><br>

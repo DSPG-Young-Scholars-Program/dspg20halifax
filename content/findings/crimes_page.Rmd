@@ -375,7 +375,7 @@ mapping_data <- all_va_crime %>%
          year_drug_crime_black_per_1000 = total_drug_crime_black / pop_Black / 10 * 1000) %>% 
   left_join(counties_sp, ., by = "county_cap") %>% 
   group_by(county_cap) %>% 
-  slice_head(1) %>% 
+  slice_head(n = 1) %>% 
   ungroup()
 
 leaflet_scale <- colorBin("BuPu" , c(0, 200), c(0, 30, 40, 50, 100, 400))
