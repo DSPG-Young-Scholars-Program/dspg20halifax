@@ -1,7 +1,7 @@
 baseURL = "https://dspg-young-scholars-program.github.io/dspg20halifax/"
 languageCode = "en-us"
 title = "UVA Biocomplexity Institute"
-description = "A website for University of Virginia's 2020 Data Science for the Public Good Program."
+description = "Understanding Incarceration and Recidivism in Halifax County, Virginia"
 theme = "min_night"
 disqusShortname = ""
 googleAnalytics = ""
@@ -13,7 +13,7 @@ publishDir = "docs"
 
 [params]
     author = "UVA Biocomplexity Institute"
-    description = "2020 DSPG Halifax County Incarceration + Recidivism"
+    description = "Understanding Incarceration and Recidivism in Halifax County, Virginia"
     logo = "favicon/uva-dspg-logo.jpg"
     githubUsername = "uva-bi-sdad"
     accent = "#232D4B" # dark colors do best
