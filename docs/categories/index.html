@@ -228,25 +228,48 @@ $(document).ready(function(){
         </script>
         
         <script>
-           var referer = document.referrer;
-           var n = referer.includes('economic');
+           function getUrlVars() {
+                var vars = {};
+                var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                    vars[key] = value;
+                });
+                return vars;
+            }
+           
+           function getUrlParam(parameter, defaultvalue){
+                var urlparameter = defaultvalue;
+                if(window.location.href.indexOf(parameter) > -1){
+                    urlparameter = getUrlVars()[parameter];
+                    }
+                return urlparameter;
+            }
+            
+            var mytype = getUrlParam('type','Empty');
+            
+            function changeLinks(parameter) {
+                links = document.getElementsByTagName("a");
+            
+                for(var i = 0; i < links.length; i++) { 
+                   var link = links[i];
+                   var newurl = link.href + '?type=' + parameter;
+                   link.setAttribute('href', newurl);
+                 } 
+            }
+           
            var x = document.getElementsByClassName('header_img');
-           if (n != true) {
+           
+           if (mytype != 'economic') {
              x[0].innerHTML = '<div><a href="https://datascienceforthepublicgood.org/events/symposium2020/poster-sessions">' +
-                              '<img src="\/dspg20halifax\/img/DSPG_white-01.png", alt="DSPG 2020 Symposium Proceedings", style="height:42px; margin-top:5px;">' +
+                              '<img src="/dspg20halifax/img/DSPG_white-01.png", alt="DSPG 2020 Symposium Proceedings", style="height:42px; margin-top:5px;">' +
                               '</a></div>';
-                              
-             var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?dspg';
              
-             window.history.pushState({path:newurl},'',newurl);
+             changeLinks('dspg');
            } else {
              x[0].innerHTML = '<div><a href="https://datascienceforthepublicgood.org/economic-mobility/community-insights/case-studies">' +
-                              '<img src="\/dspg20halifax\/img/AEMLogoGatesColors-11.png", alt="Gates Economic Mobility Case Studies", style="height:42px; margin-top:5px;">' +
+                              '<img src="/dspg20halifax/img/AEMLogoGatesColors-11.png", alt="Gates Economic Mobility Case Studies", style="height:42px; margin-top:5px;">' +
                               '</a></div>';
              
-             var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?economic';
-             
-             window.history.pushState({path:newurl},'',newurl);
+             changeLinks('economic');
            }
         </script>
        
